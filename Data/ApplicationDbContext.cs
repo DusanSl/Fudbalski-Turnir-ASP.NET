@@ -16,7 +16,17 @@ namespace Fudbalski_turnir.Data
             modelBuilder.Entity<Klub>()
                 .HasMany(k => k.Utakmice)
                 .WithMany(u => u.Klubovi)
-                .UsingEntity(j => j.ToTable("Igra")); // EF će automatski kreirati join tabelu
+                .UsingEntity(j => j.ToTable("Igra"));
+
+            modelBuilder.Entity<Turnir>()
+                .HasMany(t => t.Sponzori)
+                .WithMany(s => s.Turniri)
+                .UsingEntity(j => j.ToTable("Sponzorise"));
+
+            modelBuilder.Entity<Turnir>()
+                .HasMany(t => t.Klubovi)
+                .WithMany(k => k.Turniri)
+                .UsingEntity(j => j.ToTable("Ucestvuje"));
 
             base.OnModelCreating(modelBuilder);
         }
@@ -26,7 +36,6 @@ namespace Fudbalski_turnir.Data
         public DbSet<Fudbalski_turnir.Models.Osoba> Osoba { get; set; } = default!;
         public DbSet<Fudbalski_turnir.Models.Sponzor> Sponzor { get; set; } = default!;
         public DbSet<Fudbalski_turnir.Models.Turnir> Turnir { get; set; } = default!;
-        public DbSet<Fudbalski_turnir.Models.Utakmica> Utakmica { get; set; } = default!;
     }
 
 }
