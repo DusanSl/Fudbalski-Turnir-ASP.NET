@@ -1,0 +1,54 @@
+﻿@model Fudbalski_turnir.Models.Klub
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Klub</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ImeKluba)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ImeKluba)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GodinaOsnivanja)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GodinaOsnivanja)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RankingTima)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RankingTima)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BrojIgraca)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BrojIgraca)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Stadion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Stadion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BrojOsvojenihTitula)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BrojOsvojenihTitula)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.KlubID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

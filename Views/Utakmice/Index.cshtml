@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Fudbalski_turnir.Models.Utakmica>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Datum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mesto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrviKlubNaziv)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DrugiKlubNaziv)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kolo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrviKlubGolovi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DrugiKlubGolovi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produzeci)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Penali)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrviKlubPenali)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DrugiKlubPenali)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipUcesca)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mesto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrviKlubNaziv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrugiKlubNaziv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Kolo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrviKlubGolovi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrugiKlubGolovi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produzeci)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Penali)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrviKlubPenali)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrugiKlubPenali)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipUcesca)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.UtakmicaID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UtakmicaID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.UtakmicaID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

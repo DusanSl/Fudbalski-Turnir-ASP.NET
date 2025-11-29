@@ -1,0 +1,88 @@
+﻿@model Fudbalski_turnir.Models.Utakmica
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Utakmica</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Datum" class="control-label"></label>
+                <input asp-for="Datum" class="form-control" />
+                <span asp-validation-for="Datum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mesto" class="control-label"></label>
+                <input asp-for="Mesto" class="form-control" />
+                <span asp-validation-for="Mesto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrviKlubNaziv" class="control-label"></label>
+                <input asp-for="PrviKlubNaziv" class="form-control" />
+                <span asp-validation-for="PrviKlubNaziv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DrugiKlubNaziv" class="control-label"></label>
+                <input asp-for="DrugiKlubNaziv" class="form-control" />
+                <span asp-validation-for="DrugiKlubNaziv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kolo" class="control-label"></label>
+                <input asp-for="Kolo" class="form-control" />
+                <span asp-validation-for="Kolo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrviKlubGolovi" class="control-label"></label>
+                <input asp-for="PrviKlubGolovi" class="form-control" />
+                <span asp-validation-for="PrviKlubGolovi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DrugiKlubGolovi" class="control-label"></label>
+                <input asp-for="DrugiKlubGolovi" class="form-control" />
+                <span asp-validation-for="DrugiKlubGolovi" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Produzeci" /> @Html.DisplayNameFor(model => model.Produzeci)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Penali" /> @Html.DisplayNameFor(model => model.Penali)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrviKlubPenali" class="control-label"></label>
+                <input asp-for="PrviKlubPenali" class="form-control" />
+                <span asp-validation-for="PrviKlubPenali" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DrugiKlubPenali" class="control-label"></label>
+                <input asp-for="DrugiKlubPenali" class="form-control" />
+                <span asp-validation-for="DrugiKlubPenali" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipUcesca" class="control-label"></label>
+                <input asp-for="TipUcesca" class="form-control" />
+                <span asp-validation-for="TipUcesca" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
