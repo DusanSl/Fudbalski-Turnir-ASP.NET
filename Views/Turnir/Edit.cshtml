@@ -1,0 +1,54 @@
+﻿@model Fudbalski_turnir.Models.Turnir
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Turnir</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TurnirID" />
+            <div class="form-group">
+                <label asp-for="NazivTurnira" class="control-label"></label>
+                <input asp-for="NazivTurnira" class="form-control" />
+                <span asp-validation-for="NazivTurnira" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lokacija" class="control-label"></label>
+                <input asp-for="Lokacija" class="form-control" />
+                <span asp-validation-for="Lokacija" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DatumPocetka" class="control-label"></label>
+                <input asp-for="DatumPocetka" class="form-control" />
+                <span asp-validation-for="DatumPocetka" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DatumZavrsetka" class="control-label"></label>
+                <input asp-for="DatumZavrsetka" class="form-control" />
+                <span asp-validation-for="DatumZavrsetka" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipTurnira" class="control-label"></label>
+                <input asp-for="TipTurnira" class="form-control" />
+                <span asp-validation-for="TipTurnira" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

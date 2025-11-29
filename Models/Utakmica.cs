@@ -15,5 +15,6 @@
         public int PrviKlubPenali { get; set; }
         public int DrugiKlubPenali { get; set; }
         public int TipUcesca { get; set; } // gost ili domacin
+        public ICollection<Klub> Klubovi { get; set; }
     }
 }
