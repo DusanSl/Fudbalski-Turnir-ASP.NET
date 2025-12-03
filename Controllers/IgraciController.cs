@@ -19,13 +19,13 @@ namespace Fudbalski_turnir.Controllers
             _context = context;
         }
 
-        // GET: Igrac
+        // GET: Igraci
         public async Task<IActionResult> Index()
         {
             return View(await _context.Igrac.ToListAsync());
         }
 
-        // GET: Igrac/Details/5
+        // GET: Igraci/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,7 +34,7 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var igrac = await _context.Igrac
-                .FirstOrDefaultAsync(m => m.IgracID == id);
+                .FirstOrDefaultAsync(m => m.OsobaID == id);
             if (igrac == null)
             {
                 return NotFound();
@@ -43,13 +43,13 @@ namespace Fudbalski_turnir.Controllers
             return View(igrac);
         }
 
-        // GET: Igrac/Create
+        // GET: Igraci/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Igrac/Create
+        // POST: Igraci/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +65,7 @@ namespace Fudbalski_turnir.Controllers
             return View(igrac);
         }
 
-        // GET: Igrac/Edit/5
+        // GET: Igraci/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,14 +81,14 @@ namespace Fudbalski_turnir.Controllers
             return View(igrac);
         }
 
-        // POST: Igrac/Edit/5
+        // POST: Igraci/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IgracID,KlubID,Pozicija,BrojDresa,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Igrac igrac)
         {
-            if (id != igrac.IgracID)
+            if (id != igrac.OsobaID)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace Fudbalski_turnir.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!IgracExists(igrac.IgracID))
+                    if (!IgracExists(igrac.OsobaID))
                     {
                         return NotFound();
                     }
@@ -116,7 +116,7 @@ namespace Fudbalski_turnir.Controllers
             return View(igrac);
         }
 
-        // GET: Igrac/Delete/5
+        // GET: Igraci/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,7 +125,7 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var igrac = await _context.Igrac
-                .FirstOrDefaultAsync(m => m.IgracID == id);
+                .FirstOrDefaultAsync(m => m.OsobaID == id);
             if (igrac == null)
             {
                 return NotFound();
@@ -134,7 +134,7 @@ namespace Fudbalski_turnir.Controllers
             return View(igrac);
         }
 
-        // POST: Igrac/Delete/5
+        // POST: Igraci/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -151,7 +151,7 @@ namespace Fudbalski_turnir.Controllers
 
         private bool IgracExists(int id)
         {
-            return _context.Igrac.Any(e => e.IgracID == id);
+            return _context.Igrac.Any(e => e.OsobaID == id);
         }
     }
 }

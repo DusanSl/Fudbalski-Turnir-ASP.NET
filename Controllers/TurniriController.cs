@@ -19,13 +19,13 @@ namespace Fudbalski_turnir.Controllers
             _context = context;
         }
 
-        // GET: Turnir
+        // GET: Turniri
         public async Task<IActionResult> Index()
         {
             return View(await _context.Turnir.ToListAsync());
         }
 
-        // GET: Turnir/Details/5
+        // GET: Turniri/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,13 @@ namespace Fudbalski_turnir.Controllers
             return View(turnir);
         }
 
-        // GET: Turnir/Create
+        // GET: Turniri/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Turnir/Create
+        // POST: Turniri/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +65,7 @@ namespace Fudbalski_turnir.Controllers
             return View(turnir);
         }
 
-        // GET: Turnir/Edit/5
+        // GET: Turniri/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +81,7 @@ namespace Fudbalski_turnir.Controllers
             return View(turnir);
         }
 
-        // POST: Turnir/Edit/5
+        // POST: Turniri/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +116,7 @@ namespace Fudbalski_turnir.Controllers
             return View(turnir);
         }
 
-        // GET: Turnir/Delete/5
+        // GET: Turniri/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +134,7 @@ namespace Fudbalski_turnir.Controllers
             return View(turnir);
         }
 
-        // POST: Turnir/Delete/5
+        // POST: Turniri/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -36,6 +36,7 @@ namespace Fudbalski_turnir.Data
         public DbSet<Fudbalski_turnir.Models.Osoba> Osoba { get; set; } = default!;
         public DbSet<Fudbalski_turnir.Models.Sponzor> Sponzor { get; set; } = default!;
         public DbSet<Fudbalski_turnir.Models.Turnir> Turnir { get; set; } = default!;
+        public DbSet<Fudbalski_turnir.Models.Utakmica> Utakmica { get; set; } = default!;
     }
 
 }

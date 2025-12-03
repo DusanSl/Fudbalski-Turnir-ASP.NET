@@ -11,5 +11,10 @@
         public int BrojOsvojenihTitula { get; set; } // MOZDA NIJE POTREBNO
         public ICollection<Utakmica> Utakmice { get; set; } // zbog M:M veze
         public ICollection<Turnir> Turniri { get; set; } // zbog M:M veze
+
+        public Klub()
+        {
+
+        }
     }
 }

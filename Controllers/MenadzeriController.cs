@@ -19,13 +19,13 @@ namespace Fudbalski_turnir.Controllers
             _context = context;
         }
 
-        // GET: Menadzer
+        // GET: Menadzeri
         public async Task<IActionResult> Index()
         {
             return View(await _context.Menadzer.ToListAsync());
         }
 
-        // GET: Menadzer/Details/5
+        // GET: Menadzeri/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,7 +34,7 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var menadzer = await _context.Menadzer
-                .FirstOrDefaultAsync(m => m.MenadzerID == id);
+                .FirstOrDefaultAsync(m => m.OsobaID == id);
             if (menadzer == null)
             {
                 return NotFound();
@@ -43,13 +43,13 @@ namespace Fudbalski_turnir.Controllers
             return View(menadzer);
         }
 
-        // GET: Menadzer/Create
+        // GET: Menadzeri/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Menadzer/Create
+        // POST: Menadzeri/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +65,7 @@ namespace Fudbalski_turnir.Controllers
             return View(menadzer);
         }
 
-        // GET: Menadzer/Edit/5
+        // GET: Menadzeri/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,14 +81,14 @@ namespace Fudbalski_turnir.Controllers
             return View(menadzer);
         }
 
-        // POST: Menadzer/Edit/5
+        // POST: Menadzeri/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MenadzerID,KlubID,GodineIskustva,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Menadzer menadzer)
         {
-            if (id != menadzer.MenadzerID)
+            if (id != menadzer.OsobaID)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace Fudbalski_turnir.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MenadzerExists(menadzer.MenadzerID))
+                    if (!MenadzerExists(menadzer.OsobaID))
                     {
                         return NotFound();
                     }
@@ -116,7 +116,7 @@ namespace Fudbalski_turnir.Controllers
             return View(menadzer);
         }
 
-        // GET: Menadzer/Delete/5
+        // GET: Menadzeri/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,7 +125,7 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var menadzer = await _context.Menadzer
-                .FirstOrDefaultAsync(m => m.MenadzerID == id);
+                .FirstOrDefaultAsync(m => m.OsobaID == id);
             if (menadzer == null)
             {
                 return NotFound();
@@ -134,7 +134,7 @@ namespace Fudbalski_turnir.Controllers
             return View(menadzer);
         }
 
-        // POST: Menadzer/Delete/5
+        // POST: Menadzeri/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -151,7 +151,7 @@ namespace Fudbalski_turnir.Controllers
 
         private bool MenadzerExists(int id)
         {
-            return _context.Menadzer.Any(e => e.MenadzerID == id);
+            return _context.Menadzer.Any(e => e.OsobaID == id);
         }
     }
 }

@@ -19,13 +19,13 @@ namespace Fudbalski_turnir.Controllers
             _context = context;
         }
 
-        // GET: Sponzor
+        // GET: Sponzori
         public async Task<IActionResult> Index()
         {
             return View(await _context.Sponzor.ToListAsync());
         }
 
-        // GET: Sponzor/Details/5
+        // GET: Sponzori/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,13 @@ namespace Fudbalski_turnir.Controllers
             return View(sponzor);
         }
 
-        // GET: Sponzor/Create
+        // GET: Sponzori/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Sponzor/Create
+        // POST: Sponzori/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +65,7 @@ namespace Fudbalski_turnir.Controllers
             return View(sponzor);
         }
 
-        // GET: Sponzor/Edit/5
+        // GET: Sponzori/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +81,7 @@ namespace Fudbalski_turnir.Controllers
             return View(sponzor);
         }
 
-        // POST: Sponzor/Edit/5
+        // POST: Sponzori/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +116,7 @@ namespace Fudbalski_turnir.Controllers
             return View(sponzor);
         }
 
-        // GET: Sponzor/Delete/5
+        // GET: Sponzori/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +134,7 @@ namespace Fudbalski_turnir.Controllers
             return View(sponzor);
         }
 
-        // POST: Sponzor/Delete/5
+        // POST: Sponzori/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
