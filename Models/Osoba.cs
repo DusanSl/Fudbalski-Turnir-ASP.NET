@@ -8,6 +8,11 @@
         public DateTime DatumRodjenja { get; set; }
         public string Nacionalnost { get; set; }
         public DateOnly UKlubuOd { get; set; } // klub u kojem osoba trenutno igra ili radi
-        public DateOnly UKlubuDo { get; set; } 
+        public DateOnly UKlubuDo { get; set; }
+
+        public Osoba()
+        {
+
+        }
     }
 }

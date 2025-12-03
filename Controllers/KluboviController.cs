@@ -19,13 +19,13 @@ namespace Fudbalski_turnir.Controllers
             _context = context;
         }
 
-        // GET: Klub
+        // GET: Klubovi
         public async Task<IActionResult> Index()
         {
             return View(await _context.Klub.ToListAsync());
         }
 
-        // GET: Klub/Details/5
+        // GET: Klubovi/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,13 @@ namespace Fudbalski_turnir.Controllers
             return View(klub);
         }
 
-        // GET: Klub/Create
+        // GET: Klubovi/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Klub/Create
+        // POST: Klubovi/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +65,7 @@ namespace Fudbalski_turnir.Controllers
             return View(klub);
         }
 
-        // GET: Klub/Edit/5
+        // GET: Klubovi/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +81,7 @@ namespace Fudbalski_turnir.Controllers
             return View(klub);
         }
 
-        // POST: Klub/Edit/5
+        // POST: Klubovi/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +116,7 @@ namespace Fudbalski_turnir.Controllers
             return View(klub);
         }
 
-        // GET: Klub/Delete/5
+        // GET: Klubovi/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +134,7 @@ namespace Fudbalski_turnir.Controllers
             return View(klub);
         }
 
-        // POST: Klub/Delete/5
+        // POST: Klubovi/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

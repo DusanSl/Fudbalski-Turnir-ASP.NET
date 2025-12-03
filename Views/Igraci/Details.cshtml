@@ -1,4 +1,4 @@
-﻿@model Fudbalski_turnir.Models.Menadzer
+﻿@model Fudbalski_turnir.Models.Igrac
 
 @{
     ViewData["Title"] = "Details";
@@ -7,9 +7,15 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Menadzer</h4>
+    <h4>Igrac</h4>
     <hr />
     <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IgracID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IgracID)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.KlubID)
         </dt>
@@ -17,16 +23,16 @@
             @Html.DisplayFor(model => model.KlubID)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GodineIskustva)
+            @Html.DisplayNameFor(model => model.Pozicija)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GodineIskustva)
+            @Html.DisplayFor(model => model.Pozicija)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OsobaID)
+            @Html.DisplayNameFor(model => model.BrojDresa)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OsobaID)
+            @Html.DisplayFor(model => model.BrojDresa)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Ime)
@@ -67,6 +73,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.MenadzerID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.OsobaID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
