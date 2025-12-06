@@ -4,6 +4,7 @@ using Fudbalski_turnir.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fudbalski_turnir.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251205154838_SeperateTables")]
+    partial class SeperateTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -453,6 +456,9 @@ namespace Fudbalski_turnir.Data.Migrations
                     b.Property<int>("BrojDresa")
                         .HasColumnType("int");
 
+                    b.Property<int>("IgracID")
+                        .HasColumnType("int");
+
                     b.Property<int>("KlubID")
                         .HasColumnType("int");
 
@@ -471,6 +477,9 @@ namespace Fudbalski_turnir.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("KlubID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenadzerID")
                         .HasColumnType("int");
 
                     b.ToTable("Menadzeri");

@@ -1,7 +1,12 @@
-﻿namespace Fudbalski_turnir.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Fudbalski_turnir.Models
 {
     public class Turnir
     {
+       [Key]
+       [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
        public int TurnirID { get; set; }
        public string NazivTurnira { get; set; }
        public string Lokacija { get; set; }

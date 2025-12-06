@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="container mt-4">
+    <h1>Admin Panel</h1>
+    <p class="lead">Manage all database tables</p>
+
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Igrači</h5>
+                    <p class="card-text">Manage players in the database</p>
+                    <a asp-controller="Igraci" asp-action="Create" class="btn btn-success">Add New</a>
+                    <a asp-controller="Igraci" asp-action="Index" class="btn btn-primary">View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Klubovi</h5>
+                    <p class="card-text">Manage clubs in the database</p>
+                    <a asp-controller="Klubovi" asp-action="Create" class="btn btn-success">Add New</a>
+                    <a asp-controller="Klubovi" asp-action="Index" class="btn btn-primary">View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Utakmice</h5>
+                    <p class="card-text">Manage matches in the database</p>
+                    <a asp-controller="Utakmice" asp-action="Create" class="btn btn-success">Add New</a>
+                    <a asp-controller="Utakmice" asp-action="Index" class="btn btn-primary">View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Menadžeri</h5>
+                    <p class="card-text">Manage managers in the database</p>
+                    <a asp-controller="Menadzeri" asp-action="Create" class="btn btn-success">Add New</a>
+                    <a asp-controller="Menadzeri" asp-action="Index" class="btn btn-primary">View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Sponzori</h5>
+                    <p class="card-text">Manage sponsors in the database</p>
+                    <a asp-controller="Sponzori" asp-action="Create" class="btn btn-success">Add New</a>
+                    <a asp-controller="Sponzori" asp-action="Index" class="btn btn-primary">View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Turniri</h5>
+                    <p class="card-text">Manage tournaments in the database</p>
+                    <a asp-controller="Turniri" asp-action="Create" class="btn btn-success">Add New</a>
+                    <a asp-controller="Turniri" asp-action="Index" class="btn btn-primary">View All</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

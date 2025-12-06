@@ -1,7 +1,12 @@
-﻿namespace Fudbalski_turnir.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Fudbalski_turnir.Models
 {
     public class Klub
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int KlubID { get; set; }
         public string ImeKluba { get; set; }
         public int GodinaOsnivanja { get; set; }
