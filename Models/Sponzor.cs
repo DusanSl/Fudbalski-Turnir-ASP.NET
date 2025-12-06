@@ -1,7 +1,12 @@
-﻿namespace Fudbalski_turnir.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Fudbalski_turnir.Models
 {
     public class Sponzor
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SponzorID { get; set; }
         public string ImeSponzora { get; set; }
         public string KontaktSponzora { get; set; }

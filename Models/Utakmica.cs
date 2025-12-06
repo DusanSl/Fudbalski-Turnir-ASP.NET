@@ -1,7 +1,12 @@
-﻿namespace Fudbalski_turnir.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Fudbalski_turnir.Models
 {
     public class Utakmica
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UtakmicaID { get; set; }
         public DateTime Datum { get; set; }
         public string Mesto { get; set; }

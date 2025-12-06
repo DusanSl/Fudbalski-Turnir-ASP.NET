@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Fudbalski_turnir.Data;
 using Fudbalski_turnir.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fudbalski_turnir.Controllers
 {
@@ -20,12 +21,14 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Igraci
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Igrac.ToListAsync());
         }
 
         // GET: Igraci/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,6 +47,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Igraci/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -54,6 +58,7 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("IgracID,KlubID,Pozicija,BrojDresa,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Igrac igrac)
         {
             if (ModelState.IsValid)
@@ -66,6 +71,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Igraci/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +92,7 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("IgracID,KlubID,Pozicija,BrojDresa,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Igrac igrac)
         {
             if (id != igrac.OsobaID)
@@ -117,6 +124,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Igraci/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +145,7 @@ namespace Fudbalski_turnir.Controllers
         // POST: Igraci/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var igrac = await _context.Igrac.FindAsync(id);
