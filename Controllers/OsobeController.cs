@@ -44,14 +44,14 @@ namespace Fudbalski_turnir.Controllers
             return View(osoba);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // GET: Osobe/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // POST: Osobe/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -68,7 +68,7 @@ namespace Fudbalski_turnir.Controllers
             return View(osoba);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // GET: Osobe/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -85,7 +85,7 @@ namespace Fudbalski_turnir.Controllers
             return View(osoba);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // POST: Osobe/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -121,7 +121,7 @@ namespace Fudbalski_turnir.Controllers
             return View(osoba);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // GET: Osobe/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -140,7 +140,7 @@ namespace Fudbalski_turnir.Controllers
             return View(osoba);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // POST: Osobe/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

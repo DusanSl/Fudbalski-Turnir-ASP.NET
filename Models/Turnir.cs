@@ -13,8 +13,8 @@ namespace Fudbalski_turnir.Models
        public DateTime DatumPocetka { get; set; }
        public DateTime DatumZavrsetka { get; set; }
        public string TipTurnira { get; set; }
-       public ICollection<Sponzor> Sponzori { get; set; } // zbog M:M veze
-       public ICollection<Klub> Klubovi { get; set; } // zbog M:M veze
+       public ICollection<Sponzor>? Sponzori { get; set; } // zbog M:M veze
+       public ICollection<Klub>? Klubovi { get; set; } // zbog M:M veze
 
        public Turnir()
        {
