@@ -45,9 +45,11 @@ namespace Fudbalski_turnir.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         // GET: Utakmice/Create
         public IActionResult Create()
         {
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UtakmicaID,Datum,Mesto,PrviKlubNaziv,DrugiKlubNaziv,Kolo,PrviKlubGolovi,DrugiKlubGolovi,Produzeci,Penali,PrviKlubPenali,DrugiKlubPenali,TipUcesca")] Utakmica utakmica)
+        public async Task<IActionResult> Create([Bind("UtakmicaID,Datum,Mesto,PrviKlubNaziv,DrugiKlubNaziv,Kolo,PrviKlubGolovi,DrugiKlubGolovi,Produzeci,Penali,PrviKlubPenali,DrugiKlubPenali,TipUcesca")] Utakmica utakmica, int TurnirID)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +67,7 @@ namespace Fudbalski_turnir.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
             return View(utakmica);
         }
 

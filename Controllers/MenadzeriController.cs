@@ -45,9 +45,11 @@ namespace Fudbalski_turnir.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         // GET: Menadzeri/Create
         public IActionResult Create()
         {
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba");
             return View();
         }
 
@@ -57,18 +59,22 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MenadzerID,KlubID,GodineIskustva,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Menadzer menadzer)
+        public async Task<IActionResult> Create([Bind("MenadzerID,KlubID,GodineIskustva,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Menadzer menadzer, int KlubID)
         {
             if (ModelState.IsValid)
             {
+                menadzer.KlubID = KlubID;
+
                 _context.Add(menadzer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba", KlubID);
             return View(menadzer);
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         // GET: Menadzeri/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -82,6 +88,7 @@ namespace Fudbalski_turnir.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba");
             return View(menadzer);
         }
 
@@ -118,6 +125,7 @@ namespace Fudbalski_turnir.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba");
             return View(menadzer);
         }
 

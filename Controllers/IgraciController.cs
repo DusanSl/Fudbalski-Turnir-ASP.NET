@@ -48,8 +48,10 @@ namespace Fudbalski_turnir.Controllers
 
         // GET: Igraci/Create
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba");
             return View();
         }
 
@@ -59,19 +61,22 @@ namespace Fudbalski_turnir.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("IgracID,KlubID,Pozicija,BrojDresa,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Igrac igrac)
+        public async Task<IActionResult> Create([Bind("IgracID,KlubID,Pozicija,BrojDresa,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Igrac igrac, int KlubID)
         {
             if (ModelState.IsValid)
             {
+                igrac.KlubID = KlubID;
                 _context.Add(igrac);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba", KlubID);
             return View(igrac);
         }
 
         // GET: Igraci/Edit/5
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,11 +84,14 @@ namespace Fudbalski_turnir.Controllers
                 return NotFound();
             }
 
-            var igrac = await _context.Igrac.FindAsync(id);
+            var igrac = await _context.Igrac
+            .FirstOrDefaultAsync(i => i.OsobaID == id);
+
             if (igrac == null)
             {
                 return NotFound();
             }
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba");
             return View(igrac);
         }
 
@@ -120,6 +128,7 @@ namespace Fudbalski_turnir.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba", igrac.KlubID);
             return View(igrac);
         }
 

@@ -8,7 +8,9 @@ namespace Fudbalski_turnir.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SponzorID { get; set; }
+        [MaxLength(50)]
         public string ImeSponzora { get; set; }
+        [MaxLength(150)]
         public string KontaktSponzora { get; set; }
         public decimal VrednostSponzora { get; set; } 
         public ICollection<Turnir>? Turniri { get; set; } // zbog M:M veze

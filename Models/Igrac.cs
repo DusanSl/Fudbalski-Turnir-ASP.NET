@@ -7,6 +7,7 @@ namespace Fudbalski_turnir.Models
     public class Igrac : Osoba
     {
         public int KlubID { get; set; }
+        [MaxLength(30)]
         public string Pozicija { get; set; }
         public int BrojDresa { get; set; }
         
