@@ -14,8 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label class="control-label">Turnir</label>
-                <select name="TurnirID" class="form-control" asp-items="ViewBag.Turniri">
-                <option value="">Izaberi turnir</option>
+                <select name="TurnirID" id="turnirDropdown" class="form-control" asp-items="ViewBag.Turniri">
                 </select>
             </div>
             <div class="form-group">
@@ -29,14 +28,17 @@
                 <span asp-validation-for="Mesto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PrviKlubNaziv" class="control-label"></label>
-                <input asp-for="PrviKlubNaziv" class="form-control" />
-                <span asp-validation-for="PrviKlubNaziv" class="text-danger"></span>
+                <label class="control-label">Prvi Klub</label>
+                <select id="prviKlubDropdown" name="PrviKlubNaziv" class="form-control" disabled>
+                    <option value="">Prvo izaberi turnir</option>
+                </select>
             </div>
+
             <div class="form-group">
-                <label asp-for="DrugiKlubNaziv" class="control-label"></label>
-                <input asp-for="DrugiKlubNaziv" class="form-control" />
-                <span asp-validation-for="DrugiKlubNaziv" class="text-danger"></span>
+                <label class="control-label">Drugi Klub</label>
+                <select id="drugiKlubDropdown" name="DrugiKlubNaziv" class="form-control" disabled>
+                    <option value="">Prvo izaberi turnir</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Kolo" class="control-label"></label>
@@ -90,6 +92,41 @@
 </div>
 
 <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary mb-2 mt-2">Back to Admin Page</a>
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('turnirDropdown').addEventListener('change', function() {
+            const turnirId = this.value;
+            const prviKlubDropdown = document.getElementById('prviKlubDropdown');
+            const drugiKlubDropdown = document.getElementById('drugiKlubDropdown');
+
+            if (turnirId) {
+                fetch(`/Utakmice/GetKluboviByTurnir?turnirId=${turnirId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        prviKlubDropdown.innerHTML = '<option value="">Izaberi klub</option>';
+                        drugiKlubDropdown.innerHTML = '<option value="">Izaberi klub</option>';
+
+                        data.forEach(klub => {
+                            prviKlubDropdown.innerHTML += `<option value="${klub.imeKluba}">${klub.imeKluba}</option>`;
+                            drugiKlubDropdown.innerHTML += `<option value="${klub.imeKluba}">${klub.imeKluba}</option>`;
+                        });
+                        prviKlubDropdown.disabled = false;
+                        drugiKlubDropdown.disabled = false;
+                    })
+                    .catch(error => {
+                        alert('Greška pri učitavanju klubova');
+                    });
+            } else {
+                prviKlubDropdown.innerHTML = '<option value="">Prvo izaberi turnir</option>';
+                drugiKlubDropdown.innerHTML = '<option value="">Prvo izaberi turnir</option>';
+                prviKlubDropdown.disabled = true;
+                drugiKlubDropdown.disabled = true;
+            }
+        });
+    </script>
 }

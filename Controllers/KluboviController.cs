@@ -124,7 +124,6 @@ namespace Fudbalski_turnir.Controllers
             {
                 try
                 {
-                    // Load the existing klub with its tournaments
                     var existingKlub = await _context.Klub
                         .Include(k => k.Turniri)
                         .FirstOrDefaultAsync(k => k.KlubID == id);
@@ -134,7 +133,6 @@ namespace Fudbalski_turnir.Controllers
                         return NotFound();
                     }
 
-                    // Update basic properties
                     existingKlub.ImeKluba = klub.ImeKluba;
                     existingKlub.GodinaOsnivanja = klub.GodinaOsnivanja;
                     existingKlub.RankingTima = klub.RankingTima;
@@ -142,8 +140,7 @@ namespace Fudbalski_turnir.Controllers
                     existingKlub.Stadion = klub.Stadion;
                     existingKlub.BrojOsvojenihTitula = klub.BrojOsvojenihTitula;
 
-                    // Update tournament relationship
-                    existingKlub.Turniri.Clear();  // Remove all current tournaments
+                    existingKlub.Turniri.Clear(); 
 
                     if (TurnirID > 0)
                     {

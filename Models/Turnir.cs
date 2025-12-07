@@ -18,8 +18,9 @@ namespace Fudbalski_turnir.Models
        public string TipTurnira { get; set; }
        public ICollection<Sponzor>? Sponzori { get; set; } // zbog M:M veze
        public ICollection<Klub>? Klubovi { get; set; } // zbog M:M veze
+       public ICollection<Utakmica>? Utakmice { get; set; }
 
-       public Turnir()
+        public Turnir()
        {
 
        }
