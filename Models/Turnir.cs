@@ -8,10 +8,13 @@ namespace Fudbalski_turnir.Models
        [Key]
        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
        public int TurnirID { get; set; }
+       [MaxLength(100)]
        public string NazivTurnira { get; set; }
+       [MaxLength(50)]
        public string Lokacija { get; set; }
        public DateTime DatumPocetka { get; set; }
        public DateTime DatumZavrsetka { get; set; }
+       [MaxLength(50)]
        public string TipTurnira { get; set; }
        public ICollection<Sponzor>? Sponzori { get; set; } // zbog M:M veze
        public ICollection<Klub>? Klubovi { get; set; } // zbog M:M veze
