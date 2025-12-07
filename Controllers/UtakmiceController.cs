@@ -59,7 +59,7 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UtakmicaID,Datum,Mesto,PrviKlubNaziv,DrugiKlubNaziv,Kolo,PrviKlubGolovi,DrugiKlubGolovi,Produzeci,Penali,PrviKlubPenali,DrugiKlubPenali,TipUcesca")] Utakmica utakmica, int TurnirID)
+        public async Task<IActionResult> Create([Bind("UtakmicaID,TurnirID,Datum,Mesto,PrviKlubNaziv,DrugiKlubNaziv,Kolo,PrviKlubGolovi,DrugiKlubGolovi,Produzeci,Penali,PrviKlubPenali,DrugiKlubPenali,TipUcesca")] Utakmica utakmica)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +72,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         // GET: Utakmice/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -80,11 +81,18 @@ namespace Fudbalski_turnir.Controllers
                 return NotFound();
             }
 
-            var utakmica = await _context.Utakmica.FindAsync(id);
+            var utakmica = await _context.Utakmica
+            .Include(u => u.Turnir)
+            .FirstOrDefaultAsync(u => u.UtakmicaID == id);
+
             if (utakmica == null)
             {
                 return NotFound();
             }
+
+            // Populate dropdown with all tournaments
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", utakmica.TurnirID);
+
             return View(utakmica);
         }
 
@@ -94,7 +102,7 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UtakmicaID,Datum,Mesto,PrviKlubNaziv,DrugiKlubNaziv,Kolo,PrviKlubGolovi,DrugiKlubGolovi,Produzeci,Penali,PrviKlubPenali,DrugiKlubPenali,TipUcesca")] Utakmica utakmica)
+        public async Task<IActionResult> Edit(int id, [Bind("UtakmicaID,TurnirID,Datum,Mesto,PrviKlubNaziv,DrugiKlubNaziv,Kolo,PrviKlubGolovi,DrugiKlubGolovi,Produzeci,Penali,PrviKlubPenali,DrugiKlubPenali,TipUcesca")] Utakmica utakmica)
         {
             if (id != utakmica.UtakmicaID)
             {
@@ -121,6 +129,8 @@ namespace Fudbalski_turnir.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Turnir = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", utakmica.TurnirID);
             return View(utakmica);
         }
 
@@ -162,6 +172,15 @@ namespace Fudbalski_turnir.Controllers
         private bool UtakmicaExists(int id)
         {
             return _context.Utakmica.Any(e => e.UtakmicaID == id);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetKluboviByTurnir(int turnirId)
+        {
+            var klubovi = await _context.Klub
+                .Where(k => k.Turniri.Any(t => t.TurnirID == turnirId))
+                .Select(k => new { k.KlubID, k.ImeKluba })
+                .ToListAsync();
+            return Json(klubovi);
         }
     }
 }

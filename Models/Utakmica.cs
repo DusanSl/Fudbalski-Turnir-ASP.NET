@@ -9,6 +9,9 @@ namespace Fudbalski_turnir.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UtakmicaID { get; set; }
+        public int? TurnirID { get; set; }
+        [ForeignKey("TurnirID")]
+        public Turnir? Turnir { get; set; }
         public DateTime Datum { get; set; }
         [MaxLength(50)]
         public string Mesto { get; set; }

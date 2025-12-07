@@ -14,6 +14,13 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UtakmicaID" />
             <div class="form-group">
+                <label asp-for="TurnirID" class="control-label">Turnir</label>
+                <select asp-for="TurnirID" class="form-control" asp-items="ViewBag.Turnir">
+                    <option value="">Nema turnir</option>
+                </select>
+                <span asp-validation-for="TurnirID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Datum" class="control-label"></label>
                 <input asp-for="Datum" class="form-control" />
                 <span asp-validation-for="Datum" class="text-danger"></span>
