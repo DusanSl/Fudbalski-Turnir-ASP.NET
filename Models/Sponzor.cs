@@ -11,7 +11,7 @@ namespace Fudbalski_turnir.Models
         public string ImeSponzora { get; set; }
         public string KontaktSponzora { get; set; }
         public decimal VrednostSponzora { get; set; } 
-        public ICollection<Turnir> Turniri { get; set; } // zbog M:M veze
+        public ICollection<Turnir>? Turniri { get; set; } // zbog M:M veze
 
         public Sponzor()
         {

@@ -44,31 +44,43 @@ namespace Fudbalski_turnir.Controllers
             return View(sponzor);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         // GET: Sponzori/Create
         public IActionResult Create()
         {
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // POST: Sponzori/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SponzorID,ImeSponzora,KontaktSponzora,VrednostSponzora")] Sponzor sponzor)
+        public async Task<IActionResult> Create([Bind("SponzorID,ImeSponzora,KontaktSponzora,VrednostSponzora")] Sponzor sponzor, int TurnirID)
         {
             if (ModelState.IsValid)
             {
+                sponzor.Turniri = new List<Turnir>(); 
+                if (TurnirID > 0)
+                {
+                    var turnir = await _context.Turnir.FindAsync(TurnirID);
+                    if (turnir != null)
+                    {
+                        sponzor.Turniri.Add(turnir);
+                    }
+                }
                 _context.Add(sponzor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
             return View(sponzor);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // GET: Sponzori/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -85,7 +97,7 @@ namespace Fudbalski_turnir.Controllers
             return View(sponzor);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // POST: Sponzori/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -121,7 +133,7 @@ namespace Fudbalski_turnir.Controllers
             return View(sponzor);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // GET: Sponzori/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -140,7 +152,7 @@ namespace Fudbalski_turnir.Controllers
             return View(sponzor);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // POST: Sponzori/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
