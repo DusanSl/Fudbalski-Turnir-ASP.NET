@@ -1,4 +1,4 @@
-﻿@model Fudbalski_turnir.Models.Klub
+﻿@model FudbalskiTurnir.DAL.Models.Klub
 
 @{
     ViewData["Title"] = "Delete";
@@ -51,7 +51,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="KlubID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Delete" class="btn btn-danger" />
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

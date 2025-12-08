@@ -1,6 +1,10 @@
 using System.Diagnostics;
-using Fudbalski_turnir.Models;
 using Microsoft.AspNetCore.Mvc;
+using FudbalskiTurnir.DAL;
+using FudbalskiTurnir.DAL.Models;
+using Fudbalski_turnir.Models;
+using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.BLL.Services;
 
 namespace Fudbalski_turnir.Controllers
 {

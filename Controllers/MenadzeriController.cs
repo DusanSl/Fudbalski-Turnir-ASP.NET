@@ -8,6 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FudbalskiTurnir.DAL;
+using FudbalskiTurnir.DAL.Models;
+using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.BLL.Services;
 
 namespace Fudbalski_turnir.Controllers
 {
