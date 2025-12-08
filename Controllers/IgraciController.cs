@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Fudbalski_turnir.Data;
 using Fudbalski_turnir.Models;
 using Microsoft.AspNetCore.Authorization;
+using FudbalskiTurnir.DAL;
+using FudbalskiTurnir.DAL.Models;
+using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.BLL.Services;
 
 namespace Fudbalski_turnir.Controllers
 {

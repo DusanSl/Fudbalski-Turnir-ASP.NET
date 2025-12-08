@@ -1,4 +1,6 @@
-using Fudbalski_turnir.Data;
+using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.BLL.Services;
+using FudbalskiTurnir.DAL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +17,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<ITurnirService, TurnirService>();
+builder.Services.AddScoped<IKluboviService, KluboviService>();
+builder.Services.AddScoped<IMenadzerService, MenadzerService>();
+builder.Services.AddScoped<ISponzoriService, SponzoriService>();
+builder.Services.AddScoped<IUtakmiceService, UtakmicaService>();
+builder.Services.AddScoped<IIgraciService, IgraciService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,7 +34,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
