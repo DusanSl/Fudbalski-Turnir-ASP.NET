@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="../Fudbalski turnir.BLL/FudbalskiTurnir.BLL.csproj" Id="36d4cc91-5cf0-4184-ae7f-31699f4fcb91" />
-  <Project Path="../Fudbalski turnir.DAL/FudbalskiTurnir.DAL.csproj" Id="1e904d8a-8312-4735-944c-ff5efb273f65" />
-  <Project Path="FudbalskiTurnir.MVC.csproj" />
+  <Project Path="Fudbalski turnir MVC/FudbalskiTurnir.MVC.csproj" />
+  <Project Path="Fudbalski turnir.BLL/FudbalskiTurnir.BLL.csproj" />
+  <Project Path="Fudbalski turnir.DAL/FudbalskiTurnir.DAL.csproj" />
 </Solution>
