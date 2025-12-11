@@ -16,18 +16,23 @@ namespace FudbalskiTurnir.DAL.Models
         [MaxLength(50)]
         public string Mesto { get; set; }
         [MaxLength(50)]
+        [Display(Name = "Domaći klub")] // dependecy za ime se nalazi u views/utakmica/create.cshtml
         public string PrviKlubNaziv { get; set; }
         [MaxLength(50)]
+        [Display(Name = "Gostujući klub")]
         public string DrugiKlubNaziv { get; set; }
         [MaxLength(20)]
         public string Kolo { get; set; }
+        [Display(Name = "Domaći klub golovi")]
         public int PrviKlubGolovi { get; set; }
+        [Display(Name = "Gostujući klub golovi")]
         public int DrugiKlubGolovi { get; set; }
         public bool Produzeci { get; set; }
         public bool Penali { get; set; }
+        [Display(Name = "Domaći klub penali")]
         public int? PrviKlubPenali { get; set; }
+        [Display(Name = "Gostujući klub penali")]
         public int? DrugiKlubPenali { get; set; }
-        public int TipUcesca { get; set; } // gost ili domacin
         public ICollection<Klub>? Klubovi { get; set; }
 
         public Utakmica()

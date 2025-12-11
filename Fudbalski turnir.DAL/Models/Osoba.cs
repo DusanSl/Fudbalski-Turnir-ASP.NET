@@ -12,12 +12,10 @@ namespace FudbalskiTurnir.DAL.Models
         public string Ime { get; set; }
         [MaxLength(100)]
         public string Prezime { get; set; }
+        [Display(Name = "Datum rođenja")]
         public DateTime DatumRodjenja { get; set; }
         [MaxLength(50)]
         public string Nacionalnost { get; set; }
-        public DateTime UKlubuOd { get; set; } // klub u kojem osoba trenutno igra ili radi
-        public DateTime UKlubuDo { get; set; }
-
         public Osoba()
         {
 
