@@ -15,7 +15,7 @@
             <div class="form-group">
                 <label class="control-label">Turnir</label>
                 <select name="TurnirID" id="turnirDropdown" class="form-control" asp-items="ViewBag.Turniri">
-                    <option value = ""> Izaberi turnir</option>
+                    <option value = ""> Izaberite turnir</option>
                 </select>
             </div>
             <div class="form-group">
@@ -29,16 +29,16 @@
                 <span asp-validation-for="Mesto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Prvi Klub</label>
+                <label class="control-label">Domaći klub</label>
                 <select id="prviKlubDropdown" name="PrviKlubNaziv" class="form-control" disabled>
-                    <option value="">Prvo izaberi turnir</option>
+                    <option value="">Prvo izaberite turnir</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label class="control-label">Drugi Klub</label>
+                <label class="control-label">Gostujući klub</label>
                 <select id="drugiKlubDropdown" name="DrugiKlubNaziv" class="form-control" disabled>
-                    <option value="">Prvo izaberi turnir</option>
+                    <option value="">Prvo izaberite turnir</option>
                 </select>
             </div>
             <div class="form-group">
@@ -75,11 +75,6 @@
                 <label asp-for="DrugiKlubPenali" class="control-label"></label>
                 <input asp-for="DrugiKlubPenali" class="form-control" />
                 <span asp-validation-for="DrugiKlubPenali" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TipUcesca" class="control-label"></label>
-                <input asp-for="TipUcesca" class="form-control" />
-                <span asp-validation-for="TipUcesca" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary mb-2 mt-2" />
