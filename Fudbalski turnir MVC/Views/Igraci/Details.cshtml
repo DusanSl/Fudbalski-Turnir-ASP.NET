@@ -9,8 +9,8 @@
 <div>
     <h4>Igrac</h4>
     <hr />
-    <dl class="row">
-        @if (User.IsInRole("Admin"))
+    <dl class="row mb-1">
+        @if (ViewBag.IsAdmin)
         {
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.OsobaID)
@@ -37,6 +37,24 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Prezime)
+        <dt class="col-sm-2">
+            Klub
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Klub != null)
+            {
+                @Html.DisplayFor(model => model.Klub.ImeKluba)
+
+                @if (ViewBag.IsAdmin)
+                {
+                    <span class="text-muted small"></span>
+                }
+            }
+            else
+            {
+                <span>Klub nije povezan.</span>
+            }
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Pozicija)
         </dt>
@@ -64,6 +82,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.OsobaID" class="btn btn-primary mb-2 mt-2">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary mb-2 mt-2">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
+
+<a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>

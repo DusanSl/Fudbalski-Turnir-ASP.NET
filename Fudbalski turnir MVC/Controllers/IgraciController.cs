@@ -41,12 +41,13 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var igrac = await _context.Igrac
-                .FirstOrDefaultAsync(m => m.OsobaID == id);
+            .Include(i => i.Klub)
+            .FirstOrDefaultAsync(i => i.OsobaID == id);
             if (igrac == null)
             {
                 return NotFound();
             }
-
+            ViewBag.IsAdmin = User.IsInRole("Admin"); 
             return View(igrac);
         }
 

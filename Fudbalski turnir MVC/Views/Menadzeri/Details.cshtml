@@ -10,29 +10,57 @@
     <h4>Menadzer</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.KlubID)
+        @if (ViewBag.IsAdmin)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.OsobaID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.OsobaID)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.KlubID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.KlubID)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ime)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.KlubID)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Prezime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Prezime)
+        </dd>
+        <dt class="col-sm-2">
+            Klub
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Klub != null)
+            {
+                @Html.DisplayFor(model => model.Klub.ImeKluba)
+
+                @if (ViewBag.IsAdmin)
+                {
+                    <span class="text-muted small"></span>
+                }
+            }
+            else
+            {
+                <span>Klub nije povezan.</span>
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.GodineIskustva)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.GodineIskustva)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Prezime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Prezime)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DatumRodjenja)
@@ -49,6 +77,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.OsobaID" class="btn btn-primary mb-2 mt-2">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary mb-2 mt-2">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
+
+<a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>

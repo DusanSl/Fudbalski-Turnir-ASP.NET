@@ -6,7 +6,9 @@ namespace FudbalskiTurnir.DAL.Models
     [Table("Menadzeri")]
     public class Menadzer : Osoba
     {
+        [ForeignKey("KlubID")]
         public int KlubID { get; set; }
+        public Klub Klub { get; set; }
         [Display(Name = "Godine iskustva")]
         public int GodineIskustva { get; set; }
 

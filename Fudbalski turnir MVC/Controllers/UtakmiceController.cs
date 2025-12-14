@@ -39,12 +39,14 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var utakmica = await _context.Utakmica
-                .FirstOrDefaultAsync(m => m.UtakmicaID == id);
+            .Include(u => u.Turnir)
+            .FirstOrDefaultAsync(m => m.UtakmicaID == id);
             if (utakmica == null)
             {
                 return NotFound();
             }
 
+            ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(utakmica);
         }
 
