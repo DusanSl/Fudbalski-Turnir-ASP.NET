@@ -52,6 +52,10 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="KlubID" />
         <input type="submit" value="Delete" class="btn btn-danger" />
-        <a asp-action="Index">Back to List</a>
+        <div>
+            <a asp-action="Index" class="btn btn-secondary mt-1">Back to List</a>
+        </div>
+
+        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark mt-1">Back to Admin Page</a>
     </form>
 </div>

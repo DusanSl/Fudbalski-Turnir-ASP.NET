@@ -39,12 +39,14 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var sponzor = await _context.Sponzor
+            .Include(m => m.Turniri)
                 .FirstOrDefaultAsync(m => m.SponzorID == id);
             if (sponzor == null)
             {
                 return NotFound();
             }
 
+            ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(sponzor);
         }
 

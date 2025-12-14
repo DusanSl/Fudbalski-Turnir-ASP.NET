@@ -39,12 +39,13 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var menadzer = await _context.Menadzer
-                .FirstOrDefaultAsync(m => m.OsobaID == id);
+            .Include(m => m.Klub)
+            .FirstOrDefaultAsync(m => m.OsobaID == id);
             if (menadzer == null)
             {
                 return NotFound();
             }
-
+            ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(menadzer);
         }
 

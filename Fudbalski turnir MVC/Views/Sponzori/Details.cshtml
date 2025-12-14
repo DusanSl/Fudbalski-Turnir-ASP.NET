@@ -10,11 +10,45 @@
     <h4>Sponzor</h4>
     <hr />
     <dl class="row">
+        @if (ViewBag.IsAdmin)
+        {
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SponzorID)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.SponzorID)</dd>
+
+            <dt class="col-sm-2">TurnirID</dt>
+            <dd class="col-sm-10">
+                @if (Model.Turniri != null && Model.Turniri.Any())
+                {
+                    @foreach (var turnir in Model.Turniri)
+                    {
+                        @turnir.TurnirID
+                    }
+                }
+                else
+                {
+                    <span>Nema povezanih turnira.</span>
+                }
+            </dd>
+        }
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ImeSponzora)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ImeSponzora)
+        </dd>
+        <dt class="col-sm-2">Turnir</dt>
+        <dd class="col-sm-10">
+            @if (Model.Turniri != null && Model.Turniri.Any())
+            {
+                @foreach (var turnir in Model.Turniri)
+                {
+                    @turnir.NazivTurnira
+                }
+            }
+            else
+            {
+                <span>Nema povezanih turnira.</span>
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.KontaktSponzora)
@@ -31,6 +65,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.SponzorID" class="btn btn-primary mb-2 mt-2">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary mb-2 mt-2">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
+
+<a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>

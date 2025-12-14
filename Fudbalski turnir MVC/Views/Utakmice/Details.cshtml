@@ -10,6 +10,46 @@
     <h4>Utakmica</h4>
     <hr />
     <dl class="row">
+        @if (ViewBag.IsAdmin)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.UtakmicaID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.UtakmicaID)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TurnirID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TurnirID)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PrviKlubNaziv)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrviKlubNaziv)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DrugiKlubNaziv)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DrugiKlubNaziv)
+        </dd>
+        <dt class="col-sm-2">
+            Turnir
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Turnir != null)
+            {
+                @Model.Turnir.NazivTurnira
+            }
+            else
+            {
+                <span>Nema povezanog turnira.</span>
+            }
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Datum)
         </dt>
@@ -21,18 +61,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Mesto)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrviKlubNaziv)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrviKlubNaziv)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DrugiKlubNaziv)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DrugiKlubNaziv)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Kolo)
@@ -79,6 +107,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.UtakmicaID" class="btn btn-primary mb-2 mt-2">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary mb-2 mt-2">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
+
+<a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>

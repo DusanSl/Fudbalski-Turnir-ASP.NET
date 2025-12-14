@@ -39,12 +39,13 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var klub = await _context.Klub
+                .Include(k => k.Turniri)
                 .FirstOrDefaultAsync(m => m.KlubID == id);
             if (klub == null)
             {
                 return NotFound();
             }
-
+            ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(klub);
         }
 
