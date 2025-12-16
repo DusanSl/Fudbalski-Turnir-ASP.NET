@@ -8,7 +8,7 @@ namespace FudbalskiTurnir.DAL.Models
     {
         [ForeignKey("KlubID")]
         public int KlubID { get; set; }
-        public Klub Klub { get; set; }
+        public Klub? Klub { get; set; }
         [MaxLength(30)]
         public string Pozicija { get; set; }
         [Display(Name = "Broj dresa")]

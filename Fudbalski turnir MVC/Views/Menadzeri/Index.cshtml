@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create" class="btn btn-success mb-2 mt-2">Create New</a>
 </p>
-<table class="table">
+<table id ="menadzeriTable" class="table">
     <thead>
         <tr>
             <th>
@@ -30,8 +30,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Nacionalnost)
             </th>
-            <th>
-            <th></th>
+            <th> </th>
         </tr>
     </thead>
     <tbody>
@@ -64,3 +63,27 @@
 }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        $('#menadzeriTable').DataTable({
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "lengthChange": true,
+            "language": {
+                "search": "Filter:",
+                "info": "Prikazivanje _START_ do _END_ od _TOTAL_ entiteta",
+                "lengthMenu": "Prikažite _MENU_ entiteta",
+                "paginate": {
+                    "first": "Prva",
+                    "last": "Poslednja",
+                    "next": "Sledeća",
+                    "previous": "Prethodna"
+                },
+                "zeroRecords": "Nema rezultata"
+            }
+        });
+    </script>
+}
