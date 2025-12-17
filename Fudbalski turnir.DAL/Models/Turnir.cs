@@ -14,8 +14,10 @@ namespace FudbalskiTurnir.DAL.Models
        [MaxLength(50)]
        public string Lokacija { get; set; }
        [Display(Name = "Datum početka")]
+       [DataType(DataType.Date)]
        public DateTime DatumPocetka { get; set; }
        [Display(Name = "Datum završetka")]
+       [DataType(DataType.Date)]
        public DateTime DatumZavrsetka { get; set; }
        [MaxLength(50)]
        [Display(Name = "Tip turnira")]

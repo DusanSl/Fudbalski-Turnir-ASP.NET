@@ -1,44 +1,55 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
 
-namespace FudbalskiTurnir.DAL.Models
+namespace FudbalskiTurnir.ViewModels
 {
-    public class Utakmica
+    public class UtakmicaViewModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UtakmicaID { get; set; }
+
+        [Display(Name = "Turnir")]
         public int? TurnirID { get; set; }
-        [ForeignKey("TurnirID")]
-        public Turnir? Turnir { get; set; }
+
+        [Required(ErrorMessage = "Datum je obavezan")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Datum")]
         public DateTime Datum { get; set; }
-        [MaxLength(50)]
+
+        [Required(ErrorMessage = "Mesto je obavezno")]
+        [Display(Name = "Mesto")]
         public string Mesto { get; set; }
-        [MaxLength(50)]
-        [Display(Name = "Domaći klub")] // dependecy za ime se nalazi u views/utakmica/create.cshtml
+
+        [Required(ErrorMessage = "Domaći klub je obavezan")]
+        [Display(Name = "Domaći klub")]
         public string PrviKlubNaziv { get; set; }
-        [MaxLength(50)]
+
+        [Required(ErrorMessage = "Gostujući klub je obavezan")]
         [Display(Name = "Gostujući klub")]
         public string DrugiKlubNaziv { get; set; }
-        [MaxLength(20)]
+
+        [Display(Name = "Kolo")]
         public string Kolo { get; set; }
+
+        [Required]
+        [Range(0, 250, ErrorMessage = "Golovi ne mogu biti negativni")]
         [Display(Name = "Domaći klub golovi")]
         public int PrviKlubGolovi { get; set; }
+
+        [Required]
+        [Range(0, 250, ErrorMessage = "Golovi ne mogu biti negativni")]
         [Display(Name = "Gostujući klub golovi")]
         public int DrugiKlubGolovi { get; set; }
+
+        [Display(Name = "Produžeci")]
         public bool Produzeci { get; set; }
+
+        [Display(Name = "Penali")]
         public bool Penali { get; set; }
+
         [Display(Name = "Domaći klub penali")]
         public int? PrviKlubPenali { get; set; }
+
         [Display(Name = "Gostujući klub penali")]
         public int? DrugiKlubPenali { get; set; }
-        public ICollection<Klub>? Klubovi { get; set; }
-
-        public Utakmica()
-        {
-
-        }
     }
 }

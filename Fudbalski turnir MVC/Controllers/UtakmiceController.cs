@@ -12,6 +12,7 @@ using FudbalskiTurnir.DAL;
 using FudbalskiTurnir.DAL.Models;
 using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.BLL.Services;
+using FudbalskiTurnir.ViewModels;
 
 namespace Fudbalski_turnir.Controllers
 {
@@ -56,7 +57,7 @@ namespace Fudbalski_turnir.Controllers
         public IActionResult Create()
         {
             ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
-            return View();
+            return View(new UtakmicaViewModel());
         }
 
         [Authorize(Roles = "Admin")]
@@ -65,16 +66,31 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UtakmicaID,TurnirID,Datum,Mesto,PrviKlubNaziv,DrugiKlubNaziv,Kolo,PrviKlubGolovi,DrugiKlubGolovi,Produzeci,Penali,PrviKlubPenali,DrugiKlubPenali,TipUcesca")] Utakmica utakmica)
+        public async Task<IActionResult> Create(UtakmicaViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var utakmica = new Utakmica
+                {
+                    TurnirID = viewModel.TurnirID,
+                    Datum = viewModel.Datum,
+                    Mesto = viewModel.Mesto,
+                    PrviKlubNaziv = viewModel.PrviKlubNaziv,
+                    DrugiKlubNaziv = viewModel.DrugiKlubNaziv,
+                    Kolo = viewModel.Kolo,
+                    PrviKlubGolovi = viewModel.PrviKlubGolovi,
+                    DrugiKlubGolovi = viewModel.DrugiKlubGolovi,
+                    Produzeci = viewModel.Produzeci,
+                    Penali = viewModel.Penali,
+                    PrviKlubPenali = viewModel.PrviKlubPenali,
+                    DrugiKlubPenali = viewModel.DrugiKlubPenali
+                };
                 _context.Add(utakmica);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
-            return View(utakmica);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -96,10 +112,26 @@ namespace Fudbalski_turnir.Controllers
                 return NotFound();
             }
 
-            // Populate dropdown with all tournaments
+            var viewModel = new UtakmicaViewModel
+            {
+                UtakmicaID = utakmica.UtakmicaID,
+                TurnirID = utakmica.TurnirID,
+                Datum = utakmica.Datum,
+                Mesto = utakmica.Mesto,
+                PrviKlubNaziv = utakmica.PrviKlubNaziv,
+                DrugiKlubNaziv = utakmica.DrugiKlubNaziv,
+                Kolo = utakmica.Kolo,
+                PrviKlubGolovi = utakmica.PrviKlubGolovi,
+                DrugiKlubGolovi = utakmica.DrugiKlubGolovi,
+                Produzeci = utakmica.Produzeci,
+                Penali = utakmica.Penali,
+                PrviKlubPenali = utakmica.PrviKlubPenali,
+                DrugiKlubPenali = utakmica.DrugiKlubPenali
+            };
+
             ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", utakmica.TurnirID);
 
-            return View(utakmica);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -108,9 +140,9 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UtakmicaID,TurnirID,Datum,Mesto,PrviKlubNaziv,DrugiKlubNaziv,Kolo,PrviKlubGolovi,DrugiKlubGolovi,Produzeci,Penali,PrviKlubPenali,DrugiKlubPenali,TipUcesca")] Utakmica utakmica)
+        public async Task<IActionResult> Edit(int id, UtakmicaViewModel viewModel)
         {
-            if (id != utakmica.UtakmicaID)
+            if (id != viewModel.UtakmicaID)
             {
                 return NotFound();
             }
@@ -119,12 +151,31 @@ namespace Fudbalski_turnir.Controllers
             {
                 try
                 {
+                    var utakmica = await _context.Utakmica.FindAsync(id);
+                    if (utakmica == null)
+                    {
+                        return NotFound();
+                    }
+
+                    utakmica.TurnirID = viewModel.TurnirID;
+                    utakmica.Datum = viewModel.Datum;
+                    utakmica.Mesto = viewModel.Mesto;
+                    utakmica.PrviKlubNaziv = viewModel.PrviKlubNaziv;
+                    utakmica.DrugiKlubNaziv = viewModel.DrugiKlubNaziv;
+                    utakmica.Kolo = viewModel.Kolo;
+                    utakmica.PrviKlubGolovi = viewModel.PrviKlubGolovi;
+                    utakmica.DrugiKlubGolovi = viewModel.DrugiKlubGolovi;
+                    utakmica.Produzeci = viewModel.Produzeci;
+                    utakmica.Penali = viewModel.Penali;
+                    utakmica.PrviKlubPenali = viewModel.PrviKlubPenali;
+                    utakmica.DrugiKlubPenali = viewModel.DrugiKlubPenali;
+
                     _context.Update(utakmica);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UtakmicaExists(utakmica.UtakmicaID))
+                    if (!UtakmicaExists(viewModel.UtakmicaID))
                     {
                         return NotFound();
                     }
@@ -136,8 +187,8 @@ namespace Fudbalski_turnir.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Turnir = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", utakmica.TurnirID);
-            return View(utakmica);
+            ViewBag.Turnir = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
