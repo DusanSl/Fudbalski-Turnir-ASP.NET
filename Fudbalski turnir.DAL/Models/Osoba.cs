@@ -12,6 +12,8 @@ namespace FudbalskiTurnir.DAL.Models
         public string Ime { get; set; }
         [MaxLength(100)]
         public string Prezime { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Datum rođenja")]
         public DateTime DatumRodjenja { get; set; }
         [MaxLength(50)]
