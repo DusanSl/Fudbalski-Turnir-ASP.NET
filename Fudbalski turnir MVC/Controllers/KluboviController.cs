@@ -12,6 +12,7 @@ using FudbalskiTurnir.DAL;
 using FudbalskiTurnir.DAL.Models;
 using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.BLL.Services;
+using FudbalskiTurnir.ViewModels; 
 
 namespace Fudbalski_turnir.Controllers
 {
@@ -51,28 +52,33 @@ namespace Fudbalski_turnir.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        // GET: Klubovi/Create
         public IActionResult Create()
         {
             ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
-            return View();
+            return View(new KlubViewModel()); 
         }
 
-        // POST: Klubovi/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("KlubID,ImeKluba,GodinaOsnivanja,RankingTima,BrojIgraca,Stadion,BrojOsvojenihTitula")] Klub klub, int TurnirID)
+        public async Task<IActionResult> Create(KlubViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                klub.Turniri = new List<Turnir>();
-
-                if (TurnirID > 0)
+                var klub = new Klub
                 {
-                    var turnir = await _context.Turnir.FindAsync(TurnirID);
+                    ImeKluba = viewModel.ImeKluba,
+                    GodinaOsnivanja = viewModel.GodinaOsnivanja,
+                    RankingTima = viewModel.RankingTima,
+                    BrojIgraca = viewModel.BrojIgraca,
+                    Stadion = viewModel.Stadion,
+                    BrojOsvojenihTitula = viewModel.BrojOsvojenihTitula,
+                    Turniri = new List<Turnir>()
+                };
+
+                if (viewModel.TurnirID.HasValue && viewModel.TurnirID.Value > 0)
+                {
+                    var turnir = await _context.Turnir.FindAsync(viewModel.TurnirID.Value);
                     if (turnir != null)
                     {
                         klub.Turniri.Add(turnir);
@@ -85,13 +91,12 @@ namespace Fudbalski_turnir.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
-            return View(klub);
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        // GET: Klubovi/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -100,27 +105,37 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var klub = await _context.Klub
-            .Include(k => k.Turniri) 
-            .FirstOrDefaultAsync(k => k.KlubID == id);
+                .Include(k => k.Turniri)
+                .FirstOrDefaultAsync(k => k.KlubID == id);
 
             if (klub == null)
             {
                 return NotFound();
             }
 
-            var currentTurnirID = klub.Turniri?.FirstOrDefault()?.TurnirID;
+            var viewModel = new KlubViewModel
+            {
+                KlubID = klub.KlubID,
+                ImeKluba = klub.ImeKluba,
+                GodinaOsnivanja = klub.GodinaOsnivanja,
+                RankingTima = klub.RankingTima,
+                BrojIgraca = klub.BrojIgraca,
+                Stadion = klub.Stadion,
+                BrojOsvojenihTitula = klub.BrojOsvojenihTitula,
+                TurnirID = klub.Turniri?.FirstOrDefault()?.TurnirID
+            };
 
-            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", currentTurnirID);
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
 
-            return View(klub);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("KlubID,ImeKluba,GodinaOsnivanja,RankingTima,BrojIgraca,Stadion,BrojOsvojenihTitula")] Klub klub, int TurnirID)
+        public async Task<IActionResult> Edit(int id, KlubViewModel viewModel) 
         {
-            if (id != klub.KlubID)
+            if (id != viewModel.KlubID)
             {
                 return NotFound();
             }
@@ -138,18 +153,18 @@ namespace Fudbalski_turnir.Controllers
                         return NotFound();
                     }
 
-                    existingKlub.ImeKluba = klub.ImeKluba;
-                    existingKlub.GodinaOsnivanja = klub.GodinaOsnivanja;
-                    existingKlub.RankingTima = klub.RankingTima;
-                    existingKlub.BrojIgraca = klub.BrojIgraca;
-                    existingKlub.Stadion = klub.Stadion;
-                    existingKlub.BrojOsvojenihTitula = klub.BrojOsvojenihTitula;
+                    existingKlub.ImeKluba = viewModel.ImeKluba;
+                    existingKlub.GodinaOsnivanja = viewModel.GodinaOsnivanja;
+                    existingKlub.RankingTima = viewModel.RankingTima;
+                    existingKlub.BrojIgraca = viewModel.BrojIgraca;
+                    existingKlub.Stadion = viewModel.Stadion;
+                    existingKlub.BrojOsvojenihTitula = viewModel.BrojOsvojenihTitula;
 
-                    existingKlub.Turniri.Clear(); 
+                    existingKlub.Turniri.Clear();
 
-                    if (TurnirID > 0)
+                    if (viewModel.TurnirID.HasValue && viewModel.TurnirID.Value > 0)
                     {
-                        var turnir = await _context.Turnir.FindAsync(TurnirID);
+                        var turnir = await _context.Turnir.FindAsync(viewModel.TurnirID.Value);
                         if (turnir != null)
                         {
                             existingKlub.Turniri.Add(turnir);
@@ -160,7 +175,7 @@ namespace Fudbalski_turnir.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!KlubExists(klub.KlubID))
+                    if (!KlubExists(viewModel.KlubID))
                     {
                         return NotFound();
                     }
@@ -172,12 +187,11 @@ namespace Fudbalski_turnir.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", TurnirID);
-            return View(klub);
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
-        // GET: Klubovi/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -196,7 +210,6 @@ namespace Fudbalski_turnir.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        // POST: Klubovi/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
