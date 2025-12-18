@@ -9,18 +9,14 @@ namespace FudbalskiTurnir.DAL.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SponzorID { get; set; }
         [MaxLength(50)]
-        [Display(Name = "Ime sponzora")]
-        public string ImeSponzora { get; set; }
+        public string ImeSponzora { get; set; } = string.Empty;
         [MaxLength(150)]
-        [Display(Name = "Kontakt sponzora")]
-        public string KontaktSponzora { get; set; }
-        [Display(Name = "Vrednost sponzora")]
-        public decimal VrednostSponzora { get; set; } 
-        public ICollection<Turnir>? Turniri { get; set; } // zbog M:M veze
-
-        public Sponzor()
-        {
-
+        public string KontaktSponzora { get; set; } = string.Empty;
+        public decimal VrednostSponzora { get; set; }
+        public ICollection<Turnir>? Turniri { get; set; }
+        public Sponzor() 
+        { 
+        
         }
     }
 }

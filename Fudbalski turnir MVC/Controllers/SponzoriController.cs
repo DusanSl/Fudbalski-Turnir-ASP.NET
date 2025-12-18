@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 using FudbalskiTurnir.DAL;
 using FudbalskiTurnir.DAL.Models;
 using FudbalskiTurnir.BLL.Interfaces;
-using FudbalskiTurnir.BLL.Services; 
+using FudbalskiTurnir.BLL.Services;
+using FudbalskiTurnir.ViewModels;
 
 namespace Fudbalski_turnir.Controllers
 {
@@ -56,7 +57,7 @@ namespace Fudbalski_turnir.Controllers
         public IActionResult Create()
         {
             ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
-            return View();
+            return View(new SponzorViewModel());
         }
 
         [Authorize(Roles = "Admin")]
@@ -65,42 +66,55 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SponzorID,ImeSponzora,KontaktSponzora,VrednostSponzora")] Sponzor sponzor, int TurnirID)
+        public async Task<IActionResult> Create(SponzorViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                sponzor.Turniri = new List<Turnir>(); 
-                if (TurnirID > 0)
+                var sponzor = new Sponzor
                 {
-                    var turnir = await _context.Turnir.FindAsync(TurnirID);
-                    if (turnir != null)
-                    {
-                        sponzor.Turniri.Add(turnir);
-                    }
+                    ImeSponzora = viewModel.ImeSponzora,
+                    KontaktSponzora = viewModel.KontaktSponzora,
+                    VrednostSponzora = viewModel.VrednostSponzora,
+                    Turniri = new List<Turnir>()
+                };
+
+                if (viewModel.TurnirID.HasValue && viewModel.TurnirID.Value > 0)
+                {
+                    var turnir = await _context.Turnir.FindAsync(viewModel.TurnirID.Value);
+                    if (turnir != null) sponzor.Turniri.Add(turnir);
                 }
+
                 _context.Add(sponzor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
-            return View(sponzor);
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
         // GET: Sponzori/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var sponzor = await _context.Sponzor.FindAsync(id);
-            if (sponzor == null)
+            var sponzor = await _context.Sponzor
+                .Include(s => s.Turniri)
+                .FirstOrDefaultAsync(s => s.SponzorID == id);
+
+            if (sponzor == null) return NotFound();
+
+            var viewModel = new SponzorViewModel
             {
-                return NotFound();
-            }
-            return View(sponzor);
+                SponzorID = sponzor.SponzorID,
+                ImeSponzora = sponzor.ImeSponzora,
+                KontaktSponzora = sponzor.KontaktSponzora,
+                VrednostSponzora = sponzor.VrednostSponzora,
+                TurnirID = sponzor.Turniri?.FirstOrDefault()?.TurnirID
+            };
+
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -109,34 +123,42 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SponzorID,ImeSponzora,KontaktSponzora,VrednostSponzora")] Sponzor sponzor)
+        public async Task<IActionResult> Edit(int id, SponzorViewModel viewModel)
         {
-            if (id != sponzor.SponzorID)
-            {
-                return NotFound();
-            }
+            if (id != viewModel.SponzorID) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(sponzor);
+                    var existingSponzor = await _context.Sponzor
+                        .Include(s => s.Turniri)
+                        .FirstOrDefaultAsync(s => s.SponzorID == id);
+
+                    if (existingSponzor == null) return NotFound();
+
+                    existingSponzor.ImeSponzora = viewModel.ImeSponzora;
+                    existingSponzor.KontaktSponzora = viewModel.KontaktSponzora;
+                    existingSponzor.VrednostSponzora = viewModel.VrednostSponzora;
+
+                    existingSponzor.Turniri?.Clear();
+                    if (viewModel.TurnirID.HasValue && viewModel.TurnirID.Value > 0)
+                    {
+                        var turnir = await _context.Turnir.FindAsync(viewModel.TurnirID.Value);
+                        if (turnir != null) existingSponzor.Turniri?.Add(turnir);
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SponzorExists(sponzor.SponzorID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!SponzorExists(viewModel.SponzorID)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sponzor);
+            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]

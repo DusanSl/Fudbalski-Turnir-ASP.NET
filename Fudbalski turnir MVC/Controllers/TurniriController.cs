@@ -12,6 +12,7 @@ using FudbalskiTurnir.DAL;
 using FudbalskiTurnir.DAL.Models;
 using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.BLL.Services;
+using FudbalskiTurnir.ViewModels;
 
 namespace Fudbalski_turnir.Controllers
 {
@@ -52,7 +53,7 @@ namespace Fudbalski_turnir.Controllers
         // GET: Turniri/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new TurnirViewModel());
         }
 
         [Authorize(Roles = "Admin")]
@@ -61,32 +62,46 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TurnirID,NazivTurnira,Lokacija,DatumPocetka,DatumZavrsetka,TipTurnira")] Turnir turnir)
+        public async Task<IActionResult> Create(TurnirViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var turnir = new Turnir
+                {
+                    NazivTurnira = viewModel.NazivTurnira,
+                    Lokacija = viewModel.Lokacija,
+                    DatumPocetka = viewModel.DatumPocetka,
+                    DatumZavrsetka = viewModel.DatumZavrsetka,
+                    TipTurnira = viewModel.TipTurnira
+                };
+
                 _context.Add(turnir);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(turnir);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
         // GET: Turniri/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var turnir = await _context.Turnir.FindAsync(id);
-            if (turnir == null)
+            if (turnir == null) return NotFound();
+
+            var viewModel = new TurnirViewModel
             {
-                return NotFound();
-            }
-            return View(turnir);
+                TurnirID = turnir.TurnirID,
+                NazivTurnira = turnir.NazivTurnira,
+                Lokacija = turnir.Lokacija,
+                DatumPocetka = turnir.DatumPocetka,
+                DatumZavrsetka = turnir.DatumZavrsetka,
+                TipTurnira = turnir.TipTurnira
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -95,34 +110,34 @@ namespace Fudbalski_turnir.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TurnirID,NazivTurnira,Lokacija,DatumPocetka,DatumZavrsetka,TipTurnira")] Turnir turnir)
+        public async Task<IActionResult> Edit(int id, TurnirViewModel viewModel)
         {
-            if (id != turnir.TurnirID)
-            {
-                return NotFound();
-            }
+            if (id != viewModel.TurnirID) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var turnir = await _context.Turnir.FindAsync(id);
+                    if (turnir == null) return NotFound();
+
+                    turnir.NazivTurnira = viewModel.NazivTurnira;
+                    turnir.Lokacija = viewModel.Lokacija;
+                    turnir.DatumPocetka = viewModel.DatumPocetka;
+                    turnir.DatumZavrsetka = viewModel.DatumZavrsetka;
+                    turnir.TipTurnira = viewModel.TipTurnira;
+
                     _context.Update(turnir);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TurnirExists(turnir.TurnirID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!TurnirExists(viewModel.TurnirID)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(turnir);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]

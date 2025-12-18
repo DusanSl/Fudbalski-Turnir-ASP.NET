@@ -12,6 +12,7 @@ using FudbalskiTurnir.DAL;
 using FudbalskiTurnir.DAL.Models;
 using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.BLL.Services;
+using FudbalskiTurnir.ViewModels; 
 
 namespace Fudbalski_turnir.Controllers
 {
@@ -47,39 +48,44 @@ namespace Fudbalski_turnir.Controllers
             {
                 return NotFound();
             }
-            ViewBag.IsAdmin = User.IsInRole("Admin"); 
+            ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(igrac);
         }
 
-        // GET: Igraci/Create
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
         {
             ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba");
-            return View();
+            return View(new IgracViewModel()); 
         }
 
-        // POST: Igraci/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("IgracID,KlubID,Pozicija,BrojDresa,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Igrac igrac, int KlubID)
+        public async Task<IActionResult> Create(IgracViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                igrac.KlubID = KlubID;
+                var igrac = new Igrac
+                {
+                    KlubID = viewModel.KlubID,
+                    Ime = viewModel.Ime,
+                    Prezime = viewModel.Prezime,
+                    DatumRodjenja = viewModel.DatumRodjenja,
+                    Nacionalnost = viewModel.Nacionalnost,
+                    Pozicija = viewModel.Pozicija,
+                    BrojDresa = viewModel.BrojDresa,
+                };
+
                 _context.Add(igrac);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba", KlubID);
-            return View(igrac);
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba", viewModel.KlubID);
+            return View(viewModel);
         }
 
-        // GET: Igraci/Edit/5
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
@@ -90,25 +96,36 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var igrac = await _context.Igrac
-            .FirstOrDefaultAsync(i => i.OsobaID == id);
+                .FirstOrDefaultAsync(i => i.OsobaID == id);
 
             if (igrac == null)
             {
                 return NotFound();
             }
-            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba");
-            return View(igrac);
+
+            // Mapiranje Modela u ViewModel
+            var viewModel = new IgracViewModel
+            {
+                OsobaID = igrac.OsobaID,
+                KlubID = igrac.KlubID,
+                Ime = igrac.Ime,
+                Prezime = igrac.Prezime,
+                DatumRodjenja = igrac.DatumRodjenja,
+                Nacionalnost = igrac.Nacionalnost,
+                Pozicija = igrac.Pozicija,
+                BrojDresa = igrac.BrojDresa
+            };
+
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba", igrac.KlubID);
+            return View(viewModel);
         }
 
-        // POST: Igraci/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("IgracID,KlubID,Pozicija,BrojDresa,OsobaID,Ime,Prezime,DatumRodjenja,Nacionalnost,UKlubuOd,UKlubuDo")] Igrac igrac)
+        public async Task<IActionResult> Edit(int id, IgracViewModel viewModel)
         {
-            if (id != igrac.OsobaID)
+            if (id != viewModel.OsobaID)
             {
                 return NotFound();
             }
@@ -117,12 +134,26 @@ namespace Fudbalski_turnir.Controllers
             {
                 try
                 {
+                    var igrac = await _context.Igrac.FindAsync(id);
+                    if (igrac == null)
+                    {
+                        return NotFound();
+                    }
+
+                    igrac.KlubID = viewModel.KlubID;
+                    igrac.Ime = viewModel.Ime;
+                    igrac.Prezime = viewModel.Prezime;
+                    igrac.DatumRodjenja = viewModel.DatumRodjenja;
+                    igrac.Nacionalnost = viewModel.Nacionalnost;
+                    igrac.Pozicija = viewModel.Pozicija;
+                    igrac.BrojDresa = viewModel.BrojDresa;
+
                     _context.Update(igrac);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!IgracExists(igrac.OsobaID))
+                    if (!IgracExists(viewModel.OsobaID))
                     {
                         return NotFound();
                     }
@@ -133,11 +164,10 @@ namespace Fudbalski_turnir.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba", igrac.KlubID);
-            return View(igrac);
+            ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba", viewModel.KlubID);
+            return View(viewModel);
         }
 
-        // GET: Igraci/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -156,7 +186,6 @@ namespace Fudbalski_turnir.Controllers
             return View(igrac);
         }
 
-        // POST: Igraci/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
