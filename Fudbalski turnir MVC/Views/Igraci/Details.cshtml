@@ -1,16 +1,15 @@
-﻿@model FudbalskiTurnir.DAL.Models.Igrac
+﻿@model FudbalskiTurnir.ViewModels.IgracViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
 <h1>Details</h1>
-
 <div>
     <h4>Igrac</h4>
     <hr />
     <dl class="row mb-1">
-        @if (ViewBag.IsAdmin)
+        @if (ViewBag.IsAdmin ?? false)
         {
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.OsobaID)
@@ -38,17 +37,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Prezime)
         <dt class="col-sm-2">
-            Klub
+            @Html.DisplayNameFor(model => model.ImeKluba)
         </dt>
         <dd class="col-sm-10">
-            @if (Model.Klub != null)
+            @if (!string.IsNullOrEmpty(Model.ImeKluba))
             {
-                @Html.DisplayFor(model => model.Klub.ImeKluba)
-
-                @if (ViewBag.IsAdmin)
-                {
-                    <span class="text-muted small"></span>
-                }
+                @Model.ImeKluba
             }
             else
             {

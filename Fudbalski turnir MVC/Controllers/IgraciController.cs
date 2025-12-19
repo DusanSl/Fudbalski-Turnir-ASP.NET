@@ -29,27 +29,49 @@ namespace Fudbalski_turnir.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Igrac.ToListAsync());
+            var igraci = await _context.Igrac.Include(i => i.Klub).ToListAsync();
+            var viewModel = igraci.Select(i => new IgracViewModel
+            {
+                OsobaID = i.OsobaID,
+                Ime = i.Ime,
+                Prezime = i.Prezime,
+                Pozicija = i.Pozicija,
+                BrojDresa = i.BrojDresa,
+                DatumRodjenja = i.DatumRodjenja,
+                Nacionalnost = i.Nacionalnost,
+                KlubID = i.KlubID,
+                ImeKluba = i.Klub?.ImeKluba
+            }).ToList();
+
+            return View(viewModel); 
         }
 
         // GET: Igraci/Details/5
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var igrac = await _context.Igrac
-            .Include(i => i.Klub)
-            .FirstOrDefaultAsync(i => i.OsobaID == id);
-            if (igrac == null)
-            {
-                return NotFound();
-            }
+                .Include(i => i.Klub)
+                .FirstOrDefaultAsync(m => m.OsobaID == id);
             ViewBag.IsAdmin = User.IsInRole("Admin");
-            return View(igrac);
+            if (igrac == null) return NotFound();
+
+            var viewModel = new IgracViewModel
+            {
+                OsobaID = igrac.OsobaID,
+                Ime = igrac.Ime,
+                Prezime = igrac.Prezime,
+                Pozicija = igrac.Pozicija,
+                BrojDresa = igrac.BrojDresa,
+                DatumRodjenja = igrac.DatumRodjenja,
+                Nacionalnost = igrac.Nacionalnost,
+                KlubID = igrac.KlubID,
+                ImeKluba = igrac.Klub?.ImeKluba 
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -103,7 +125,6 @@ namespace Fudbalski_turnir.Controllers
                 return NotFound();
             }
 
-            // Mapiranje Modela u ViewModel
             var viewModel = new IgracViewModel
             {
                 OsobaID = igrac.OsobaID,
@@ -169,35 +190,45 @@ namespace Fudbalski_turnir.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        // GET: Igraci/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var igrac = await _context.Igrac
+                .Include(i => i.Klub)
                 .FirstOrDefaultAsync(m => m.OsobaID == id);
-            if (igrac == null)
-            {
-                return NotFound();
-            }
 
-            return View(igrac);
+            if (igrac == null) return NotFound();
+
+            var viewModel = new IgracViewModel
+            {
+                OsobaID = igrac.OsobaID,
+                Ime = igrac.Ime,
+                Prezime = igrac.Prezime,
+                Pozicija = igrac.Pozicija,
+                BrojDresa = igrac.BrojDresa,
+                DatumRodjenja = igrac.DatumRodjenja,
+                Nacionalnost = igrac.Nacionalnost,
+                KlubID = igrac.KlubID,
+                ImeKluba = igrac.Klub?.ImeKluba
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        // POST: Igraci/Delete/5
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var igrac = await _context.Igrac.FindAsync(id);
             if (igrac != null)
             {
                 _context.Igrac.Remove(igrac);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

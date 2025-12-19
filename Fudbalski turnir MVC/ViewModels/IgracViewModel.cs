@@ -7,7 +7,7 @@ namespace FudbalskiTurnir.ViewModels
         public int OsobaID { get; set; }
 
         [Required(ErrorMessage = "Klub je obavezan")]
-        [Display(Name = "Klub")]
+        [Display(Name = "KlubID")]
         public int KlubID { get; set; }
 
         [Required(ErrorMessage = "Ime je obavezno")]
@@ -40,5 +40,7 @@ namespace FudbalskiTurnir.ViewModels
         [Range(1, 99, ErrorMessage = "Broj dresa mora biti između 1 i 99")]
         [Display(Name = "Broj dresa")]
         public int BrojDresa { get; set; }
+        [Display(Name = "Klub")]
+        public string? ImeKluba { get; set; }
     }
 }

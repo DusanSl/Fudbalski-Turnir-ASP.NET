@@ -10,7 +10,7 @@ namespace FudbalskiTurnir.DAL.Models
         public int UtakmicaID { get; set; }
         public int? TurnirID { get; set; }
         [ForeignKey("TurnirID")]
-        public Turnir? Turnir { get; set; }
+        public Turnir? Turnir { get; set; } 
         [DataType(DataType.Date)]
         public DateTime Datum { get; set; }
         [MaxLength(50)]

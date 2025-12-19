@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FudbalskiTurnir.DAL.Models.Menadzer>
+﻿@model IEnumerable<FudbalskiTurnir.ViewModels.MenadzerViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,9 +12,6 @@
 <table id="menadzeriTable" class="display compact cell-border">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.KlubID)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.GodineIskustva)
             </th>
@@ -36,9 +33,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.KlubID)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.GodineIskustva)
             </td>
