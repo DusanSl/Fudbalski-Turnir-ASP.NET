@@ -1,4 +1,4 @@
-﻿@model FudbalskiTurnir.DAL.Models.Igrac
+﻿@model FudbalskiTurnir.ViewModels.IgracViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -11,6 +11,12 @@
     <h4>Igrac</h4>
     <hr />
     <dl class="row mb-1">
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OsobaID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OsobaID)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.KlubID)

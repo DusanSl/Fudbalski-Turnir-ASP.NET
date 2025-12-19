@@ -28,26 +28,47 @@ namespace Fudbalski_turnir.Controllers
         // GET: Menadzeri
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Menadzer.ToListAsync());
+            var menadzeri = await _context.Menadzer.Include(m => m.Klub).ToListAsync();
+            var viewModel = menadzeri.Select(m => new MenadzerViewModel
+            {
+                OsobaID = m.OsobaID,
+                Ime = m.Ime,
+                Prezime = m.Prezime,
+                GodineIskustva = m.GodineIskustva,
+                DatumRodjenja = m.DatumRodjenja,
+                Nacionalnost = m.Nacionalnost,
+                KlubID = m.KlubID,
+                ImeKluba = m.Klub?.ImeKluba
+            }).ToList();
+
+            return View(viewModel);
         }
 
         // GET: Menadzeri/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var menadzer = await _context.Menadzer
-            .Include(m => m.Klub)
-            .FirstOrDefaultAsync(m => m.OsobaID == id);
-            if (menadzer == null)
-            {
-                return NotFound();
-            }
+                .Include(m => m.Klub)
+                .FirstOrDefaultAsync(m => m.OsobaID == id); 
             ViewBag.IsAdmin = User.IsInRole("Admin");
-            return View(menadzer);
+
+            if (menadzer == null) return NotFound();
+
+            var viewModel = new MenadzerViewModel
+            {
+                OsobaID = menadzer.OsobaID,
+                KlubID = menadzer.KlubID,
+                Ime = menadzer.Ime,
+                Prezime = menadzer.Prezime,
+                DatumRodjenja = menadzer.DatumRodjenja,
+                Nacionalnost = menadzer.Nacionalnost,
+                GodineIskustva = menadzer.GodineIskustva,
+                ImeKluba = menadzer.Klub?.ImeKluba
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -153,19 +174,26 @@ namespace Fudbalski_turnir.Controllers
         // GET: Menadzeri/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var menadzer = await _context.Menadzer
+                .Include(m => m.Klub)
                 .FirstOrDefaultAsync(m => m.OsobaID == id);
-            if (menadzer == null)
-            {
-                return NotFound();
-            }
 
-            return View(menadzer);
+            if (menadzer == null) return NotFound();
+
+            var viewModel = new MenadzerViewModel
+            {
+                OsobaID = menadzer.OsobaID,
+                Ime = menadzer.Ime,
+                Prezime = menadzer.Prezime,
+                ImeKluba = menadzer.Klub?.ImeKluba,
+                GodineIskustva = menadzer.GodineIskustva,
+                Nacionalnost = menadzer.Nacionalnost,
+                KlubID = menadzer.KlubID,
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -178,9 +206,8 @@ namespace Fudbalski_turnir.Controllers
             if (menadzer != null)
             {
                 _context.Menadzer.Remove(menadzer);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

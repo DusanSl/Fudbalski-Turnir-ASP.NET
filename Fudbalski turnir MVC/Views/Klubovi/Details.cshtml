@@ -1,4 +1,4 @@
-﻿@model FudbalskiTurnir.DAL.Models.Klub
+﻿@model FudbalskiTurnir.ViewModels.KlubViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -10,7 +10,7 @@
     <h4>Klub</h4>
     <hr />
     <dl class="row">
-        @if (ViewBag.IsAdmin)
+        @if (ViewBag.IsAdmin ?? false)
         {
             <dt class="col-sm-2">            
                 TurnirID

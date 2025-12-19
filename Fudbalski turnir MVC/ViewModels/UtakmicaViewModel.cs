@@ -6,7 +6,7 @@ namespace FudbalskiTurnir.ViewModels
     {
         public int UtakmicaID { get; set; }
 
-        [Display(Name = "Turnir")]
+        [Display(Name = "TurnirID")]
         public int? TurnirID { get; set; }
 
         [Required(ErrorMessage = "Datum je obavezan")]
@@ -51,5 +51,7 @@ namespace FudbalskiTurnir.ViewModels
 
         [Display(Name = "Gostujući klub penali")]
         public int? DrugiKlubPenali { get; set; }
+        [Display(Name = "Naziv turnira")]
+        public string? NazivTurnira { get; set; }
     }
 }

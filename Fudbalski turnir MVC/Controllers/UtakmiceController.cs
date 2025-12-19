@@ -28,27 +28,54 @@ namespace Fudbalski_turnir.Controllers
         // GET: Utakmice
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Utakmica.ToListAsync());
+            var utakmice = await _context.Utakmica.ToListAsync();
+
+            var viewModel = utakmice.Select(u => new UtakmicaViewModel
+            {
+                UtakmicaID = u.UtakmicaID,
+                TurnirID = u.TurnirID,
+                Datum = u.Datum,
+                Mesto = u.Mesto,
+                PrviKlubNaziv = u.PrviKlubNaziv,
+                DrugiKlubNaziv = u.DrugiKlubNaziv,
+                Kolo = u.Kolo,
+                PrviKlubGolovi = u.PrviKlubGolovi,
+                DrugiKlubGolovi = u.DrugiKlubGolovi,
+                Produzeci = u.Produzeci,
+                Penali = u.Penali,
+                PrviKlubPenali = u.PrviKlubPenali,
+                DrugiKlubPenali = u.DrugiKlubPenali
+            }).ToList();
+
+            return View(viewModel);
         }
 
         // GET: Utakmice/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var utakmica = await _context.Utakmica
-            .Include(u => u.Turnir)
-            .FirstOrDefaultAsync(m => m.UtakmicaID == id);
-            if (utakmica == null)
-            {
-                return NotFound();
-            }
+            var u = await _context.Utakmica.FirstOrDefaultAsync(m => m.UtakmicaID == id);
 
             ViewBag.IsAdmin = User.IsInRole("Admin");
-            return View(utakmica);
+            var viewModel = new UtakmicaViewModel
+            {
+                UtakmicaID = u.UtakmicaID,
+                TurnirID = u.TurnirID,
+                Datum = u.Datum,
+                Mesto = u.Mesto,
+                PrviKlubNaziv = u.PrviKlubNaziv,
+                DrugiKlubNaziv = u.DrugiKlubNaziv,
+                Kolo = u.Kolo,
+                PrviKlubGolovi = u.PrviKlubGolovi,
+                DrugiKlubGolovi = u.DrugiKlubGolovi,
+                Produzeci = u.Produzeci,
+                Penali = u.Penali,
+                PrviKlubPenali = u.PrviKlubPenali,
+                DrugiKlubPenali = u.DrugiKlubPenali
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -195,19 +222,32 @@ namespace Fudbalski_turnir.Controllers
         // GET: Utakmice/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var utakmica = await _context.Utakmica
+            var u = await _context.Utakmica
+                .Include(m => m.Turnir)
                 .FirstOrDefaultAsync(m => m.UtakmicaID == id);
-            if (utakmica == null)
-            {
-                return NotFound();
-            }
 
-            return View(utakmica);
+            if (u == null) return NotFound();
+
+            var viewModel = new UtakmicaViewModel
+            {
+                UtakmicaID = u.UtakmicaID,
+                Datum = u.Datum,
+                Mesto = u.Mesto,
+                PrviKlubNaziv = u.PrviKlubNaziv,
+                DrugiKlubNaziv = u.DrugiKlubNaziv,
+                Kolo = u.Kolo,
+                PrviKlubGolovi = u.PrviKlubGolovi,
+                DrugiKlubGolovi = u.DrugiKlubGolovi,
+                Produzeci = u.Produzeci,
+                Penali = u.Penali,
+                PrviKlubPenali = u.PrviKlubPenali,
+                DrugiKlubPenali = u.DrugiKlubPenali,
+                NazivTurnira = u.Turnir?.NazivTurnira 
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -220,9 +260,8 @@ namespace Fudbalski_turnir.Controllers
             if (utakmica != null)
             {
                 _context.Utakmica.Remove(utakmica);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

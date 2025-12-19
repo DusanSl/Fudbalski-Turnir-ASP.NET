@@ -12,6 +12,13 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TurnirID" class="control-label">Trenutni turnir</label>
+                <select asp-for="TurnirID" class="form-control" asp-items="ViewBag.Turniri">
+                    <option value="">Bez turnira</option>
+                </select>
+                <span asp-validation-for="TurnirID" class="text-danger"></span>
+            </div>
             <input type="hidden" asp-for="SponzorID" />
             <div class="form-group">
                 <label asp-for="ImeSponzora" class="control-label"></label>

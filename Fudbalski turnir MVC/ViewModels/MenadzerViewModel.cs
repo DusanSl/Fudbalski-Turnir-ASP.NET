@@ -7,7 +7,7 @@ namespace FudbalskiTurnir.ViewModels
     {
         public int OsobaID { get; set; }
         [Required(ErrorMessage = "Morate odabrati klub")]
-        [Display(Name = "Klub")]
+        [Display(Name = "KlubID")]
         public int KlubID { get; set; }
         [Required(ErrorMessage = "Ime je obavezno")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Ime mora imati između 2 i 50 karaktera")]
@@ -28,5 +28,7 @@ namespace FudbalskiTurnir.ViewModels
         [Range(0, 100, ErrorMessage = "Godine iskustva moraju biti između 0 i 100")]
         [Display(Name = "Godine iskustva")]
         public int GodineIskustva { get; set; }
+        [Display(Name = "Ime kluba")]
+        public string? ImeKluba { get; set; }
     }
 }

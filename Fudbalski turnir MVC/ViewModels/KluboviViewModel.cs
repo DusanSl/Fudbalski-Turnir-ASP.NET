@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FudbalskiTurnir.DAL.Models;
 
 namespace FudbalskiTurnir.ViewModels
 {
@@ -36,7 +37,10 @@ namespace FudbalskiTurnir.ViewModels
         [Display(Name = "Broj osvojenih titula")]
         public int BrojOsvojenihTitula { get; set; }
 
-        [Display(Name = "Turnir")]
+        [Display(Name = "TurnirID")]
         public int? TurnirID { get; set; }
+        [Display(Name = "Turnir")]
+        public string? NazivTurnira { get; set; }
+        public ICollection<Turnir>? Turniri { get; set; }
     }
 }

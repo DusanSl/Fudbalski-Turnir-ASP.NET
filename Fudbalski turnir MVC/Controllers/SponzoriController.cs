@@ -28,27 +28,44 @@ namespace Fudbalski_turnir.Controllers
         // GET: Sponzori
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sponzor.ToListAsync());
+            var sponzori = await _context.Sponzor
+                .Include(s => s.Turniri)
+                .ToListAsync();
+
+            var viewModel = sponzori.Select(s => new SponzorViewModel
+            {
+                SponzorID = s.SponzorID,
+                ImeSponzora = s.ImeSponzora,
+                KontaktSponzora = s.KontaktSponzora,
+                VrednostSponzora = s.VrednostSponzora,
+                Turniri = s.Turniri?.ToList()
+            }).ToList();
+
+            return View(viewModel);
         }
 
         // GET: Sponzori/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var sponzor = await _context.Sponzor
-            .Include(m => m.Turniri)
-                .FirstOrDefaultAsync(m => m.SponzorID == id);
-            if (sponzor == null)
-            {
-                return NotFound();
-            }
+                .Include(s => s.Turniri)
+                .FirstOrDefaultAsync(s => s.SponzorID == id);
+
+            if (sponzor == null) return NotFound();
 
             ViewBag.IsAdmin = User.IsInRole("Admin");
-            return View(sponzor);
+            var viewModel = new SponzorViewModel
+            {
+                SponzorID = sponzor.SponzorID,
+                ImeSponzora = sponzor.ImeSponzora,
+                KontaktSponzora = sponzor.KontaktSponzora,
+                VrednostSponzora = sponzor.VrednostSponzora,
+                Turniri = sponzor.Turniri 
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -163,21 +180,30 @@ namespace Fudbalski_turnir.Controllers
 
         [Authorize(Roles = "Admin")]
         // GET: Sponzori/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var sponzor = await _context.Sponzor
+                .Include(s => s.Turniri) 
                 .FirstOrDefaultAsync(m => m.SponzorID == id);
-            if (sponzor == null)
-            {
-                return NotFound();
-            }
 
-            return View(sponzor);
+            if (sponzor == null) return NotFound();
+
+            var viewModel = new SponzorViewModel
+            {
+                SponzorID = sponzor.SponzorID,
+                ImeSponzora = sponzor.ImeSponzora,
+                KontaktSponzora = sponzor.KontaktSponzora,
+                VrednostSponzora = sponzor.VrednostSponzora,
+
+                TurnirID = sponzor.Turniri?.FirstOrDefault()?.TurnirID,
+
+                Turniri = sponzor.Turniri?.ToList()
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -190,9 +216,8 @@ namespace Fudbalski_turnir.Controllers
             if (sponzor != null)
             {
                 _context.Sponzor.Remove(sponzor);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

@@ -1,4 +1,4 @@
-﻿@model FudbalskiTurnir.DAL.Models.Sponzor
+﻿@model FudbalskiTurnir.ViewModels.SponzorViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -11,6 +11,18 @@
     <h4>Sponzor</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TurnirID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TurnirID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SponzorID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SponzorID)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ImeSponzora)
         </dt>
@@ -28,6 +40,19 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.VrednostSponzora)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NazivTurnira)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Turniri != null && Model.Turniri.Any())
+            {
+                @string.Join(", ", Model.Turniri.Select(t => t.NazivTurnira))
+            }
+            else
+            {
+                <span>Nema povezanih turnira</span>
+            }
         </dd>
     </dl>
     

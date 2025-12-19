@@ -28,25 +28,43 @@ namespace Fudbalski_turnir.Controllers
         // GET: Turniri
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Turnir.ToListAsync());
+            var turniri = await _context.Turnir.ToListAsync();
+
+            var viewModel = turniri.Select(t => new TurnirViewModel
+            {
+                TurnirID = t.TurnirID,
+                NazivTurnira = t.NazivTurnira,
+                Lokacija = t.Lokacija,
+                DatumPocetka = t.DatumPocetka,
+                DatumZavrsetka = t.DatumZavrsetka,
+                TipTurnira = t.TipTurnira
+            }).ToList();
+
+            return View(viewModel);
         }
 
         // GET: Turniri/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var turnir = await _context.Turnir
                 .FirstOrDefaultAsync(m => m.TurnirID == id);
-            if (turnir == null)
-            {
-                return NotFound();
-            }
 
-            return View(turnir);
+            if (turnir == null) return NotFound();
+
+            ViewBag.IsAdmin = User.IsInRole("Admin");
+            var viewModel = new TurnirViewModel
+            {
+                TurnirID = turnir.TurnirID,
+                NazivTurnira = turnir.NazivTurnira,
+                Lokacija = turnir.Lokacija,
+                DatumPocetka = turnir.DatumPocetka,
+                DatumZavrsetka = turnir.DatumZavrsetka,
+                TipTurnira = turnir.TipTurnira
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -144,19 +162,23 @@ namespace Fudbalski_turnir.Controllers
         // GET: Turniri/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var turnir = await _context.Turnir
-                .FirstOrDefaultAsync(m => m.TurnirID == id);
-            if (turnir == null)
-            {
-                return NotFound();
-            }
+            var turnir = await _context.Turnir.FindAsync(id);
 
-            return View(turnir);
+            if (turnir == null) return NotFound();
+
+            var viewModel = new TurnirViewModel
+            {
+                TurnirID = turnir.TurnirID,
+                NazivTurnira = turnir.NazivTurnira,
+                Lokacija = turnir.Lokacija,
+                DatumPocetka = turnir.DatumPocetka,
+                DatumZavrsetka = turnir.DatumZavrsetka,
+                TipTurnira = turnir.TipTurnira
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -169,9 +191,9 @@ namespace Fudbalski_turnir.Controllers
             if (turnir != null)
             {
                 _context.Turnir.Remove(turnir);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

@@ -28,26 +28,45 @@ namespace Fudbalski_turnir.Controllers
         // GET: Klubovi
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Klub.ToListAsync());
+            var klubovi = await _context.Klub.ToListAsync();
+
+            var viewModel = klubovi.Select(k => new KlubViewModel
+            {
+                KlubID = k.KlubID,
+                ImeKluba = k.ImeKluba,
+                GodinaOsnivanja = k.GodinaOsnivanja,
+                RankingTima = k.RankingTima,
+                BrojIgraca = k.BrojIgraca,
+                Stadion = k.Stadion,
+                BrojOsvojenihTitula = k.BrojOsvojenihTitula
+            }).ToList();
+
+            return View(viewModel);
         }
 
         // GET: Klubovi/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var klub = await _context.Klub
-                .Include(k => k.Turniri)
+                .Include(k => k.Turniri) 
                 .FirstOrDefaultAsync(m => m.KlubID == id);
-            if (klub == null)
-            {
-                return NotFound();
-            }
+
+            if (klub == null) return NotFound();
+
             ViewBag.IsAdmin = User.IsInRole("Admin");
-            return View(klub);
+            var viewModel = new KlubViewModel
+            {
+                KlubID = klub.KlubID,
+                ImeKluba = klub.ImeKluba,
+                RankingTima = klub.RankingTima,
+                Stadion = klub.Stadion,
+                Turniri = klub.Turniri,
+
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -194,19 +213,28 @@ namespace Fudbalski_turnir.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var klub = await _context.Klub
+                .Include(k => k.Turniri)
                 .FirstOrDefaultAsync(m => m.KlubID == id);
-            if (klub == null)
-            {
-                return NotFound();
-            }
 
-            return View(klub);
+            if (klub == null) return NotFound();
+
+            var viewModel = new KlubViewModel
+            {
+                KlubID = klub.KlubID,
+                ImeKluba = klub.ImeKluba,
+                GodinaOsnivanja = klub.GodinaOsnivanja,
+                RankingTima = klub.RankingTima,
+                BrojIgraca = klub.BrojIgraca,
+                Stadion = klub.Stadion,
+                BrojOsvojenihTitula = klub.BrojOsvojenihTitula,
+                Turniri = klub.Turniri?.ToList(),
+                TurnirID = klub.Turniri?.FirstOrDefault()?.TurnirID,
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -218,9 +246,8 @@ namespace Fudbalski_turnir.Controllers
             if (klub != null)
             {
                 _context.Klub.Remove(klub);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
