@@ -57,7 +57,7 @@ namespace Fudbalski_turnir.Controllers
             if (id == null) return NotFound();
 
             var u = await _context.Utakmica
-                .Include(u => u.Turnir)  // Dodaj ovo
+                .Include(u => u.Turnir)  
                 .FirstOrDefaultAsync(m => m.UtakmicaID == id);
 
             if (u == null) return NotFound();
