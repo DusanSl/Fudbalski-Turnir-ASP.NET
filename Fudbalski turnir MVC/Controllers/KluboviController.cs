@@ -63,7 +63,9 @@ namespace Fudbalski_turnir.Controllers
                 RankingTima = klub.RankingTima,
                 Stadion = klub.Stadion,
                 Turniri = klub.Turniri,
-
+                BrojOsvojenihTitula = klub.BrojOsvojenihTitula,
+                GodinaOsnivanja = klub.GodinaOsnivanja,
+                BrojIgraca = klub.BrojIgraca
             };
 
             return View(viewModel);

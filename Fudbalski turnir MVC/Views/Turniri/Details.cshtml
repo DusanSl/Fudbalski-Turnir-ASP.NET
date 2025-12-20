@@ -8,48 +8,66 @@
 
 <div>
     <h4>Turnir</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TurnirID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TurnirID)
-        </dd>
-        <dt class = "col-sm-2">
+
+    @if (ViewBag.IsAdmin ?? false)
+    {
+        <h5 class="text-muted mt-3 mb-2">System Info</h5>
+        <dl class="row mb-3">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.TurnirID)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.TurnirID)
+            </dd>
+        </dl>
+    }
+
+    <h5 class="text-muted mt-3 mb-2">Basic Info</h5>
+    <dl class="row mb-3">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.NazivTurnira)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.NazivTurnira)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lokacija)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lokacija)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DatumPocetka)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DatumPocetka)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DatumZavrsetka)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DatumZavrsetka)
-        </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.TipTurnira)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.TipTurnira)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Lokacija)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Lokacija)
+        </dd>
+    </dl>
+
+    <h5 class="text-muted mt-3 mb-2">Schedule</h5>
+    <dl class="row mb-3">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DatumPocetka)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DatumPocetka)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DatumZavrsetka)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DatumZavrsetka)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</div>
 
-<a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    @if (ViewBag.IsAdmin ?? false)
+    {
+        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark">Back to Admin Page</a>
+    }
+</div>

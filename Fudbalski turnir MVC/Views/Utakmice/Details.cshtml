@@ -8,97 +8,122 @@
 
 <div>
     <h4>Utakmica</h4>
-    <hr />
-    <dl class="row">
-        @if (ViewBag.IsAdmin ?? false)
-        {
-            <dt class="col-sm-2">
+
+    @if (ViewBag.IsAdmin ?? false)
+    {
+        <h5 class="text-muted mt-3 mb-2">System Info</h5>
+        <dl class="row mb-3">
+            <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.UtakmicaID)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.UtakmicaID)
             </dd>
-            <dt class="col-sm-2">
+
+            <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.TurnirID)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.TurnirID)
             </dd>
-        }
-        <dt class="col-sm-2">
+        </dl>
+    }
+
+    <h5 class="text-muted mt-3 mb-2">Match Info</h5>
+    <dl class="row mb-3">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.PrviKlubNaziv)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.PrviKlubNaziv)
         </dd>
-        <dt class="col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.DrugiKlubNaziv)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.DrugiKlubNaziv)
         </dd>
-        <dt class="col-sm-2">Turnir</dt>
-        <dd class="col-sm-10">
+
+        <dt class="col-sm-3">
+            Turnir
+        </dt>
+        <dd class="col-sm-9">
             @(string.IsNullOrEmpty(Model.NazivTurnira) ? "Nema povezanog turnira" : Model.NazivTurnira)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Datum)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Datum)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Mesto)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Mesto)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Kolo)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Kolo)
         </dd>
-        <dt class = "col-sm-2">
+    </dl>
+
+    <h5 class="text-muted mt-3 mb-2">Score</h5>
+    <dl class="row mb-3">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.PrviKlubGolovi)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.PrviKlubGolovi)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.DrugiKlubGolovi)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.DrugiKlubGolovi)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Produzeci)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Produzeci)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Penali)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Penali)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.PrviKlubPenali)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.PrviKlubPenali)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.DrugiKlubPenali)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.DrugiKlubPenali)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</div>
 
-<a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    @if (ViewBag.IsAdmin ?? false)
+    {
+        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark">Back to Admin Page</a>
+    }
+</div>

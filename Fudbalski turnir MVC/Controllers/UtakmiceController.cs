@@ -51,11 +51,16 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Utakmice/Details/5
+        // GET: Utakmice/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
 
-            var u = await _context.Utakmica.FirstOrDefaultAsync(m => m.UtakmicaID == id);
+            var u = await _context.Utakmica
+                .Include(u => u.Turnir)  
+                .FirstOrDefaultAsync(m => m.UtakmicaID == id);
+
+            if (u == null) return NotFound();
 
             ViewBag.IsAdmin = User.IsInRole("Admin");
             var viewModel = new UtakmicaViewModel
@@ -72,7 +77,8 @@ namespace Fudbalski_turnir.Controllers
                 Produzeci = u.Produzeci,
                 Penali = u.Penali,
                 PrviKlubPenali = u.PrviKlubPenali,
-                DrugiKlubPenali = u.DrugiKlubPenali
+                DrugiKlubPenali = u.DrugiKlubPenali,
+                NazivTurnira = u.Turnir?.NazivTurnira 
             };
 
             return View(viewModel);
