@@ -6,7 +6,8 @@ namespace FudbalskiTurnir.ViewModels
     {
         public int OsobaID { get; set; }
 
-        [Required(ErrorMessage = "Klub je obavezan")]
+        [Required(ErrorMessage = "Morate izabrati klub.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Morate izabrati klub.")]
         [Display(Name = "KlubID")]
         public int KlubID { get; set; }
 

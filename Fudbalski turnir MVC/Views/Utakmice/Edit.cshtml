@@ -15,8 +15,8 @@
             <input type="hidden" asp-for="UtakmicaID" />
             <div class="form-group">
                 <label asp-for="TurnirID" class="control-label">Turnir</label>
-                <select asp-for="TurnirID" class="form-control" asp-items="ViewBag.Turnir">
-                    <option value="">Nema turnir</option>
+                <select asp-for="TurnirID" id="turnirDropdown" class="form-control" asp-items="ViewBag.Turniri">
+                    <option value="">Izaberite turnir</option>
                 </select>
                 <span asp-validation-for="TurnirID" class="text-danger"></span>
             </div>
@@ -31,13 +31,17 @@
                 <span asp-validation-for="Mesto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PrviKlubNaziv" class="control-label"></label>
-                <input asp-for="PrviKlubNaziv" class="form-control" />
+                <label asp-for="PrviKlubNaziv" class="control-label">Domaći klub</label>
+                <select asp-for="PrviKlubNaziv" id="prviKlubDropdown" class="form-control">
+                    <option value="">Izaberite turnir prvo</option>
+                </select>
                 <span asp-validation-for="PrviKlubNaziv" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DrugiKlubNaziv" class="control-label"></label>
-                <input asp-for="DrugiKlubNaziv" class="form-control" />
+                <label asp-for="DrugiKlubNaziv" class="control-label">Gostujući klub</label>
+                <select asp-for="DrugiKlubNaziv" id="drugiKlubDropdown" class="form-control">
+                    <option value="">Izaberite turnir prvo</option>
+                </select>
                 <span asp-validation-for="DrugiKlubNaziv" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -89,5 +93,92 @@
 <a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        const currentPrviKlub = '@Model.PrviKlubNaziv';
+        const currentDrugiKlub = '@Model.DrugiKlubNaziv';
+        const currentTurnirId = '@Model.TurnirID';
+
+        if (currentTurnirId) {
+            loadKlubovi(currentTurnirId, true);
+        }
+
+        function loadKlubovi(turnirId, isInitialLoad = false) {
+            const prviKlubDropdown = document.getElementById('prviKlubDropdown');
+            const drugiKlubDropdown = document.getElementById('drugiKlubDropdown');
+
+            if (turnirId) {
+                fetch(`/Utakmice/GetKluboviByTurnir?turnirId=${turnirId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        prviKlubDropdown.innerHTML = '<option value="">Izaberi klub</option>';
+                        drugiKlubDropdown.innerHTML = '<option value="">Izaberi klub</option>';
+
+                        data.forEach(klub => {
+                            const prviSelected = isInitialLoad && klub.imeKluba === currentPrviKlub ? 'selected' : '';
+                            const drugiSelected = isInitialLoad && klub.imeKluba === currentDrugiKlub ? 'selected' : '';
+
+                            prviKlubDropdown.innerHTML += `<option value="${klub.imeKluba}" ${prviSelected}>${klub.imeKluba}</option>`;
+                            drugiKlubDropdown.innerHTML += `<option value="${klub.imeKluba}" ${drugiSelected}>${klub.imeKluba}</option>`;
+                        });
+
+                        prviKlubDropdown.disabled = false;
+                        drugiKlubDropdown.disabled = false;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Greška pri učitavanju klubova');
+                    });
+            } else {
+                prviKlubDropdown.innerHTML = '<option value="">Prvo izaberite turnir</option>';
+                drugiKlubDropdown.innerHTML = '<option value="">Prvo izaberite turnir</option>';
+                prviKlubDropdown.disabled = true;
+                drugiKlubDropdown.disabled = true;
+            }
+        }
+
+        document.getElementById('turnirDropdown').addEventListener('change', function() {
+            loadKlubovi(this.value, false);
+        });
+
+        const prviKlubDropdown = document.getElementById('prviKlubDropdown');
+        const drugiKlubDropdown = document.getElementById('drugiKlubDropdown');
+        const drugiKlubError = document.querySelector('span[data-valmsg-for="DrugiKlubNaziv"]');
+
+        function validateKlubovi() {
+            const prviKlub = prviKlubDropdown.value;
+            const drugiKlub = drugiKlubDropdown.value;
+
+            if (prviKlub && drugiKlub && prviKlub === drugiKlub) {
+                if (drugiKlubError) {
+                    drugiKlubError.textContent = 'Domaći i gostujući klub ne mogu biti isti.';
+                    drugiKlubError.classList.add('field-validation-error');
+                    drugiKlubError.classList.remove('field-validation-valid');
+                }
+                drugiKlubDropdown.classList.add('input-validation-error');
+                return false;
+            } else {
+                if (drugiKlubError) {
+                    drugiKlubError.textContent = '';
+                    drugiKlubError.classList.add('field-validation-valid');
+                    drugiKlubError.classList.remove('field-validation-error');
+                }
+                drugiKlubDropdown.classList.remove('input-validation-error');
+                return true;
+            }
+        }
+
+        drugiKlubDropdown.addEventListener('change', validateKlubovi);
+        prviKlubDropdown.addEventListener('change', validateKlubovi);
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!validateKlubovi()) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
 }

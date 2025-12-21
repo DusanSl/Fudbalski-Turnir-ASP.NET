@@ -87,6 +87,12 @@ namespace Fudbalski_turnir.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (viewModel.TurnirID <= 0)
+                {
+                    ModelState.AddModelError("TurnirID", "Morate izabrati turnir.");
+                    ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "Naziv turnira");
+                    return View(viewModel);
+                }
                 var sponzor = new Sponzor
                 {
                     ImeSponzora = viewModel.ImeSponzora,

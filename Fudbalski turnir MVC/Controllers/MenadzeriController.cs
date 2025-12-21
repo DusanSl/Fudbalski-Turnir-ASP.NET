@@ -90,6 +90,12 @@ namespace Fudbalski_turnir.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (viewModel.KlubID <= 0)
+                {
+                    ModelState.AddModelError("KlubID", "Morate izabrati klub.");
+                    ViewBag.Klubovi = new SelectList(_context.Klub, "KlubID", "ImeKluba");
+                    return View(viewModel);
+                }
                 var menadzer = new Menadzer
                 {
                     Ime = viewModel.Ime,
