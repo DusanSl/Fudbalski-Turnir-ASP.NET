@@ -13,9 +13,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="TurnirID" class="control-label">Turnir</label>
+                <label asp-for="TurnirID" class="control-label"></label>
                 <select asp-for="TurnirID" id="turnirDropdown" class="form-control" asp-items="ViewBag.Turniri">
-                    <option value="">Izaberite turnir</option>
+                    <option value="">Izaberi turnir</option>
                 </select>
                 <span asp-validation-for="TurnirID" class="text-danger"></span>
             </div>
@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PrviKlubNaziv" class="control-label">Domaći klub</label>
-                <select asp-for="PrviKlubNaziv" id="prviKlubDropdown" class="form-control">
+                <select asp-for="PrviKlubNaziv" id="prviKlubDropdown" class="form-control" disabled>
                     <option value="">Prvo izaberite turnir</option>
                 </select>
                 <span asp-validation-for="PrviKlubNaziv" class="text-danger"></span>
@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <label asp-for="DrugiKlubNaziv" class="control-label">Gostujući klub</label>
-                <select asp-for="DrugiKlubNaziv" id="drugiKlubDropdown" class="form-control">
+                <select asp-for="DrugiKlubNaziv" id="drugiKlubDropdown" class="form-control" disabled>
                     <option value="">Prvo izaberite turnir</option>
                 </select>
                 <span asp-validation-for="DrugiKlubNaziv" class="text-danger"></span>
@@ -114,17 +114,55 @@
                             prviKlubDropdown.innerHTML += `<option value="${klub.imeKluba}">${klub.imeKluba}</option>`;
                             drugiKlubDropdown.innerHTML += `<option value="${klub.imeKluba}">${klub.imeKluba}</option>`;
                         });
+
                         prviKlubDropdown.disabled = false;
                         drugiKlubDropdown.disabled = false;
                     })
                     .catch(error => {
+                        console.error('Error:', error);
                         alert('Greška pri učitavanju klubova');
                     });
             } else {
-                prviKlubDropdown.innerHTML = '<option value="">Prvo izaberi turnir</option>';
-                drugiKlubDropdown.innerHTML = '<option value="">Prvo izaberi turnir</option>';
+                prviKlubDropdown.innerHTML = '<option value="">Prvo izaberite turnir</option>';
+                drugiKlubDropdown.innerHTML = '<option value="">Prvo izaberite turnir</option>';
                 prviKlubDropdown.disabled = true;
                 drugiKlubDropdown.disabled = true;
+            }
+        });
+
+        const prviKlubDropdown = document.getElementById('prviKlubDropdown');
+        const drugiKlubDropdown = document.getElementById('drugiKlubDropdown');
+        const drugiKlubError = document.querySelector('span[data-valmsg-for="DrugiKlubNaziv"]');
+
+        function validateKlubovi() {
+            const prviKlub = prviKlubDropdown.value;
+            const drugiKlub = drugiKlubDropdown.value;
+
+            if (prviKlub && drugiKlub && prviKlub === drugiKlub) {
+                if (drugiKlubError) {
+                    drugiKlubError.textContent = 'Domaći i gostujući klub ne mogu biti isti.';
+                    drugiKlubError.classList.add('field-validation-error');
+                    drugiKlubError.classList.remove('field-validation-valid');
+                }
+                drugiKlubDropdown.classList.add('input-validation-error');
+                return false;
+            } else {
+                if (drugiKlubError) {
+                    drugiKlubError.textContent = '';
+                    drugiKlubError.classList.add('field-validation-valid');
+                    drugiKlubError.classList.remove('field-validation-error');
+                }
+                drugiKlubDropdown.classList.remove('input-validation-error');
+                return true;
+            }
+        }
+        drugiKlubDropdown.addEventListener('change', validateKlubovi);
+        prviKlubDropdown.addEventListener('change', validateKlubovi);
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!validateKlubovi()) {
+                e.preventDefault(); 
+                return false;
             }
         });
     </script>

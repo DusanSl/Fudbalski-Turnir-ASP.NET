@@ -51,7 +51,6 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Utakmice/Details/5
-        // GET: Utakmice/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -103,6 +102,12 @@ namespace Fudbalski_turnir.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (viewModel.TurnirID <= 0)
+                {
+                    ModelState.AddModelError("TurnirID", "Morate izabrati turnir.");
+                    ViewBag.Klubovi = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
+                    return View(viewModel);
+                }
                 var utakmica = new Utakmica
                 {
                     TurnirID = viewModel.TurnirID,

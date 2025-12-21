@@ -37,6 +37,8 @@ namespace FudbalskiTurnir.ViewModels
         [Display(Name = "Broj osvojenih titula")]
         public int BrojOsvojenihTitula { get; set; }
 
+        [Required(ErrorMessage = "Morate izabrati turnir.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Morate izabrati turnir.")]
         [Display(Name = "TurnirID")]
         public int? TurnirID { get; set; }
         [Display(Name = "Turnir")]

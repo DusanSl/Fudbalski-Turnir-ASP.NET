@@ -70,7 +70,7 @@ namespace Fudbalski_turnir.Controllers
 
             return View(viewModel);
         }
-
+        // GET: Klubovi/Create
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
@@ -78,7 +78,7 @@ namespace Fudbalski_turnir.Controllers
             ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
             return View(new KlubViewModel()); 
         }
-
+        // POST: Klubovi/Create
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -86,6 +86,12 @@ namespace Fudbalski_turnir.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (viewModel.TurnirID <= 0)
+                {
+                    ModelState.AddModelError("TurnirID", "Morate izabrati turnir.");
+                    ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "Naziv turnira");
+                    return View(viewModel);
+                }
                 var klub = new Klub
                 {
                     ImeKluba = viewModel.ImeKluba,

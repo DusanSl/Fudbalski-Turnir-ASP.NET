@@ -2,10 +2,12 @@
 
 namespace FudbalskiTurnir.ViewModels
 {
-    public class UtakmicaViewModel
+    public class UtakmicaViewModel : IValidatableObject
     {
         public int UtakmicaID { get; set; }
 
+        [Required(ErrorMessage = "Morate izabrati turnir.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Morate izabrati turnir.")]
         [Display(Name = "TurnirID")]
         public int? TurnirID { get; set; }
 
@@ -53,5 +55,17 @@ namespace FudbalskiTurnir.ViewModels
         public int? DrugiKlubPenali { get; set; }
         [Display(Name = "Naziv turnira")]
         public string? NazivTurnira { get; set; }
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!string.IsNullOrEmpty(PrviKlubNaziv) &&
+                !string.IsNullOrEmpty(DrugiKlubNaziv) &&
+                PrviKlubNaziv == DrugiKlubNaziv)
+            {
+                yield return new ValidationResult(
+                    "Domaći i gostujući klub ne mogu biti isti.",
+                    new[] { nameof(DrugiKlubNaziv) }
+                );
+            }
+        }
     }
 }
