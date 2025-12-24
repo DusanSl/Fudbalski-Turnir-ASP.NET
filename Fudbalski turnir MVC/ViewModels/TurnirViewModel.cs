@@ -23,7 +23,7 @@ namespace FudbalskiTurnir.ViewModels
         [Required(ErrorMessage = "Datum završetka je obavezan")]
         [DataType(DataType.Date)]
         [Display(Name = "Datum završetka")]
-        public DateTime DatumZavrsetka { get; set; } = DateTime.Now.AddDays(7);
+        public DateTime DatumZavrsetka { get; set; } = DateTime.Now.AddDays(30);
 
         [Required(ErrorMessage = "Tip turnira je obavezan")]
         [StringLength(50, ErrorMessage = "Tip ne može biti duži od 50 karaktera")]

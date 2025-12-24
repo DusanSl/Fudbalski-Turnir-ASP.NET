@@ -45,9 +45,31 @@
                 <span asp-validation-for="DrugiKlubNaziv" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Kolo" class="control-label"></label>
-                <input asp-for="Kolo" class="form-control" />
+                <label asp-for="Kolo" class="control-label">Kolo turnira</label>
+                <select asp-for="Kolo" class="form-control">
+                    <option value="">Izaberite fazu</option>
+                    <option value="Grupna faza">Grupna faza</option>
+                    <option value="Osmina finala">Osmina finala</option>
+                    <option value="Četvrtfinale">Četvrtfinale</option>
+                    <option value="Polufinale">Polufinale</option>
+                    <option value="Finale">Finale</option>
+                </select>
                 <span asp-validation-for="Kolo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Grupa" class="control-label">Grupa turnira</label>
+                <select asp-for="Grupa" class="form-control">
+                    <option value="">Izaberite grupu</option>
+                    <option value="A">Grupa A</option>
+                    <option value="B">Grupa B</option>
+                    <option value="C">Grupa C</option>
+                    <option value="D">Grupa D</option>
+                    <option value="E">Grupa E</option>
+                    <option value="F">Grupa F</option>
+                    <option value="G">Grupa G</option>
+                    <option value="H">Grupa H</option>
+                </select>
+                <span asp-validation-for="Grupa" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PrviKlubGolovi" class="control-label"></label>
@@ -107,8 +129,8 @@
                 fetch(`/Utakmice/GetKluboviByTurnir?turnirId=${turnirId}`)
                     .then(response => response.json())
                     .then(data => {
-                        prviKlubDropdown.innerHTML = '<option value="">Izaberi klub</option>';
-                        drugiKlubDropdown.innerHTML = '<option value="">Izaberi klub</option>';
+                        prviKlubDropdown.innerHTML = '<option value="">Izaberite klub</option>';
+                        drugiKlubDropdown.innerHTML = '<option value="">Izaberite klub</option>';
 
                         data.forEach(klub => {
                             prviKlubDropdown.innerHTML += `<option value="${klub.imeKluba}">${klub.imeKluba}</option>`;
@@ -161,9 +183,29 @@
 
         document.querySelector('form').addEventListener('submit', function(e) {
             if (!validateKlubovi()) {
-                e.preventDefault(); 
+                e.preventDefault();
                 return false;
             }
         });
+
+        const koloDropdown = document.querySelector('select[name="Kolo"]');
+        const grupaFormGroup = document.querySelector('select[name="Grupa"]').closest('.form-group');
+
+
+        function toggleGrupaField() {
+            const selectedKolo = koloDropdown.value;
+            console.log('Selected Kolo:', selectedKolo);
+
+            if (selectedKolo === 'Grupna faza') {
+                grupaFormGroup.style.display = 'block';
+            } else {
+                grupaFormGroup.style.display = 'none';
+                document.querySelector('select[name="Grupa"]').value = '';
+            }
+        }
+
+        koloDropdown.addEventListener('change', toggleGrupaField);
+
+        toggleGrupaField();
     </script>
 }
