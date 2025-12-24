@@ -7,12 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using FudbalskiTurnir.DAL;
-using FudbalskiTurnir.DAL.Models;
 using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.BLL.Services;
 using FudbalskiTurnir.ViewModels;
+using FudbalskiTurnir.DAL;
+using FudbalskiTurnir.DAL.Models;
 
 namespace Fudbalski_turnir.Controllers
 {
@@ -44,7 +45,8 @@ namespace Fudbalski_turnir.Controllers
                 Produzeci = u.Produzeci,
                 Penali = u.Penali,
                 PrviKlubPenali = u.PrviKlubPenali,
-                DrugiKlubPenali = u.DrugiKlubPenali
+                DrugiKlubPenali = u.DrugiKlubPenali,
+                Grupa = u.Grupa
             }).ToList();
 
             return View(viewModel);
@@ -77,7 +79,8 @@ namespace Fudbalski_turnir.Controllers
                 Penali = u.Penali,
                 PrviKlubPenali = u.PrviKlubPenali,
                 DrugiKlubPenali = u.DrugiKlubPenali,
-                NazivTurnira = u.Turnir?.NazivTurnira 
+                NazivTurnira = u.Turnir?.NazivTurnira,
+                Grupa = u.Grupa
             };
 
             return View(viewModel);
@@ -105,9 +108,10 @@ namespace Fudbalski_turnir.Controllers
                 if (viewModel.TurnirID <= 0)
                 {
                     ModelState.AddModelError("TurnirID", "Morate izabrati turnir.");
-                    ViewBag.Klubovi = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
+                    ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
                     return View(viewModel);
                 }
+
                 var utakmica = new Utakmica
                 {
                     TurnirID = viewModel.TurnirID,
@@ -121,12 +125,15 @@ namespace Fudbalski_turnir.Controllers
                     Produzeci = viewModel.Produzeci,
                     Penali = viewModel.Penali,
                     PrviKlubPenali = viewModel.PrviKlubPenali,
-                    DrugiKlubPenali = viewModel.DrugiKlubPenali
+                    DrugiKlubPenali = viewModel.DrugiKlubPenali,
+                    Grupa = viewModel.Grupa 
                 };
+
                 _context.Add(utakmica);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
             return View(viewModel);
         }
@@ -164,7 +171,8 @@ namespace Fudbalski_turnir.Controllers
                 Produzeci = utakmica.Produzeci,
                 Penali = utakmica.Penali,
                 PrviKlubPenali = utakmica.PrviKlubPenali,
-                DrugiKlubPenali = utakmica.DrugiKlubPenali
+                DrugiKlubPenali = utakmica.DrugiKlubPenali,
+                Grupa = utakmica.Grupa
             };
 
             ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", utakmica.TurnirID);
@@ -207,6 +215,7 @@ namespace Fudbalski_turnir.Controllers
                     utakmica.Penali = viewModel.Penali;
                     utakmica.PrviKlubPenali = viewModel.PrviKlubPenali;
                     utakmica.DrugiKlubPenali = viewModel.DrugiKlubPenali;
+                    utakmica.Grupa = viewModel.Grupa;
 
                     _context.Update(utakmica);
                     await _context.SaveChangesAsync();
@@ -255,7 +264,8 @@ namespace Fudbalski_turnir.Controllers
                 Penali = u.Penali,
                 PrviKlubPenali = u.PrviKlubPenali,
                 DrugiKlubPenali = u.DrugiKlubPenali,
-                NazivTurnira = u.Turnir?.NazivTurnira 
+                NazivTurnira = u.Turnir?.NazivTurnira,
+                Grupa = u.Grupa
             };
 
             return View(viewModel);

@@ -4,123 +4,193 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-public class StandingsController : Controller
+namespace FudbalskiTurnir.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public StandingsController(ApplicationDbContext context)
+    public class StandingsController : Controller
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
 
-    public async Task<IActionResult> Index(int? turnirId, string faza = "Grupna")
-    {
-        ViewBag.Turniri = new SelectList(
-            await _context.Turnir.ToListAsync(),
-            "TurnirID",
-            "NazivTurnira"
-        );
-
-        ViewBag.SelectedTurnirId = turnirId;
-        ViewBag.SelectedFaza = faza;
-
-        if (turnirId == null)
+        public StandingsController(ApplicationDbContext context)
         {
-            return View(new List<StandingsViewModel>());
+            _context = context;
         }
 
-        var utakmice = await _context.Utakmica
-            .Where(u => u.TurnirID == turnirId)
-            .ToListAsync();
-
-        if (faza == "Grupna")
+        public async Task<IActionResult> Index(int? turnirId, string faza = "Grupna")
         {
-            utakmice = utakmice.Where(u =>
-                u.Kolo.Contains("Kolo") ||
-                u.Kolo.Contains("1") ||
-                u.Kolo.Contains("2") ||
-                u.Kolo.Contains("3") ||
-                u.Kolo.Contains("4") ||
-                u.Kolo.Contains("5") ||
-                u.Kolo.Contains("6")
-            ).ToList();
-        }
-        else // Knockout
-        {
-            utakmice = utakmice.Where(u =>
-                u.Kolo.Contains("Osmina") ||
-                u.Kolo.Contains("Četvrtfinale") ||
-                u.Kolo.Contains("Polufinale") ||
-                u.Kolo.Contains("Finale")
-            ).ToList();
-        }
+            // Dropdown za turnire
+            ViewBag.Turniri = new SelectList(
+                await _context.Turnir.ToListAsync(),
+                "TurnirID",
+                "NazivTurnira"
+            );
 
-        var standings = CalculateStandings(utakmice);
+            ViewBag.SelectedTurnirId = turnirId;
+            ViewBag.SelectedFaza = faza;
 
-        return View(standings);
-    }
-
-    private List<StandingsViewModel> CalculateStandings(List<Utakmica> utakmice)
-    {
-        var standings = new Dictionary<string, StandingsViewModel>();
-
-        foreach (var utakmica in utakmice)
-        {
-            // Prvi tim je uvek domaći
-            if (!standings.ContainsKey(utakmica.PrviKlubNaziv))
+            if (turnirId == null)
             {
-                standings[utakmica.PrviKlubNaziv] = new StandingsViewModel
+                return View(new GrupnaFazaViewModel
                 {
-                    KlubNaziv = utakmica.PrviKlubNaziv
-                };
+                    Grupe = new Dictionary<string, List<StandingsViewModel>>(),
+                    Bracket = new BracketViewModel()
+                });
             }
 
-            // Drugi tim je uvek gostujući
-            if (!standings.ContainsKey(utakmica.DrugiKlubNaziv))
+            if (faza == "Grupna")
             {
-                standings[utakmica.DrugiKlubNaziv] = new StandingsViewModel
+                var sveUtakmice = await _context.Utakmica
+                    .Where(u => u.TurnirID == turnirId && u.Kolo == "Grupna faza")
+                    .ToListAsync();
+
+                var grupe = new Dictionary<string, List<StandingsViewModel>>();
+
+                var grupisano = sveUtakmice.GroupBy(u => u.Grupa).OrderBy(g => g.Key);
+
+                foreach (var grupa in grupisano)
                 {
-                    KlubNaziv = utakmica.DrugiKlubNaziv
+                    if (!string.IsNullOrEmpty(grupa.Key))
+                    {
+                        var standings = CalculateStandings(grupa.ToList());
+                        grupe[grupa.Key] = standings;
+                    }
+                }
+
+                var model = new GrupnaFazaViewModel
+                {
+                    Grupe = grupe,
+                    Bracket = new BracketViewModel()
                 };
+                return View(model);
             }
-
-            var domacin = standings[utakmica.PrviKlubNaziv];
-            var gost = standings[utakmica.DrugiKlubNaziv];
-
-            domacin.Odigrano++;
-            gost.Odigrano++;
-
-            domacin.DatiGolovi += utakmica.PrviKlubGolovi;
-            domacin.PrimljeniGolovi += utakmica.DrugiKlubGolovi;
-
-            gost.DatiGolovi += utakmica.DrugiKlubGolovi;
-            gost.PrimljeniGolovi += utakmica.PrviKlubGolovi;
-
-            if (utakmica.PrviKlubGolovi > utakmica.DrugiKlubGolovi)
+            else 
             {
-                domacin.Pobede++;
-                domacin.Bodovi += 3;
-                gost.Porazi++;
-            }
-            else if (utakmica.DrugiKlubGolovi > utakmica.PrviKlubGolovi)
-            {
-                gost.Pobede++;
-                gost.Bodovi += 3;
-                domacin.Porazi++;
-            }
-            else
-            {
-                domacin.Nereseno++;
-                gost.Nereseno++;
-                domacin.Bodovi += 1;
-                gost.Bodovi += 1;
+                var bracket = await GetKnockoutBracket(turnirId.Value);
+
+                var model = new GrupnaFazaViewModel
+                {
+                    Grupe = new Dictionary<string, List<StandingsViewModel>>(),
+                    Bracket = bracket
+                };
+                return View(model);
             }
         }
 
-        return standings.Values
-            .OrderByDescending(s => s.Bodovi)
-            .ThenByDescending(s => s.GolRazlika)
-            .ThenByDescending(s => s.DatiGolovi)
-            .ToList();
+        private List<StandingsViewModel> CalculateStandings(List<Utakmica> utakmice)
+        {
+            var standings = new Dictionary<string, StandingsViewModel>();
+
+            foreach (var utakmica in utakmice)
+            {
+                if (!standings.ContainsKey(utakmica.PrviKlubNaziv))
+                    standings[utakmica.PrviKlubNaziv] = new StandingsViewModel { KlubNaziv = utakmica.PrviKlubNaziv };
+
+                if (!standings.ContainsKey(utakmica.DrugiKlubNaziv))
+                    standings[utakmica.DrugiKlubNaziv] = new StandingsViewModel { KlubNaziv = utakmica.DrugiKlubNaziv };
+
+                var domacin = standings[utakmica.PrviKlubNaziv];
+                var gost = standings[utakmica.DrugiKlubNaziv];
+
+                domacin.Odigrano++;
+                gost.Odigrano++;
+
+                domacin.DatiGolovi += utakmica.PrviKlubGolovi;
+                domacin.PrimljeniGolovi += utakmica.DrugiKlubGolovi;
+
+                gost.DatiGolovi += utakmica.DrugiKlubGolovi;
+                gost.PrimljeniGolovi += utakmica.PrviKlubGolovi;
+
+                if (utakmica.PrviKlubGolovi > utakmica.DrugiKlubGolovi)
+                {
+                    domacin.Pobede++;
+                    domacin.Bodovi += 3;
+                    gost.Porazi++;
+                }
+                else if (utakmica.DrugiKlubGolovi > utakmica.PrviKlubGolovi)
+                {
+                    gost.Pobede++;
+                    gost.Bodovi += 3;
+                    domacin.Porazi++;
+                }
+                else
+                {
+                    domacin.Nereseno++;
+                    gost.Nereseno++;
+                    domacin.Bodovi += 1;
+                    gost.Bodovi += 1;
+                }
+            }
+
+            return standings.Values
+                .OrderByDescending(s => s.Bodovi)
+                .ThenByDescending(s => (s.DatiGolovi - s.PrimljeniGolovi)) 
+                .ThenByDescending(s => s.DatiGolovi)
+                .ToList();
+        }
+
+        private async Task<BracketViewModel> GetKnockoutBracket(int turnirId)
+        {
+            var sveKnockoutUtakmice = await _context.Utakmica
+                .Where(u => u.TurnirID == turnirId && u.Kolo != "Grupna faza")
+                .ToListAsync();
+
+            return new BracketViewModel
+            {
+                OsminaFinala = sveKnockoutUtakmice
+                    .Where(u => u.Kolo == "Osmina finala")
+                    .OrderBy(u => u.UtakmicaID)
+                    .Select(u => MapToKnockout(u)).ToList(),
+
+                Cetvrtfinale = sveKnockoutUtakmice
+                    .Where(u => u.Kolo == "Četvrtfinale")
+                    .OrderBy(u => u.UtakmicaID)
+                    .Select(u => MapToKnockout(u)).ToList(),
+
+                Polufinale = sveKnockoutUtakmice
+                    .Where(u => u.Kolo == "Polufinale")
+                    .OrderBy(u => u.UtakmicaID)
+                    .Select(u => MapToKnockout(u)).ToList(),
+
+                Finale = sveKnockoutUtakmice
+                    .Where(u => u.Kolo == "Finale")
+                    .Select(u => MapToKnockout(u)).FirstOrDefault()
+            };
+        }
+
+        private KnockoutUtakmica MapToKnockout(Utakmica u)
+        {
+            return new KnockoutUtakmica
+            {
+                UtakmicaID = u.UtakmicaID,
+                PrviKlubNaziv = u.PrviKlubNaziv,
+                DrugiKlubNaziv = u.DrugiKlubNaziv,
+                PrviKlubGolovi = u.PrviKlubGolovi,
+                DrugiKlubGolovi = u.DrugiKlubGolovi,
+                Produzeci = u.Produzeci,
+                Penali = u.Penali,
+                PrviKlubPenali = u.PrviKlubPenali,
+                DrugiKlubPenali = u.DrugiKlubPenali,
+                Pobednik = GetWinner(u),
+                Datum = u.Datum,
+                Mesto = u.Mesto
+            };
+        }
+
+        private static string GetWinner(Utakmica u)
+        {
+            if (u.PrviKlubGolovi == null || u.DrugiKlubGolovi == null)
+                return null;
+
+            if (u.Penali && u.PrviKlubPenali.HasValue && u.DrugiKlubPenali.HasValue)
+            {
+                return u.PrviKlubPenali > u.DrugiKlubPenali ? u.PrviKlubNaziv : u.DrugiKlubNaziv;
+            }
+
+            if (u.PrviKlubGolovi > u.DrugiKlubGolovi)
+                return u.PrviKlubNaziv;
+            else if (u.DrugiKlubGolovi > u.PrviKlubGolovi)
+                return u.DrugiKlubNaziv;
+
+            return null;
+        }
     }
 }

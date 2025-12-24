@@ -45,9 +45,31 @@
                 <span asp-validation-for="DrugiKlubNaziv" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Kolo" class="control-label"></label>
-                <input asp-for="Kolo" class="form-control" />
+                <label asp-for="Kolo" class="control-label">Faza turnira</label>
+                <select asp-for="Kolo" class="form-control" id="koloDropdown">
+                    <option value="">Izaberite fazu</option>
+                    <option value="Grupna faza">Grupna faza</option>
+                    <option value="Osmina finala">Osmina finala</option>
+                    <option value="Četvrtfinale">Četvrtfinale</option>
+                    <option value="Polufinale">Polufinale</option>
+                    <option value="Finale">Finale</option>
+                </select>
                 <span asp-validation-for="Kolo" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="grupaField">
+                <label asp-for="Grupa" class="control-label">Grupa</label>
+                <select asp-for="Grupa" class="form-control" id="grupaDropdown">
+                    <option value="">Izaberite grupu</option>
+                    <option value="A">Grupa A</option>
+                    <option value="B">Grupa B</option>
+                    <option value="C">Grupa C</option>
+                    <option value="D">Grupa D</option>
+                    <option value="E">Grupa E</option>
+                    <option value="F">Grupa F</option>
+                    <option value="G">Grupa G</option>
+                    <option value="H">Grupa H</option>
+                </select>
+                <span asp-validation-for="Grupa" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PrviKlubGolovi" class="control-label"></label>
@@ -179,6 +201,22 @@
                 e.preventDefault();
                 return false;
             }
+                });
+                document.addEventListener('DOMContentLoaded', function() {
+        const koloDropdown = document.getElementById('koloDropdown');
+        const grupaField = document.getElementById('grupaField');
+
+        function toggleGrupaField() {
+            if (koloDropdown.value === 'Grupna faza') {
+                grupaField.style.display = 'block';
+            } else {
+                grupaField.style.display = 'none';
+                document.getElementById('grupaDropdown').value = '';
+            }
+        }
+
+        koloDropdown.addEventListener('change', toggleGrupaField);
+        toggleGrupaField();
         });
     </script>
 }

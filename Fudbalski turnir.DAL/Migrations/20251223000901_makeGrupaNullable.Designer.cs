@@ -4,6 +4,7 @@ using FudbalskiTurnir.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fudbalski_turnir.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251223000901_makeGrupaNullable")]
+    partial class makeGrupaNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace Fudbalski_turnir.Data.Migrations
 
                     b.HasKey("KlubID");
 
-                    b.ToTable("Klub", (string)null);
+                    b.ToTable("Klub");
                 });
 
             modelBuilder.Entity("FudbalskiTurnir.DAL.Models.Osoba", b =>
@@ -85,7 +88,7 @@ namespace Fudbalski_turnir.Data.Migrations
 
                     b.HasKey("OsobaID");
 
-                    b.ToTable("Osoba", (string)null);
+                    b.ToTable("Osoba");
 
                     b.UseTptMappingStrategy();
                 });
@@ -113,7 +116,7 @@ namespace Fudbalski_turnir.Data.Migrations
 
                     b.HasKey("SponzorID");
 
-                    b.ToTable("Sponzor", (string)null);
+                    b.ToTable("Sponzor");
                 });
 
             modelBuilder.Entity("FudbalskiTurnir.DAL.Models.Turnir", b =>
@@ -147,7 +150,7 @@ namespace Fudbalski_turnir.Data.Migrations
 
                     b.HasKey("TurnirID");
 
-                    b.ToTable("Turnir", (string)null);
+                    b.ToTable("Turnir");
                 });
 
             modelBuilder.Entity("FudbalskiTurnir.DAL.Models.Utakmica", b =>
@@ -210,7 +213,7 @@ namespace Fudbalski_turnir.Data.Migrations
 
                     b.HasIndex("TurnirID");
 
-                    b.ToTable("Utakmica", (string)null);
+                    b.ToTable("Utakmica");
                 });
 
             modelBuilder.Entity("KlubTurnir", b =>
@@ -477,7 +480,7 @@ namespace Fudbalski_turnir.Data.Migrations
 
                     b.HasIndex("KlubID");
 
-                    b.ToTable("Igraci", (string)null);
+                    b.ToTable("Igraci");
                 });
 
             modelBuilder.Entity("FudbalskiTurnir.DAL.Models.Menadzer", b =>
@@ -492,7 +495,7 @@ namespace Fudbalski_turnir.Data.Migrations
 
                     b.HasIndex("KlubID");
 
-                    b.ToTable("Menadzeri", (string)null);
+                    b.ToTable("Menadzeri");
                 });
 
             modelBuilder.Entity("FudbalskiTurnir.DAL.Models.Utakmica", b =>

@@ -29,6 +29,7 @@ namespace FudbalskiTurnir.ViewModels
         [Display(Name = "Gostujući klub")]
         public string DrugiKlubNaziv { get; set; }
 
+        [Required(ErrorMessage = "Kolo je obavezno")]
         [Display(Name = "Kolo")]
         public string Kolo { get; set; }
 
@@ -55,6 +56,7 @@ namespace FudbalskiTurnir.ViewModels
         public int? DrugiKlubPenali { get; set; }
         [Display(Name = "Naziv turnira")]
         public string? NazivTurnira { get; set; }
+        public string? Grupa { get; set; } 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!string.IsNullOrEmpty(PrviKlubNaziv) &&

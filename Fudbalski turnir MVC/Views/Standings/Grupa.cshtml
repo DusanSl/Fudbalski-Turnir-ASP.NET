@@ -1,0 +1,79 @@
+﻿@model Dictionary<string, List<StandingsViewModel>>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var grupa in Model.OrderBy(g => g.Key))
+        {
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white text-center">
+                        <h5 class="mb-0">Grupa @grupa.Key</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mb-0">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th style="width: 30px;">#</th>
+                                        <th class="text-left">Klub</th>
+                                        <th title="Odigrano">O</th>
+                                        <th class="text-success" title="Pobede">P</th>
+                                        <th>N</th>
+                                        <th class="text-danger" title="Porazi">I</th>
+                                        <th>DG</th>
+                                        <th>PG</th>
+                                        <th>GR</th>
+                                        <th><strong>Bod</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < grupa.Value.Count; i++)
+                                    {
+                                        var klub = grupa.Value[i];
+                                        var rowClass = i < 2 ? "table-success" : ""; 
+
+                                        <tr class="@rowClass text-center">
+                                            <td><small>@(i + 1)</small></td>
+                                            <td class="text-left"><strong>@klub.KlubNaziv</strong></td>
+                                            <td>@klub.Odigrano</td>
+                                            <td>@klub.Pobede</td>
+                                            <td>@klub.Nereseno</td>
+                                            <td>@klub.Porazi</td>
+                                            <td>@klub.DatiGolovi</td>
+                                            <td>@klub.PrimljeniGolovi</td>
+                                            <td>
+                                                @{
+                                                    int gr = klub.DatiGolovi - klub.PrimljeniGolovi;
+                                                    if (gr > 0)
+                                                    {
+                                                        <span class="text-success">+@gr</span>
+                                                    }
+                                                    else if (gr < 0)
+                                                    {
+
+                                                        <span class="text-danger">@gr</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <span>0</span>
+                                                    }
+                                                }
+                                            </td>
+                                            <td><strong>@klub.Bodovi</strong></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">Nema podataka o grupama za ovaj turnir.</div>
+}

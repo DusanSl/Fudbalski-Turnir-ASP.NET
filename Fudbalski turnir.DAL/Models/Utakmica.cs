@@ -27,7 +27,8 @@ namespace FudbalskiTurnir.DAL.Models
         public bool Penali { get; set; }
         public int? PrviKlubPenali { get; set; }
         public int? DrugiKlubPenali { get; set; }
-
+        [MaxLength(20)]
+        public string? Grupa { get; set; }
         public ICollection<Klub>? Klubovi { get; set; }
     }
 }
