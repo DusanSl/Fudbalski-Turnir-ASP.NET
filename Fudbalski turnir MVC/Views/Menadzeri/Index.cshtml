@@ -13,29 +13,24 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.GodineIskustva)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Ime)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Prezime)
             </th>
+            <th>Klub</th>
             <th>
-                @Html.DisplayNameFor(model => model.DatumRodjenja)
+                @Html.DisplayNameFor(model => model.GodineIskustva)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nacionalnost)
             </th>
-            <th> </th>
+            <th>Akcije</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GodineIskustva)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Ime)
             </td>
@@ -43,7 +38,10 @@
                 @Html.DisplayFor(modelItem => item.Prezime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DatumRodjenja)
+                @(string.IsNullOrEmpty(item.ImeKluba) ? "Bez kluba" : item.ImeKluba)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GodineIskustva)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nacionalnost)

@@ -15,7 +15,7 @@ namespace FudbalskiTurnir.ViewModels
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = false)]
         [Display(Name = "Datum")]
-        public DateTime Datum { get; set; }
+        public DateTime Datum { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "Mesto je obavezno")]
         [Display(Name = "Mesto")]

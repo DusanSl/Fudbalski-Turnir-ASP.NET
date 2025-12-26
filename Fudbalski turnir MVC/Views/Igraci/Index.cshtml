@@ -1,89 +1,68 @@
 ﻿@model IEnumerable<FudbalskiTurnir.ViewModels.IgracViewModel>
-
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
-
 <p>
     <a asp-action="Create" class="btn btn-success mb-2 mt-2">Create New</a>
 </p>
 <table id="igraciTable" class="display compact cell-border">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Ime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Prezime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pozicija)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BrojDresa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DatumRodjenja)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nacionalnost)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Ime)</th>
+            <th>@Html.DisplayNameFor(model => model.Prezime)</th>
+            <th>Klub</th>
+            <th>@Html.DisplayNameFor(model => model.Pozicija)</th>
+            <th>@Html.DisplayNameFor(model => model.BrojDresa)</th>
+            <th>@Html.DisplayNameFor(model => model.Nacionalnost)</th>
+            <th>Akcije</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Prezime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pozicija)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BrojDresa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatumRodjenja)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nacionalnost)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.OsobaID" class="btn btn-primary mb-2 mt-2">Edit</a>    
-                <a asp-action="Details" asp-route-id="@item.OsobaID" class="btn btn-secondary mb-2 mt-2">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.OsobaID" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Ime)</td>
+                <td>@Html.DisplayFor(modelItem => item.Prezime)</td>
+                <td>
+                    @(string.IsNullOrEmpty(item.ImeKluba) ? "Slobodan igrač" : item.ImeKluba)
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Pozicija)</td>
+                <td>@Html.DisplayFor(modelItem => item.BrojDresa)</td>
+                <td>@Html.DisplayFor(modelItem => item.Nacionalnost)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.OsobaID" class="btn btn-primary mb-2 mt-2">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.OsobaID" class="btn btn-secondary mb-2 mt-2">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.OsobaID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
 @section Scripts {
     <script>
-        $('#igraciTable').DataTable({
-            "paging": true,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "lengthChange": true,
-            "language": {
-                "search": "Filter:",
-                "info": "Prikazivanje _START_ do _END_ od _TOTAL_ entiteta",
-                "lengthMenu": "Prikažite _MENU_ entiteta",
-                "paginate": {
-                    "first": "Prva",
-                    "last": "Poslednja",
-                    "next": "Sledeća",
-                    "previous": "Prethodna"
-                },
-                "zeroRecords": "Nema rezultata"
-            }
+        $(document).ready(function () {
+            $('#igraciTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "lengthChange": true,
+                "language": {
+                    "search": "Filter:",
+                    "info": "Prikazivanje _START_ do _END_ od _TOTAL_ entiteta",
+                    "lengthMenu": "Prikažite _MENU_ entiteta",
+                    "paginate": {
+                        "first": "Prva",
+                        "last": "Poslednja",
+                        "next": "Sledeća",
+                        "previous": "Prethodna"
+                    },
+                    "zeroRecords": "Nema rezultata"
+                }
+            });
         });
     </script>
 }

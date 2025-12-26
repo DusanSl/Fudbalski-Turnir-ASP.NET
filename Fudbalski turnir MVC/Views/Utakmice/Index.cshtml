@@ -1,11 +1,8 @@
 ﻿@model IEnumerable<FudbalskiTurnir.ViewModels.UtakmicaViewModel>
-
 @{
     ViewData["Title"] = "Index";
 }
-
 <h1>Index</h1>
-
 <p>
     <a asp-action="Create" class="btn btn-success mb-2 mt-2">Create New</a>
 </p>
@@ -16,7 +13,7 @@
                 @Html.DisplayNameFor(model => model.Datum)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Mesto)
+                Turnir
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PrviKlubNaziv)
@@ -25,75 +22,51 @@
                 @Html.DisplayNameFor(model => model.DrugiKlubNaziv)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Kolo)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.PrviKlubGolovi)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DrugiKlubGolovi)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Produzeci)
+                @Html.DisplayNameFor(model => model.Kolo)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Penali)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrviKlubPenali)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DrugiKlubPenali)
-            </th>
-            <th></th>
+            <th>Akcije</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Datum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mesto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrviKlubNaziv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DrugiKlubNaziv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Kolo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrviKlubGolovi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DrugiKlubGolovi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Produzeci)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Penali)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrviKlubPenali)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DrugiKlubPenali)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UtakmicaID" class="btn btn-primary mb-2 mt-2">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.UtakmicaID" class="btn btn-secondary mb-2 mt-2">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.UtakmicaID" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Datum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NazivTurnira)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrviKlubNaziv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrugiKlubNaziv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrviKlubGolovi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrugiKlubGolovi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Kolo)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.UtakmicaID" class="btn btn-primary mb-2 mt-2">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.UtakmicaID" class="btn btn-secondary mb-2 mt-2">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.UtakmicaID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-
 @section Scripts {
     <script>
         $('#utakmiceTable').DataTable({
