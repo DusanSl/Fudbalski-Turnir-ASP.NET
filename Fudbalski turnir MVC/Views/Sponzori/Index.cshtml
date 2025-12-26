@@ -16,12 +16,13 @@
                 @Html.DisplayNameFor(model => model.ImeSponzora)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.KontaktSponzora)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.VrednostSponzora)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.KontaktSponzora)
+            </th>
+            <th>Turnir</th>
+            <th>Akcije</th>
         </tr>
     </thead>
     <tbody>
@@ -31,11 +32,21 @@
                 @Html.DisplayFor(modelItem => item.ImeSponzora)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.KontaktSponzora)
+                @Html.DisplayFor(modelItem => item.VrednostSponzora)€
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.VrednostSponzora)
-            </td>
+                @Html.DisplayFor(modelItem => item.KontaktSponzora)
+                </td>
+                <td>
+                    @if (item.Turniri != null && item.Turniri.Any())
+                    {
+                        @string.Join(", ", item.Turniri.Select(t => t.NazivTurnira))
+                    }
+                    else
+                    {
+                        <span class="text-muted small">Nema dodeljenih turnira</span>
+                    }
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.SponzorID" class="btn btn-primary mb-2 mt-2">Edit</a>
                 <a asp-action="Details" asp-route-id="@item.SponzorID" class="btn btn-secondary mb-2 mt-2">Details</a>

@@ -21,6 +21,7 @@ namespace FudbalskiTurnir.ViewModels
         [Required(ErrorMessage = "Datum rođenja je obavezan")]
         [DataType(DataType.Date)]
         [Display(Name = "Datum rođenja")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = false)]
         public DateTime DatumRodjenja { get; set; }
         [Required(ErrorMessage = "Nacionalnost je obavezna")]
         [MaxLength(50, ErrorMessage = "Nacionalnost ne može biti duža od 50 karaktera")]

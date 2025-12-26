@@ -23,7 +23,7 @@ namespace FudbalskiTurnir.ViewModels
 
         [Required(ErrorMessage = "Vrednost sponzora je obavezna")]
         [Range(1, 1000000000, ErrorMessage = "Vrednost mora biti veća od 0")]
-        [Display(Name = "Vrednost sponzora")]
+        [Display(Name = "Vrednost sponzora (€)")]
         public decimal VrednostSponzora { get; set; }
         [Display(Name = "Turnir")]
         public string? NazivTurnira { get; set; }

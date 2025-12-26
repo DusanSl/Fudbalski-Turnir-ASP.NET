@@ -1,28 +1,27 @@
 ﻿@model FudbalskiTurnir.ViewModels.IgracViewModel
-
-@{
-    ViewData["Title"] = "Delete";
-}
-
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Igrac</h4>
+ @{
+    ViewData["Title"] = "Delete";}
+ <h1>Delete</h1>
+ <h3>Are you sure you want to delete this?</h3><div>
+    <h4>Igrač</h4>
     <hr />
     <dl class="row mb-1">
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OsobaID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.OsobaID)
-        </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.KlubID)
+            @Html.DisplayNameFor(model => model.Ime)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.KlubID)
+            @Html.DisplayFor(model => model.Ime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Prezime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Prezime)
+        </dd>
+        <dt class = "col-sm-2">
+            Klub </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ImeKluba)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Pozicija)
@@ -37,28 +36,16 @@
             @Html.DisplayFor(model => model.BrojDresa)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ime)
+            @Html.DisplayNameFor(model => model.Nacionalnost)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Prezime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Prezime)
+            @Html.DisplayFor(model => model.Nacionalnost)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DatumRodjenja)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DatumRodjenja)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nacionalnost)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nacionalnost)
         </dd>
     </dl>
     
@@ -68,7 +55,6 @@
         <div>
             <a asp-action="Index" class="btn btn-secondary mt-1">Back to List</a>
         </div>
-
+ 
         <a asp-controller="Admin" asp-action="Index" class="btn btn-dark mt-1">Back to Admin Page</a>
-    </form>
-</div>
+    </form></div>

@@ -49,6 +49,20 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
+/*
+app.Use(async (context, next) =>
+{
+    var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+    await next.Invoke();
+    stopwatch.Stop();
+
+    var path = context.Request.Path;
+    var elapsed = stopwatch.ElapsedMilliseconds;
+    Console.WriteLine($"Request {path} took {elapsed} ms");
+}); 
+for testing performance
+ */
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<FudbalskiTurnir.ViewModels.UserViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table id="usersTable" class="display compact cell-border">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Uloga</th>
+            <th>Status</th>
+            <th>Email Potvrđen</th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    @if (user.Roles != null && user.Roles.Any())
+                    {
+                        @string.Join(", ", user.Roles)
+                    }
+                    else
+                    {
+                        <span>User</span>
+                    }
+                </td>
+                <td>
+                    @(user.IsActive ? "Aktivan" : "Banovan")
+                </td>
+                <td>
+                    @(user.EmailConfirmed ? "Da" : "Ne")
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-primary mb-2 mt-2">Edit</a>
+                    <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-secondary mb-2 mt-2">Details</a>
+                    <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#usersTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "lengthChange": true,
+                "language": {
+                    "search": "Filter:",
+                    "info": "Prikazivanje _START_ do _END_ od _TOTAL_ entiteta",
+                    "lengthMenu": "Prikažite _MENU_ entiteta",
+                    "paginate": {
+                        "first": "Prva",
+                        "last": "Poslednja",
+                        "next": "Sledeća",
+                        "previous": "Prethodna"
+                    },
+                    "zeroRecords": "Nema rezultata"
+                }
+            });
+        });
+    </script>
+}

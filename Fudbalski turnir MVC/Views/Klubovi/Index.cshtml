@@ -16,9 +16,6 @@
                 @Html.DisplayNameFor(model => model.ImeKluba)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GodinaOsnivanja)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.RankingTima)
             </th>
             <th>
@@ -30,7 +27,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.BrojOsvojenihTitula)
             </th>
-            <th></th>
+            <th>Akcije</th>
         </tr>
     </thead>
     <tbody>
@@ -40,10 +37,7 @@
                 @Html.DisplayFor(modelItem => item.ImeKluba)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GodinaOsnivanja)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RankingTima)
+                #@Html.DisplayFor(modelItem => item.RankingTima)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BrojIgraca)

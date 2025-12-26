@@ -29,12 +29,15 @@ namespace Fudbalski_turnir.Controllers
         // GET: Utakmice
         public async Task<IActionResult> Index()
         {
-            var utakmice = await _context.Utakmica.ToListAsync();
+            var utakmice = await _context.Utakmica
+                .Include(u => u.Turnir)
+                .ToListAsync();
 
             var viewModel = utakmice.Select(u => new UtakmicaViewModel
             {
                 UtakmicaID = u.UtakmicaID,
                 TurnirID = u.TurnirID,
+                NazivTurnira = u.Turnir?.NazivTurnira ?? "Nema turnira",
                 Datum = u.Datum,
                 Mesto = u.Mesto,
                 PrviKlubNaziv = u.PrviKlubNaziv,
@@ -55,34 +58,36 @@ namespace Fudbalski_turnir.Controllers
         // GET: Utakmice/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+                return NotFound();
 
-            var u = await _context.Utakmica
-                .Include(u => u.Turnir)  
-                .FirstOrDefaultAsync(m => m.UtakmicaID == id);
+            var viewModel = await _context.Utakmica
+                .Where(u => u.UtakmicaID == id)
+                .Select(u => new UtakmicaViewModel
+                {
+                    UtakmicaID = u.UtakmicaID,
+                    TurnirID = u.TurnirID,
+                    Datum = u.Datum,
+                    Mesto = u.Mesto,
+                    PrviKlubNaziv = u.PrviKlubNaziv,
+                    DrugiKlubNaziv = u.DrugiKlubNaziv,
+                    Kolo = u.Kolo,
+                    PrviKlubGolovi = u.PrviKlubGolovi,
+                    DrugiKlubGolovi = u.DrugiKlubGolovi,
+                    Produzeci = u.Produzeci,
+                    Penali = u.Penali,
+                    PrviKlubPenali = u.PrviKlubPenali,
+                    DrugiKlubPenali = u.DrugiKlubPenali,
+                    Grupa = u.Grupa,
 
-            if (u == null) return NotFound();
+                    NazivTurnira = u.Turnir.NazivTurnira
+                })
+                .FirstOrDefaultAsync();
+
+            if (viewModel == null)
+                return NotFound();
 
             ViewBag.IsAdmin = User.IsInRole("Admin");
-            var viewModel = new UtakmicaViewModel
-            {
-                UtakmicaID = u.UtakmicaID,
-                TurnirID = u.TurnirID,
-                Datum = u.Datum,
-                Mesto = u.Mesto,
-                PrviKlubNaziv = u.PrviKlubNaziv,
-                DrugiKlubNaziv = u.DrugiKlubNaziv,
-                Kolo = u.Kolo,
-                PrviKlubGolovi = u.PrviKlubGolovi,
-                DrugiKlubGolovi = u.DrugiKlubGolovi,
-                Produzeci = u.Produzeci,
-                Penali = u.Penali,
-                PrviKlubPenali = u.PrviKlubPenali,
-                DrugiKlubPenali = u.DrugiKlubPenali,
-                NazivTurnira = u.Turnir?.NazivTurnira,
-                Grupa = u.Grupa
-            };
-
             return View(viewModel);
         }
 

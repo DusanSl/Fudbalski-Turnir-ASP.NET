@@ -77,7 +77,7 @@ namespace Fudbalski_turnir.Controllers
         public IActionResult Create()
         {
             ViewBag.Klub = new SelectList(_context.Klub, "KlubID", "ImeKluba");
-            return View();
+            return View(new MenadzerViewModel());
         }
 
         [Authorize(Roles = "Admin")]
