@@ -6,15 +6,43 @@
         if (match == null) return;
 
         <div class="match-box shadow-sm mb-3 border rounded bg-white" style="font-size: 0.85rem; min-width: 160px;">
+
             <div class="d-flex justify-content-between align-items-center p-2 @(match.Pobednik == match.PrviKlubNaziv ? "bg-success bg-opacity-10 fw-bold" : "")">
-                <span class="text-truncate" style="max-width: 110px;">@match.PrviKlubNaziv</span>
-                <span class="badge bg-light text-dark border">@(match.PrviKlubGolovi?.ToString() ?? "-")</span>
+                <span class="text-truncate">@match.PrviKlubNaziv</span>
+                <div>
+                    @if (match.PrviKlubPenali.HasValue)
+                    {
+                        <small class="text-muted me-1">(@match.PrviKlubPenali)</small>
+                    }
+                    <span class="badge bg-light text-dark border">@(match.PrviKlubGolovi?.ToString() ?? "-")</span>
+                </div>
             </div>
+
             <div style="height: 1px; background: #eee;"></div>
+
             <div class="d-flex justify-content-between align-items-center p-2 @(match.Pobednik == match.DrugiKlubNaziv ? "bg-success bg-opacity-10 fw-bold" : "")">
                 <span class="text-truncate" style="max-width: 110px;">@match.DrugiKlubNaziv</span>
-                <span class="badge bg-light text-dark border">@(match.DrugiKlubGolovi?.ToString() ?? "-")</span>
+                <div>
+                    @if (match.DrugiKlubPenali.HasValue)
+                    {
+                        <small class="text-muted me-1">(@match.DrugiKlubPenali)</small>
+                    }
+                    <span class="badge bg-light text-dark border">@(match.DrugiKlubGolovi?.ToString() ?? "-")</span>
+                </div>
             </div>
+
+            @if (match.Produzeci && !match.PrviKlubPenali.HasValue)
+            {
+                <div class="text-center pb-1" style="font-size: 0.65rem; color: #666; background: #f9f9f9;">
+                    Produžeci
+                </div>
+            }
+            else if (match.PrviKlubPenali.HasValue)
+            {
+                <div class="text-center pb-1" style="font-size: 0.65rem; color: #666; background: #f9f9f9;">
+                    Penali
+                </div>
+            }
         </div>
     }
 }
@@ -45,6 +73,7 @@ else
                 @foreach (var m in Model.Polufinale.Take(1)) { RenderMatch(m); }
             </div>
 
+            @* --- FINALE --- *@
             <div class="d-flex flex-column justify-content-center px-4">
                 <div class="text-center">
                     <h4 class="text-primary fw-bold">FINALE</h4>
@@ -54,13 +83,36 @@ else
                             <div class="card-body p-2">
                                 <div class="py-2 @(Model.Finale.Pobednik == Model.Finale.PrviKlubNaziv ? "text-success fw-bold" : "")">
                                     @Model.Finale.PrviKlubNaziv
-                                    <span class="float-end">@Model.Finale.PrviKlubGolovi</span>
+                                    <span class="float-end">
+                                        @if (Model.Finale.PrviKlubPenali.HasValue)
+                                        {
+                                            <small class="text-muted">(@Model.Finale.PrviKlubPenali)</small>
+                                        }
+                                        @Model.Finale.PrviKlubGolovi
+                                    </span>
                                 </div>
+
                                 <hr class="my-1">
+
                                 <div class="py-2 @(Model.Finale.Pobednik == Model.Finale.DrugiKlubNaziv ? "text-success fw-bold" : "")">
                                     @Model.Finale.DrugiKlubNaziv
-                                    <span class="float-end">@Model.Finale.DrugiKlubGolovi</span>
+                                    <span class="float-end">
+                                        @if (Model.Finale.DrugiKlubPenali.HasValue)
+                                        {
+                                            <small class="text-muted">(@Model.Finale.DrugiKlubPenali)</small>
+                                        }
+                                        @Model.Finale.DrugiKlubGolovi
+                                    </span>
                                 </div>
+
+                                @if (Model.Finale.Produzeci || Model.Finale.PrviKlubPenali.HasValue)
+                                {
+                                    <div class="mt-1 border-top pt-1" style="font-size: 0.75rem;">
+                                        <span class="badge @(Model.Finale.PrviKlubPenali.HasValue ? "bg-danger" : "bg-warning text-dark")">
+                                            @(Model.Finale.PrviKlubPenali.HasValue ? "P" : "Produžeci")
+                                        </span>
+                                    </div>
+                                }
                             </div>
                         </div>
 

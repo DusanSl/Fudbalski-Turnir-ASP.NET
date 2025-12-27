@@ -45,5 +45,17 @@ namespace FudbalskiTurnir.BLL.Services
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<List<Utakmica>> GetAllMatchesSortedByDateAsync()
+        {
+            return await _context.Utakmica
+                .OrderByDescending(u => u.Datum)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Utakmica>> GetAllUtakmiceAsync()
+        {
+            return await _context.Utakmica
+                .Include(u => u.Turnir) 
+                .ToListAsync();
+        }
     }
 }

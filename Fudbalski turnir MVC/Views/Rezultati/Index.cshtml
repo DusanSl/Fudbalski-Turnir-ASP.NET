@@ -1,0 +1,107 @@
+﻿@model IEnumerable<FudbalskiTurnir.DAL.Models.Utakmica>
+
+@{
+    ViewData["Title"] = "Rezultati Turnira";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Sve Utakmice</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="turnirFilter" class="form-label">Izaberi turnir:</label>
+            <select id="turnirFilter" class="form-select">
+                <option value="">Svi turniri</option>
+                @foreach (var grupa in Model.Where(u => u.Turnir != null).GroupBy(u => u.TurnirID))
+                {
+                    <option value="@grupa.Key">@grupa.First().Turnir.NazivTurnira</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <table id="rezultatiTable" class="display cell-border">
+        <thead>
+            <tr>
+                <th>Datum i vreme</th>
+                <th>Kolo / Grupa</th>
+                <th>Domaćin</th>
+                <th>Rezultat</th>
+                <th>Gost</th>
+                <th>Mesto</th>
+                <th>Napomena</th>
+                <th class="d-none">TurnirID_Hidden</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var utakmica in Model)
+            {
+                <tr>
+                    <td>@utakmica.Datum.ToString("dd.MM.yyyy. HH:mm")</td>
+                    <td>
+                        @utakmica.Kolo
+                        @if (!string.IsNullOrEmpty(utakmica.Grupa))
+                        {
+                            <span>(Grupa @utakmica.Grupa)</span>
+                        }
+                    </td>
+                    <td>@utakmica.PrviKlubNaziv</td>
+                    <td>
+                        <span class="px-3 py-2">
+                            @(utakmica.PrviKlubGolovi) : @(utakmica.DrugiKlubGolovi)
+                        </span>
+                    </td>
+                    <td>@utakmica.DrugiKlubNaziv</td>
+                    <td>@utakmica.Mesto</td>
+                    <td>
+                        @if (utakmica.PrviKlubPenali.HasValue)
+                        {
+                            <span class="text-danger fw-bold small">Penali (@utakmica.PrviKlubPenali-@utakmica.DrugiKlubPenali)</span>
+                        }
+                        else if (utakmica.Produzeci)
+                        {
+                            <span class="text-warning fw-bold small">Produžeci</span>
+                        }
+                    </td>
+                    <td class="d-none">@utakmica.TurnirID</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var table = $('#rezultatiTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "lengthChange": true,
+                "order": [[0, "desc"]], 
+                "language": {
+                    "search": "Filter:",
+                    "info": "Prikazivanje _START_ do _END_ od _TOTAL_ utakmica",
+                    "lengthMenu": "Prikaži _MENU_ redova",
+                    "paginate": {
+                        "first": "Prva",
+                        "last": "Poslednja",
+                        "next": "Sledeća",
+                        "previous": "Prethodna"
+                    },
+                    "zeroRecords": "Nema pronađenih utakmica"
+                }
+            });
+
+            $('#turnirFilter').on('change', function () {
+                var selectedValue = $(this).val();
+                if (selectedValue === "") {
+                    table.column(7).search('').draw();
+                } else {
+                    table.column(7).search('^' + selectedValue + '$', true, false).draw();
+                }
+            });
+        });
+    </script>
+}
