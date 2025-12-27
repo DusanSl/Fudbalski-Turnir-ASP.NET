@@ -8,6 +8,7 @@ namespace FudbalskiTurnir.BLL.Interfaces
         Task<Turnir?> GetTurnirByIdAsync(int id);
         Task CreateTurnirAsync(Turnir turnir);
         Task UpdateTurnirAsync(Turnir turnir);
-        Task DeleteTurnirAsync(int id);
+        Task DeleteTurnirAsync(int id); 
+        Task<IEnumerable<Utakmica>> GetAllUtakmiceAsync();
     }
 }
