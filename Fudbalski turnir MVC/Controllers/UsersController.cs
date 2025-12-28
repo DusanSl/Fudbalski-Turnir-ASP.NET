@@ -1,22 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.DAL.Models;
+using FudbalskiTurnir.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; 
-using FudbalskiTurnir.ViewModels;   
 
-[Authorize(Roles = "Admin")]
 public class UsersController : Controller
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IUserService _userService;
 
-    public UsersController(UserManager<IdentityUser> userManager)
+    public UsersController(IUserService userService)
     {
-        _userManager = userManager;
+        _userService = userService;
     }
 
     public async Task<IActionResult> Index()
     {
-        var users = await _userManager.Users.ToListAsync();
+        var users = await _userService.GetAllUsersAsync();
         var model = new List<UserViewModel>();
 
         foreach (var u in users)
@@ -27,110 +25,80 @@ public class UsersController : Controller
                 Email = u.Email ?? "Bez emaila",
                 PhoneNumber = u.PhoneNumber,
                 EmailConfirmed = u.EmailConfirmed,
-                PhoneNumberConfirmed = u.PhoneNumberConfirmed,
                 IsActive = u.LockoutEnd == null || u.LockoutEnd < DateTimeOffset.Now,
-                Roles = await _userManager.GetRolesAsync(u)
+                Roles = await _userService.GetUserRolesAsync(u)
             });
         }
+        return View(model);
+    }
+
+    // GET: Users/Details/5
+    public async Task<IActionResult> Details(string id)
+    {
+        var user = await _userService.GetUserByIdAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var roles = await _userService.GetUserRolesAsync(user);
+
+        var model = new UserViewModel
+        {
+            Id = user.Id,
+            Email = user.Email ?? "Bez emaila",
+            PhoneNumber = user.PhoneNumber ?? "Nema unet broj",
+            EmailConfirmed = user.EmailConfirmed,
+            IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
+            Roles = roles,
+            SelectedRole = roles.FirstOrDefault() ?? "Nema dodeljenu ulogu"
+        };
 
         return View(model);
     }
 
-    // DETAILS
-    public async Task<IActionResult> Details(string id)
+    // GET: Users/Edit/5
+    public async Task<IActionResult> Edit(string id)
     {
-        var user = await _userManager.FindByIdAsync(id);
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user == null) return NotFound();
+
+        var roles = await _userService.GetUserRolesAsync(user);
+
+        var model = new UserViewModel
+        {
+            Id = user.Id,
+            Email = user.Email ?? "",
+            PhoneNumber = user.PhoneNumber,
+            IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
+            SelectedRole = roles.FirstOrDefault() ?? "User"
+        };
+
+        return View(model);
+    }
+
+    // GET: Users/Delete/5
+    public async Task<IActionResult> Delete(string id)
+    {
+        var user = await _userService.GetUserByIdAsync(id);
         if (user == null) return NotFound();
 
         var model = new UserViewModel
         {
             Id = user.Id,
             Email = user.Email,
-            PhoneNumber = user.PhoneNumber,
-            EmailConfirmed = user.EmailConfirmed,
-            PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-            IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
-            Roles = await _userManager.GetRolesAsync(user)
+            IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now
         };
 
         return View(model);
     }
-    // GET: Edit
-    public async Task<IActionResult> Edit(string id)
-    {
-        var user = await _userManager.FindByIdAsync(id);
-        if (user == null) return NotFound();
 
-        var userRoles = await _userManager.GetRolesAsync(user);
-
-        return View(new UserViewModel
-        {
-            Id = user.Id,
-            Email = user.Email ?? "",
-            PhoneNumber = user.PhoneNumber,
-            EmailConfirmed = user.EmailConfirmed,
-            PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-            IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
-            SelectedRole = userRoles.FirstOrDefault() ?? "User"
-        });
-    }
-
-    // POST: Edit
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(UserViewModel model)
-    {
-        var user = await _userManager.FindByIdAsync(model.Id!);
-        if (user == null) return NotFound();
-
-        user.Email = model.Email;
-        user.PhoneNumber = model.PhoneNumber;
-
-        if (model.IsActive)
-        {
-            await _userManager.SetLockoutEndDateAsync(user, null); 
-        }
-        else
-        {
-            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
-        }
-
-        var currentRoles = await _userManager.GetRolesAsync(user);
-        await _userManager.RemoveFromRolesAsync(user, currentRoles);
-        await _userManager.AddToRoleAsync(user, model.SelectedRole);
-
-        var result = await _userManager.UpdateAsync(user);
-        if (result.Succeeded) return RedirectToAction(nameof(Index));
-
-        return View(model);
-    }
-
-    public async Task<IActionResult> Delete(string id)
-    {
-        var user = await _userManager.FindByIdAsync(id);
-        if (user == null) return NotFound();
-
-        var userRoles = await _userManager.GetRolesAsync(user);
-
-        return View(new UserViewModel
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Roles = userRoles,
-            IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now
-        });
-    }
-
-    // DELETE (POST)
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(string id)
     {
-        var user = await _userManager.FindByIdAsync(id);
-        if (user != null)
-        {
-            await _userManager.DeleteAsync(user);
-        }
+        await _userService.DeleteUserAsync(id);
         return RedirectToAction(nameof(Index));
     }
 }
