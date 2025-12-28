@@ -1,4 +1,4 @@
-﻿
+﻿using FudbalskiTurnir.DAL.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace FudbalskiTurnir.ViewModels
@@ -16,9 +16,9 @@ namespace FudbalskiTurnir.ViewModels
         public bool EmailConfirmed { get; set; }
         [Display(Name = "Potvrđen broj telefona")]
         public bool PhoneNumberConfirmed { get; set; }
-        public bool IsActive { get; set; } 
+        public bool IsActive { get; set; }
         [Display(Name = "Uloga")]
-        public string SelectedRole { get; set; } = "User"; 
-        public IEnumerable<string>? AllRoles { get; set; } 
+        public string SelectedRole { get; set; } = "User";
+        public IEnumerable<string>? AllRoles { get; set; }
     }
 }

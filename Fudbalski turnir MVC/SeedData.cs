@@ -1,43 +1,26 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FudbalskiTurnir.DAL.Models; 
+using Microsoft.AspNetCore.Identity;
 
-public static class SeedData
+namespace FudbalskiTurnir.DAL 
 {
-    public static async Task Initialize(IServiceProvider serviceProvider, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public static class SeedData
     {
-        if (!await roleManager.RoleExistsAsync("Admin"))
+        public static async Task Initialize(
+            IServiceProvider serviceProvider,
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
-            await roleManager.CreateAsync(new IdentityRole("Admin"));
-        }
-
-        if (!await roleManager.RoleExistsAsync("User"))
-        {
-            await roleManager.CreateAsync(new IdentityRole("User"));
-        }
-        // existing admin user
-        var adminEmail = "admin@football.com";
-        var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-        if (adminUser == null)
-        {
-            var newAdmin = new IdentityUser
+            var adminEmail = "admin@djole.com";
+            if (await userManager.FindByEmailAsync(adminEmail) == null)
             {
-                UserName = adminEmail,
-                Email = adminEmail,
-                EmailConfirmed = true
-            };
-
-            var result = await userManager.CreateAsync(newAdmin, "Admin123!");
-
-            if (result.Succeeded)
-            {
-                await userManager.AddToRoleAsync(newAdmin, "Admin");
-            }
-        }
-        else
-        {
-            if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
-            {
-                await userManager.AddToRoleAsync(adminUser, "Admin");
+                var user = new User 
+                {
+                    UserName = adminEmail,
+                    Email = adminEmail,
+                    EmailConfirmed = true
+                };
+                await userManager.CreateAsync(user, "Admin123!");
+                await userManager.AddToRoleAsync(user, "Admin");
             }
         }
     }
