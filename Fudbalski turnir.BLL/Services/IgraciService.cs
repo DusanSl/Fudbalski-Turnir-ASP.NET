@@ -16,12 +16,18 @@ namespace FudbalskiTurnir.BLL.Services
 
         public async Task<IEnumerable<Igrac>> GetAllIgraceAsync()
         {
-            return await _context.Igrac.ToListAsync();
+            return await _context.Igrac.Include(i => i.Klub).ToListAsync();
         }
 
         public async Task<Igrac?> GetIgracByIdAsync(int id)
         {
-            return await _context.Igrac.FindAsync(id);
+            return await _context.Igrac.Include(i => i.Klub)
+                .FirstOrDefaultAsync(m => m.OsobaID == id);
+        }
+
+        public async Task<IEnumerable<Klub>> GetAllKluboviAsync()
+        {
+            return await _context.Klub.ToListAsync();
         }
 
         public async Task CreateIgracAsync(Igrac igrac)

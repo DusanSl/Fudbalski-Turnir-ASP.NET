@@ -9,5 +9,6 @@ namespace FudbalskiTurnir.BLL.Interfaces
         Task CreateIgracAsync(Igrac igrac);
         Task UpdateIgracAsync(Igrac igrac);
         Task DeleteIgracAsync(int id);
+        Task<IEnumerable<Klub>> GetAllKluboviAsync();
     }
 }

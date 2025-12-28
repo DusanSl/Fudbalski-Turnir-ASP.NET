@@ -6,8 +6,9 @@ namespace FudbalskiTurnir.BLL.Interfaces
     {
         Task<IEnumerable<Klub>> GetAllKluboviAsync();
         Task<Klub?> GetKlubByIdAsync(int id);
-        Task CreateKlubAsync(Klub klub);
-        Task UpdateKlubAsync(Klub klub);
+        Task CreateKlubAsync(Klub klub, int? turnirId);
+        Task UpdateKlubAsync(Klub klub, int? turnirId);
         Task DeleteKlubAsync(int id);
+        Task<IEnumerable<Turnir>> GetAllTurniriAsync();
     }
 }

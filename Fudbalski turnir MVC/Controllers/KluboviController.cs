@@ -1,34 +1,27 @@
-﻿using Fudbalski_turnir.Data;
-using Fudbalski_turnir.Models;
+﻿using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.DAL.Models;
+using FudbalskiTurnir.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FudbalskiTurnir.DAL;
-using FudbalskiTurnir.DAL.Models;
-using FudbalskiTurnir.BLL.Interfaces;
-using FudbalskiTurnir.BLL.Services;
-using FudbalskiTurnir.ViewModels; 
 
 namespace Fudbalski_turnir.Controllers
 {
     public class KluboviController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IKluboviService _kluboviService;
 
-        public KluboviController(ApplicationDbContext context)
+        public KluboviController(IKluboviService kluboviService)
         {
-            _context = context;
+            _kluboviService = kluboviService;
         }
 
         // GET: Klubovi
         public async Task<IActionResult> Index()
         {
-            var klubovi = await _context.Klub.ToListAsync();
+            // Koristimo servis umesto direktnog konteksta
+            var klubovi = await _kluboviService.GetAllKluboviAsync();
 
             var viewModel = klubovi.Select(k => new KlubViewModel
             {
@@ -49,9 +42,7 @@ namespace Fudbalski_turnir.Controllers
         {
             if (id == null) return NotFound();
 
-            var klub = await _context.Klub
-                .Include(k => k.Turniri) 
-                .FirstOrDefaultAsync(m => m.KlubID == id);
+            var klub = await _kluboviService.GetKlubByIdAsync(id.Value);
 
             if (klub == null) return NotFound();
 
@@ -62,7 +53,7 @@ namespace Fudbalski_turnir.Controllers
                 ImeKluba = klub.ImeKluba,
                 RankingTima = klub.RankingTima,
                 Stadion = klub.Stadion,
-                Turniri = klub.Turniri,
+                Turniri = klub.Turniri, // Ovo je sada napunjeno jer servis radi .Include()
                 BrojOsvojenihTitula = klub.BrojOsvojenihTitula,
                 GodinaOsnivanja = klub.GodinaOsnivanja,
                 BrojIgraca = klub.BrojIgraca
@@ -70,14 +61,17 @@ namespace Fudbalski_turnir.Controllers
 
             return View(viewModel);
         }
+
         // GET: Klubovi/Create
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira");
-            return View(new KlubViewModel()); 
+            var turniri = await _kluboviService.GetAllTurniriAsync();
+            ViewBag.Turniri = new SelectList(turniri, "TurnirID", "NazivTurnira");
+            return View(new KlubViewModel());
         }
+
         // POST: Klubovi/Create
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -89,9 +83,11 @@ namespace Fudbalski_turnir.Controllers
                 if (viewModel.TurnirID <= 0)
                 {
                     ModelState.AddModelError("TurnirID", "Morate izabrati turnir.");
-                    ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "Naziv turnira");
+                    var turniriList = await _kluboviService.GetAllTurniriAsync();
+                    ViewBag.Turniri = new SelectList(turniriList, "TurnirID", "NazivTurnira");
                     return View(viewModel);
                 }
+
                 var klub = new Klub
                 {
                     ImeKluba = viewModel.ImeKluba,
@@ -99,26 +95,15 @@ namespace Fudbalski_turnir.Controllers
                     RankingTima = viewModel.RankingTima,
                     BrojIgraca = viewModel.BrojIgraca,
                     Stadion = viewModel.Stadion,
-                    BrojOsvojenihTitula = viewModel.BrojOsvojenihTitula,
-                    Turniri = new List<Turnir>()
+                    BrojOsvojenihTitula = viewModel.BrojOsvojenihTitula
                 };
 
-                if (viewModel.TurnirID.HasValue && viewModel.TurnirID.Value > 0)
-                {
-                    var turnir = await _context.Turnir.FindAsync(viewModel.TurnirID.Value);
-                    if (turnir != null)
-                    {
-                        klub.Turniri.Add(turnir);
-                    }
-                }
-
-                _context.Add(klub);
-                await _context.SaveChangesAsync();
-
+                await _kluboviService.CreateKlubAsync(klub, viewModel.TurnirID);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            var turniriBack = await _kluboviService.GetAllTurniriAsync();
+            ViewBag.Turniri = new SelectList(turniriBack, "TurnirID", "NazivTurnira", viewModel.TurnirID);
             return View(viewModel);
         }
 
@@ -126,19 +111,11 @@ namespace Fudbalski_turnir.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var klub = await _context.Klub
-                .Include(k => k.Turniri)
-                .FirstOrDefaultAsync(k => k.KlubID == id);
+            var klub = await _kluboviService.GetKlubByIdAsync(id.Value);
 
-            if (klub == null)
-            {
-                return NotFound();
-            }
+            if (klub == null) return NotFound();
 
             var viewModel = new KlubViewModel
             {
@@ -152,7 +129,8 @@ namespace Fudbalski_turnir.Controllers
                 TurnirID = klub.Turniri?.FirstOrDefault()?.TurnirID
             };
 
-            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            var turniri = await _kluboviService.GetAllTurniriAsync();
+            ViewBag.Turniri = new SelectList(turniri, "TurnirID", "NazivTurnira", viewModel.TurnirID);
 
             return View(viewModel);
         }
@@ -160,61 +138,29 @@ namespace Fudbalski_turnir.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, KlubViewModel viewModel) 
+        public async Task<IActionResult> Edit(int id, KlubViewModel viewModel)
         {
-            if (id != viewModel.KlubID)
-            {
-                return NotFound();
-            }
+            if (id != viewModel.KlubID) return NotFound();
 
             if (ModelState.IsValid)
             {
-                try
+                var klub = new Klub
                 {
-                    var existingKlub = await _context.Klub
-                        .Include(k => k.Turniri)
-                        .FirstOrDefaultAsync(k => k.KlubID == id);
+                    KlubID = viewModel.KlubID,
+                    ImeKluba = viewModel.ImeKluba,
+                    GodinaOsnivanja = viewModel.GodinaOsnivanja,
+                    RankingTima = viewModel.RankingTima,
+                    BrojIgraca = viewModel.BrojIgraca,
+                    Stadion = viewModel.Stadion,
+                    BrojOsvojenihTitula = viewModel.BrojOsvojenihTitula
+                };
 
-                    if (existingKlub == null)
-                    {
-                        return NotFound();
-                    }
-
-                    existingKlub.ImeKluba = viewModel.ImeKluba;
-                    existingKlub.GodinaOsnivanja = viewModel.GodinaOsnivanja;
-                    existingKlub.RankingTima = viewModel.RankingTima;
-                    existingKlub.BrojIgraca = viewModel.BrojIgraca;
-                    existingKlub.Stadion = viewModel.Stadion;
-                    existingKlub.BrojOsvojenihTitula = viewModel.BrojOsvojenihTitula;
-
-                    existingKlub.Turniri.Clear();
-
-                    if (viewModel.TurnirID.HasValue && viewModel.TurnirID.Value > 0)
-                    {
-                        var turnir = await _context.Turnir.FindAsync(viewModel.TurnirID.Value);
-                        if (turnir != null)
-                        {
-                            existingKlub.Turniri.Add(turnir);
-                        }
-                    }
-
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!KlubExists(viewModel.KlubID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _kluboviService.UpdateKlubAsync(klub, viewModel.TurnirID);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Turniri = new SelectList(_context.Turnir, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            var turniri = await _kluboviService.GetAllTurniriAsync();
+            ViewBag.Turniri = new SelectList(turniri, "TurnirID", "NazivTurnira", viewModel.TurnirID);
             return View(viewModel);
         }
 
@@ -223,9 +169,7 @@ namespace Fudbalski_turnir.Controllers
         {
             if (id == null) return NotFound();
 
-            var klub = await _context.Klub
-                .Include(k => k.Turniri)
-                .FirstOrDefaultAsync(m => m.KlubID == id);
+            var klub = await _kluboviService.GetKlubByIdAsync(id.Value);
 
             if (klub == null) return NotFound();
 
@@ -250,18 +194,8 @@ namespace Fudbalski_turnir.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var klub = await _context.Klub.FindAsync(id);
-            if (klub != null)
-            {
-                _context.Klub.Remove(klub);
-                await _context.SaveChangesAsync();
-            }
+            await _kluboviService.DeleteKlubAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool KlubExists(int id)
-        {
-            return _context.Klub.Any(e => e.KlubID == id);
         }
     }
 }
