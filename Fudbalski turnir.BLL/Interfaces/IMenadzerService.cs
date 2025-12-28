@@ -1,4 +1,6 @@
 ﻿using FudbalskiTurnir.DAL.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FudbalskiTurnir.BLL.Interfaces
 {
@@ -9,5 +11,6 @@ namespace FudbalskiTurnir.BLL.Interfaces
         Task CreateMenadzerAsync(Menadzer menadzer);
         Task UpdateMenadzerAsync(Menadzer menadzer);
         Task DeleteMenadzerAsync(int id);
+        Task<IEnumerable<Klub>> GetAllKluboviAsync();
     }
 }

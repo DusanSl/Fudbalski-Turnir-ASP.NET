@@ -2,6 +2,8 @@
 using FudbalskiTurnir.DAL;
 using FudbalskiTurnir.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FudbalskiTurnir.BLL.Services
 {
@@ -16,12 +18,16 @@ namespace FudbalskiTurnir.BLL.Services
 
         public async Task<IEnumerable<Menadzer>> GetAllMenadzerAsync()
         {
-            return await _context.Menadzer.ToListAsync();
+            return await _context.Menadzer
+                .Include(m => m.Klub)
+                .ToListAsync();
         }
 
         public async Task<Menadzer?> GetMenadzerByIdAsync(int id)
         {
-            return await _context.Menadzer.FindAsync(id);
+            return await _context.Menadzer
+                .Include(m => m.Klub)
+                .FirstOrDefaultAsync(m => m.OsobaID == id);
         }
 
         public async Task CreateMenadzerAsync(Menadzer menadzer)
@@ -32,8 +38,12 @@ namespace FudbalskiTurnir.BLL.Services
 
         public async Task UpdateMenadzerAsync(Menadzer menadzer)
         {
-            _context.Menadzer.Update(menadzer);
-            await _context.SaveChangesAsync();
+            var existing = await _context.Menadzer.FindAsync(menadzer.OsobaID);
+            if (existing != null)
+            {
+                _context.Entry(existing).CurrentValues.SetValues(menadzer);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteMenadzerAsync(int id)
@@ -44,6 +54,11 @@ namespace FudbalskiTurnir.BLL.Services
                 _context.Menadzer.Remove(menadzer);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<Klub>> GetAllKluboviAsync()
+        {
+            return await _context.Klub.ToListAsync();
         }
     }
 }
