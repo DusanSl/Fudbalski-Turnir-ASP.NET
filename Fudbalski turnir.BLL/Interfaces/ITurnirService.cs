@@ -1,4 +1,6 @@
 ﻿using FudbalskiTurnir.DAL.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FudbalskiTurnir.BLL.Interfaces
 {
@@ -8,7 +10,8 @@ namespace FudbalskiTurnir.BLL.Interfaces
         Task<Turnir?> GetTurnirByIdAsync(int id);
         Task CreateTurnirAsync(Turnir turnir);
         Task UpdateTurnirAsync(Turnir turnir);
-        Task DeleteTurnirAsync(int id); 
+        Task DeleteTurnirAsync(int id);
+        Task<bool> TurnirExistsAsync(int id);
         Task<IEnumerable<Utakmica>> GetAllUtakmiceAsync();
     }
 }

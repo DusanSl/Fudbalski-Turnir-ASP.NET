@@ -16,12 +16,14 @@ namespace FudbalskiTurnir.BLL.Services
 
         public async Task<IEnumerable<Utakmica>> GetAllUtakmiceAsync()
         {
-            return await _context.Utakmica.ToListAsync();
+            return await _context.Utakmica.Include(u => u.Turnir).ToListAsync();
         }
 
         public async Task<Utakmica?> GetUtakmicaByIdAsync(int id)
         {
-            return await _context.Utakmica.FindAsync(id);
+            return await _context.Utakmica
+                .Include(u => u.Turnir)
+                .FirstOrDefaultAsync(u => u.UtakmicaID == id);
         }
 
         public async Task CreateUtakmicaAsync(Utakmica utakmica)
@@ -44,6 +46,24 @@ namespace FudbalskiTurnir.BLL.Services
                 _context.Utakmica.Remove(utakmica);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> UtakmicaExistsAsync(int id)
+        {
+            return await _context.Utakmica.AnyAsync(e => e.UtakmicaID == id);
+        }
+
+        public async Task<IEnumerable<Turnir>> GetAllTurniriAsync()
+        {
+            return await _context.Turnir.ToListAsync();
+        }
+
+        public async Task<IEnumerable<object>> GetKluboviByTurnirAsync(int turnirId)
+        {
+            return await _context.Klub
+                .Where(k => k.Turniri.Any(t => t.TurnirID == turnirId))
+                .Select(k => new { k.KlubID, k.ImeKluba })
+                .ToListAsync();
         }
     }
 }
