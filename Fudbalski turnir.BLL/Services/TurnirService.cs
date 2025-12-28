@@ -21,7 +21,7 @@ namespace FudbalskiTurnir.BLL.Services
 
         public async Task<Turnir?> GetTurnirByIdAsync(int id)
         {
-            return await _context.Turnir.FindAsync(id);
+            return await _context.Turnir.FirstOrDefaultAsync(t => t.TurnirID == id);
         }
 
         public async Task CreateTurnirAsync(Turnir turnir)
@@ -45,17 +45,19 @@ namespace FudbalskiTurnir.BLL.Services
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<List<Utakmica>> GetAllMatchesSortedByDateAsync()
-        {
-            return await _context.Utakmica
-                .OrderByDescending(u => u.Datum)
-                .ToListAsync();
-        }
         public async Task<IEnumerable<Utakmica>> GetAllUtakmiceAsync()
         {
             return await _context.Utakmica
-                .Include(u => u.Turnir) 
+                .Include(u => u.Turnir)
+                .Include(u => u.PrviKlubNaziv)
+                .Include(u => u.DrugiKlubNaziv)
+                .OrderByDescending(u => u.Datum)
                 .ToListAsync();
+        }
+
+        public async Task<bool> TurnirExistsAsync(int id)
+        {
+            return await _context.Turnir.AnyAsync(e => e.TurnirID == id);
         }
     }
 }

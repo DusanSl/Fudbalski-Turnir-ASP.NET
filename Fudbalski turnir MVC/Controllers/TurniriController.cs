@@ -1,34 +1,25 @@
-﻿using Fudbalski_turnir.Data;
-using Fudbalski_turnir.Models;
+﻿using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.DAL.Models;
+using FudbalskiTurnir.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FudbalskiTurnir.DAL;
-using FudbalskiTurnir.DAL.Models;
-using FudbalskiTurnir.BLL.Interfaces;
-using FudbalskiTurnir.BLL.Services;
-using FudbalskiTurnir.ViewModels;
 
 namespace Fudbalski_turnir.Controllers
 {
     public class TurniriController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITurnirService _turnirService;
 
-        public TurniriController(ApplicationDbContext context)
+        public TurniriController(ITurnirService turnirService)
         {
-            _context = context;
+            _turnirService = turnirService;
         }
 
         // GET: Turniri
         public async Task<IActionResult> Index()
         {
-            var turniri = await _context.Turnir.ToListAsync();
+            var turniri = await _turnirService.GetAllTurniriAsync();
 
             var viewModel = turniri.Select(t => new TurnirViewModel
             {
@@ -48,9 +39,7 @@ namespace Fudbalski_turnir.Controllers
         {
             if (id == null) return NotFound();
 
-            var turnir = await _context.Turnir
-                .FirstOrDefaultAsync(m => m.TurnirID == id);
-
+            var turnir = await _turnirService.GetTurnirByIdAsync(id.Value);
             if (turnir == null) return NotFound();
 
             ViewBag.IsAdmin = User.IsInRole("Admin");
@@ -67,17 +56,15 @@ namespace Fudbalski_turnir.Controllers
             return View(viewModel);
         }
 
-        [Authorize(Roles = "Admin")]
         // GET: Turniri/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View(new TurnirViewModel());
         }
 
-        [Authorize(Roles = "Admin")]
         // POST: Turniri/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TurnirViewModel viewModel)
@@ -93,20 +80,19 @@ namespace Fudbalski_turnir.Controllers
                     TipTurnira = viewModel.TipTurnira
                 };
 
-                _context.Add(turnir);
-                await _context.SaveChangesAsync();
+                await _turnirService.CreateTurnirAsync(turnir);
                 return RedirectToAction(nameof(Index));
             }
             return View(viewModel);
         }
 
-        [Authorize(Roles = "Admin")]
         // GET: Turniri/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var turnir = await _context.Turnir.FindAsync(id);
+            var turnir = await _turnirService.GetTurnirByIdAsync(id.Value);
             if (turnir == null) return NotFound();
 
             var viewModel = new TurnirViewModel
@@ -122,10 +108,8 @@ namespace Fudbalski_turnir.Controllers
             return View(viewModel);
         }
 
-        [Authorize(Roles = "Admin")]
         // POST: Turniri/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TurnirViewModel viewModel)
@@ -136,21 +120,21 @@ namespace Fudbalski_turnir.Controllers
             {
                 try
                 {
-                    var turnir = await _context.Turnir.FindAsync(id);
-                    if (turnir == null) return NotFound();
+                    var turnir = new Turnir
+                    {
+                        TurnirID = viewModel.TurnirID,
+                        NazivTurnira = viewModel.NazivTurnira,
+                        Lokacija = viewModel.Lokacija,
+                        DatumPocetka = viewModel.DatumPocetka,
+                        DatumZavrsetka = viewModel.DatumZavrsetka,
+                        TipTurnira = viewModel.TipTurnira
+                    };
 
-                    turnir.NazivTurnira = viewModel.NazivTurnira;
-                    turnir.Lokacija = viewModel.Lokacija;
-                    turnir.DatumPocetka = viewModel.DatumPocetka;
-                    turnir.DatumZavrsetka = viewModel.DatumZavrsetka;
-                    turnir.TipTurnira = viewModel.TipTurnira;
-
-                    _context.Update(turnir);
-                    await _context.SaveChangesAsync();
+                    await _turnirService.UpdateTurnirAsync(turnir);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TurnirExists(viewModel.TurnirID)) return NotFound();
+                    if (!await _turnirService.TurnirExistsAsync(viewModel.TurnirID)) return NotFound();
                     else throw;
                 }
                 return RedirectToAction(nameof(Index));
@@ -158,14 +142,13 @@ namespace Fudbalski_turnir.Controllers
             return View(viewModel);
         }
 
-        [Authorize(Roles = "Admin")]
         // GET: Turniri/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
 
-            var turnir = await _context.Turnir.FindAsync(id);
-
+            var turnir = await _turnirService.GetTurnirByIdAsync(id.Value);
             if (turnir == null) return NotFound();
 
             var viewModel = new TurnirViewModel
@@ -181,25 +164,14 @@ namespace Fudbalski_turnir.Controllers
             return View(viewModel);
         }
 
-        [Authorize(Roles = "Admin")]
         // POST: Turniri/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var turnir = await _context.Turnir.FindAsync(id);
-            if (turnir != null)
-            {
-                _context.Turnir.Remove(turnir);
-                await _context.SaveChangesAsync();
-            }
-
+            await _turnirService.DeleteTurnirAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool TurnirExists(int id)
-        {
-            return _context.Turnir.Any(e => e.TurnirID == id);
         }
     }
 }
