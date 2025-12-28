@@ -10,9 +10,9 @@ namespace Fudbalski_turnir.Controllers
 {
     public class KluboviController : Controller
     {
-        private readonly IKluboviService _kluboviService;
+        private readonly IKlubService _kluboviService;
 
-        public KluboviController(IKluboviService kluboviService)
+        public KluboviController(IKlubService kluboviService)
         {
             _kluboviService = kluboviService;
         }

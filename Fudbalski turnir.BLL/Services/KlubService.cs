@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FudbalskiTurnir.BLL.Services
 {
-    public class KluboviService : IKluboviService
+    public class KlubService : IKlubService
     {
         private readonly ApplicationDbContext _context;
 
-        public KluboviService(ApplicationDbContext context)
+        public KlubService(ApplicationDbContext context)
         {
             _context = context;
         }

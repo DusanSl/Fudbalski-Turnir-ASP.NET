@@ -2,7 +2,7 @@
 
 namespace FudbalskiTurnir.BLL.Interfaces
 {
-    public interface IIgraciService
+    public interface IIgracService
     {
         Task<IEnumerable<Igrac>> GetAllIgraceAsync();
         Task<Igrac?> GetIgracByIdAsync(int id);

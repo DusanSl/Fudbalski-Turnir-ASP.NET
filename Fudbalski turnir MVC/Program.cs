@@ -18,11 +18,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ITurnirService, TurnirService>();
-builder.Services.AddScoped<IKluboviService, KluboviService>();
+builder.Services.AddScoped<IKlubService, KlubService>();
 builder.Services.AddScoped<IMenadzerService, MenadzerService>();
-builder.Services.AddScoped<ISponzoriService, SponzoriService>();
+builder.Services.AddScoped<ISponzorService, SponzorService>();
 builder.Services.AddScoped<IUtakmiceService, UtakmicaService>();
-builder.Services.AddScoped<IIgraciService, IgraciService>();
+builder.Services.AddScoped<IIgracService, IgracService>();
 
 var app = builder.Build();
 
