@@ -1,8 +1,10 @@
 ﻿using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.DAL.Models;
 using FudbalskiTurnir.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize(Roles = "Admin")]
 public class UsersController : Controller
 {
     private readonly IUserService _userService;

@@ -7,6 +7,7 @@ using FudbalskiTurnir.BLL.Services;
 
 namespace Fudbalski_turnir.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         public IActionResult Index()

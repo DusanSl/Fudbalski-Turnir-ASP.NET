@@ -48,9 +48,7 @@ namespace FudbalskiTurnir.BLL.Services
         public async Task<IEnumerable<Utakmica>> GetAllUtakmiceAsync()
         {
             return await _context.Utakmica
-                .Include(u => u.Turnir)
-                .Include(u => u.PrviKlubNaziv)
-                .Include(u => u.DrugiKlubNaziv)
+                .Include(u => u.Turnir) 
                 .OrderByDescending(u => u.Datum)
                 .ToListAsync();
         }
