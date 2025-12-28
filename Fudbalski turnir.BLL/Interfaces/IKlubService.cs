@@ -2,7 +2,7 @@
 
 namespace FudbalskiTurnir.BLL.Interfaces
 {
-    public interface IKluboviService
+    public interface IKlubService
     {
         Task<IEnumerable<Klub>> GetAllKluboviAsync();
         Task<Klub?> GetKlubByIdAsync(int id);

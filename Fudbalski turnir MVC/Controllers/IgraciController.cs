@@ -15,9 +15,9 @@ namespace Fudbalski_turnir.Controllers
     [Authorize]
     public class IgraciController : Controller
     {
-        private readonly IIgraciService _igraciService;
+        private readonly IIgracService _igraciService;
 
-        public IgraciController(IIgraciService igraciService)
+        public IgraciController(IIgracService igraciService)
         {
             _igraciService = igraciService;
         }
