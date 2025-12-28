@@ -1,26 +1,40 @@
-﻿using FudbalskiTurnir.DAL.Models; 
+﻿using FudbalskiTurnir.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace FudbalskiTurnir.DAL 
+namespace FudbalskiTurnir.DAL
 {
     public static class SeedData
     {
-        public static async Task Initialize(
-            IServiceProvider serviceProvider,
-            UserManager<User> userManager,
-            RoleManager<IdentityRole> roleManager)
+        public static async Task Initialize(IServiceProvider serviceProvider, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var adminEmail = "admin@djole.com";
-            if (await userManager.FindByEmailAsync(adminEmail) == null)
+            string[] roleNames = { "Admin", "User" };
+
+            foreach (var roleName in roleNames)
             {
-                var user = new User 
+                var roleExist = await roleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
+            var adminEmail = "admin@football.com";
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+            if (adminUser == null)
+            {
+                adminUser = new User
                 {
                     UserName = adminEmail,
                     Email = adminEmail,
                     EmailConfirmed = true
                 };
-                await userManager.CreateAsync(user, "Admin123!");
-                await userManager.AddToRoleAsync(user, "Admin");
+
+                var createAdminUser = await userManager.CreateAsync(adminUser, "Admin123!");
+                if (createAdminUser.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                }
             }
         }
     }
