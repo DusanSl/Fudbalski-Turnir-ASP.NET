@@ -1,66 +1,92 @@
-﻿using FudbalskiTurnir.BLL.Interfaces;
+﻿using FudbalskiTurnir.BLL.DTOs;
+using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace FudbalskiTurnir.BLL.Services
+public class UserService : IUserService
 {
-    public class UserService : IUserService
+    private readonly UserManager<User> _userManager;
+
+    public UserService(UserManager<User> userManager)
     {
-        private readonly UserManager<User> _userManager;
+        _userManager = userManager;
+    }
 
-        public UserService(UserManager<User> userManager)
+    public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
+    {
+        var users = await _userManager.Users.ToListAsync();
+        var userDtos = new List<UserDTO>();
+
+        foreach (var user in users)
         {
-            _userManager = userManager;
+            var roles = await _userManager.GetRolesAsync(user);
+            userDtos.Add(new UserDTO
+            {
+                Id = user.Id,
+                Email = user.Email ?? string.Empty,
+                PhoneNumber = user.PhoneNumber,
+                EmailConfirmed = user.EmailConfirmed,
+                IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
+                Roles = roles
+            });
+        }
+        return userDtos;
+    }
+
+    public async Task<UserDTO?> GetUserByIdAsync(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) return null;
+
+        var roles = await _userManager.GetRolesAsync(user);
+        return new UserDTO
+        {
+            Id = user.Id,
+            Email = user.Email ?? string.Empty,
+            PhoneNumber = user.PhoneNumber,
+            EmailConfirmed = user.EmailConfirmed,
+            PhoneNumberConfirmed = user.PhoneNumberConfirmed, // Mapiranje
+            IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
+            Roles = roles,
+            SelectedRole = roles.FirstOrDefault()
+        };
+    }
+
+    public async Task<bool> UpdateUserAsync(UserDTO userDto)
+    {
+        var existingUser = await _userManager.FindByIdAsync(userDto.Id);
+        if (existingUser == null) return false;
+
+        existingUser.Email = userDto.Email;
+        existingUser.UserName = userDto.Email;
+        existingUser.PhoneNumber = userDto.PhoneNumber;
+        existingUser.EmailConfirmed = userDto.EmailConfirmed; // Čuvanje potvrde
+        existingUser.PhoneNumberConfirmed = userDto.PhoneNumberConfirmed; // Čuvanje potvrde
+
+        if (userDto.IsActive)
+            await _userManager.SetLockoutEndDateAsync(existingUser, null);
+        else
+            await _userManager.SetLockoutEndDateAsync(existingUser, DateTimeOffset.MaxValue);
+
+        var currentRoles = await _userManager.GetRolesAsync(existingUser);
+        await _userManager.RemoveFromRolesAsync(existingUser, currentRoles);
+
+        if (!string.IsNullOrEmpty(userDto.SelectedRole))
+        {
+            await _userManager.AddToRoleAsync(existingUser, userDto.SelectedRole);
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
-        {
-            return await _userManager.Users.ToListAsync();
-        }
+        var result = await _userManager.UpdateAsync(existingUser);
+        return result.Succeeded;
+    }
 
-        public async Task<User?> GetUserByIdAsync(string id)
-        {
-            return await _userManager.FindByIdAsync(id);
-        }
+    public async Task<bool> DeleteUserAsync(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) return false;
 
-        public async Task<IEnumerable<string>> GetUserRolesAsync(User user)
-        {
-            return await _userManager.GetRolesAsync(user);
-        }
-
-        public async Task<bool> UpdateUserAsync(User user, string selectedRole, bool isActive)
-        {
-            var existingUser = await _userManager.FindByIdAsync(user.Id);
-            if (existingUser == null) return false;
-
-            existingUser.Email = user.Email;
-            existingUser.UserName = user.Email;
-            existingUser.PhoneNumber = user.PhoneNumber;
-
-            if (isActive)
-                await _userManager.SetLockoutEndDateAsync(existingUser, null);
-            else
-                await _userManager.SetLockoutEndDateAsync(existingUser, DateTimeOffset.MaxValue);
-
-            var currentRoles = await _userManager.GetRolesAsync(existingUser);
-            await _userManager.RemoveFromRolesAsync(existingUser, currentRoles);
-            await _userManager.AddToRoleAsync(existingUser, selectedRole);
-
-            var result = await _userManager.UpdateAsync(existingUser);
-            return result.Succeeded;
-        }
-
-        public async Task<bool> DeleteUserAsync(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null) return false;
-
-            var result = await _userManager.DeleteAsync(user);
-            return result.Succeeded;
-        }
+        var result = await _userManager.DeleteAsync(user);
+        return result.Succeeded;
     }
 }

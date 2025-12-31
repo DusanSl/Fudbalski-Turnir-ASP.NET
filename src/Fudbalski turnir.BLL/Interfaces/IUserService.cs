@@ -1,15 +1,12 @@
-﻿using FudbalskiTurnir.DAL.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using FudbalskiTurnir.BLL.DTOs;
 
 namespace FudbalskiTurnir.BLL.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> GetAllUsersAsync();
-        Task<User?> GetUserByIdAsync(string id);
-        Task<bool> UpdateUserAsync(User user, string selectedRole, bool isActive);
+        Task<IEnumerable<UserDTO>> GetAllUsersAsync();
+        Task<UserDTO?> GetUserByIdAsync(string id);
+        Task<bool> UpdateUserAsync(UserDTO userDto);
         Task<bool> DeleteUserAsync(string id);
-        Task<IEnumerable<string>> GetUserRolesAsync(User user);
     }
 }
