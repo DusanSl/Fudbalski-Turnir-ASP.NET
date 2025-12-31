@@ -1,40 +1,44 @@
 ﻿@model FudbalskiTurnir.ViewModels.SponzorViewModel
-
 @{
     ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
-
 <h4>Sponzor</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TurnirID" class="control-label"></label>
+
+            <div class="form-group mb-1">
+                <label asp-for="TurnirID" class="control-label">Turnir</label>
                 <select asp-for="TurnirID" class="form-control" asp-items="ViewBag.ListaTurnira">
                     <option value="">Izaberite turnir</option>
                 </select>
                 <span asp-validation-for="TurnirID" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ImeSponzora" class="control-label"></label>
-                <input asp-for="ImeSponzora" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="ImeSponzora" class="control-label">Ime sponzora</label>
+                <input asp-for="ImeSponzora" class="form-control" placeholder="npr. Coca-Cola" />
                 <span asp-validation-for="ImeSponzora" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="KontaktSponzora" class="control-label"></label>
-                <input asp-for="KontaktSponzora" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="KontaktSponzora" class="control-label">Kontakt sponzora</label>
+                <input asp-for="KontaktSponzora" class="form-control" placeholder="npr. cocacola@gmail.com" />
                 <span asp-validation-for="KontaktSponzora" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="VrednostSponzora" class="control-label"></label>
-                <input asp-for="VrednostSponzora" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="VrednostSponzora" class="control-label">Vrednost sponzora</label>
+                <input asp-for="VrednostSponzora" class="form-control" placeholder="npr. 50000"
+                       value="@(Model.VrednostSponzora == 0 ? "" : Model.VrednostSponzora.ToString())" />
                 <span asp-validation-for="VrednostSponzora" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mt-2">
                 <input type="submit" value="Create" class="btn btn-success mb-1 mt-1" />
             </div>
         </form>
@@ -48,5 +52,7 @@
 <a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

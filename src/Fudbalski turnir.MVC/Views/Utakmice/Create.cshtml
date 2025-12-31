@@ -1,35 +1,37 @@
 ﻿@model FudbalskiTurnir.ViewModels.UtakmicaViewModel
-
 @{
     ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
-
 <h4>Utakmica</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TurnirID" class="control-label"></label>
+
+            <div class="form-group mb-1">
+                <label asp-for="TurnirID" class="control-label">Turnir</label>
                 <select asp-for="TurnirID" id="turnirDropdown" class="form-control" asp-items="ViewBag.Turniri">
-                    <option value="">Izaberi turnir</option>
+                    <option value="">Izaberite turnir</option>
                 </select>
                 <span asp-validation-for="TurnirID" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-1">
                 <label asp-for="Datum" class="control-label"></label>
                 <input asp-for="Datum" class="form-control" />
                 <span asp-validation-for="Datum" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-1">
                 <label asp-for="Mesto" class="control-label"></label>
-                <input asp-for="Mesto" class="form-control" />
+                <input asp-for="Mesto" class="form-control" placeholder="npr. Barcelona" />
                 <span asp-validation-for="Mesto" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-1">
                 <label asp-for="PrviKlubNaziv" class="control-label">Domaći klub</label>
                 <select asp-for="PrviKlubNaziv" id="prviKlubDropdown" class="form-control" disabled>
                     <option value="">Prvo izaberite turnir</option>
@@ -37,14 +39,15 @@
                 <span asp-validation-for="PrviKlubNaziv" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-1">
                 <label asp-for="DrugiKlubNaziv" class="control-label">Gostujući klub</label>
                 <select asp-for="DrugiKlubNaziv" id="drugiKlubDropdown" class="form-control" disabled>
                     <option value="">Prvo izaberite turnir</option>
                 </select>
                 <span asp-validation-for="DrugiKlubNaziv" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-1">
                 <label asp-for="Kolo" class="control-label">Kolo turnira</label>
                 <select asp-for="Kolo" class="form-control">
                     <option value="">Izaberite fazu</option>
@@ -56,7 +59,8 @@
                 </select>
                 <span asp-validation-for="Kolo" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-1">
                 <label asp-for="Grupa" class="control-label">Grupa turnira</label>
                 <select asp-for="Grupa" class="form-control">
                     <option value="">Izaberite grupu</option>
@@ -71,37 +75,48 @@
                 </select>
                 <span asp-validation-for="Grupa" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PrviKlubGolovi" class="control-label"></label>
-                <input asp-for="PrviKlubGolovi" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="PrviKlubGolovi" class="control-label">Golovi (Domaći)</label>
+                <input asp-for="PrviKlubGolovi" class="form-control" placeholder="npr. 2"
+                       value="@(Model.PrviKlubGolovi == 0 ? "" : Model.PrviKlubGolovi.ToString())" />
                 <span asp-validation-for="PrviKlubGolovi" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DrugiKlubGolovi" class="control-label"></label>
-                <input asp-for="DrugiKlubGolovi" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="DrugiKlubGolovi" class="control-label">Golovi (Gosti)</label>
+                <input asp-for="DrugiKlubGolovi" class="form-control" placeholder="npr. 1"
+                       value="@(Model.DrugiKlubGolovi == 0 ? "" : Model.DrugiKlubGolovi.ToString())" />
                 <span asp-validation-for="DrugiKlubGolovi" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+
+            <div class="form-group form-check mb-1">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Produzeci" /> @Html.DisplayNameFor(model => model.Produzeci)
                 </label>
             </div>
-            <div class="form-group form-check">
+
+            <div class="form-group form-check mb-1">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Penali" /> @Html.DisplayNameFor(model => model.Penali)
                 </label>
             </div>
-            <div class="form-group">
-                <label asp-for="PrviKlubPenali" class="control-label"></label>
-                <input asp-for="PrviKlubPenali" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="PrviKlubPenali" class="control-label">Penali (Domaći)</label>
+                <input asp-for="PrviKlubPenali" class="form-control" placeholder="npr. 5"
+                       value="@(Model.PrviKlubPenali == 0 ? "" : Model.PrviKlubPenali.ToString())" />
                 <span asp-validation-for="PrviKlubPenali" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DrugiKlubPenali" class="control-label"></label>
-                <input asp-for="DrugiKlubPenali" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="DrugiKlubPenali" class="control-label">Penali (Gosti)</label>
+                <input asp-for="DrugiKlubPenali" class="form-control" placeholder="npr. 4"
+                       value="@(Model.DrugiKlubPenali == 0 ? "" : Model.DrugiKlubPenali.ToString())" />
                 <span asp-validation-for="DrugiKlubPenali" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mt-2">
                 <input type="submit" value="Create" class="btn btn-success mb-1 mt-1" />
             </div>
         </form>
@@ -111,7 +126,6 @@
 <div>
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
-
 <a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>
 
 @section Scripts {
@@ -191,11 +205,8 @@
         const koloDropdown = document.querySelector('select[name="Kolo"]');
         const grupaFormGroup = document.querySelector('select[name="Grupa"]').closest('.form-group');
 
-
         function toggleGrupaField() {
             const selectedKolo = koloDropdown.value;
-            console.log('Selected Kolo:', selectedKolo);
-
             if (selectedKolo === 'Grupna faza') {
                 grupaFormGroup.style.display = 'block';
             } else {
@@ -205,7 +216,6 @@
         }
 
         koloDropdown.addEventListener('change', toggleGrupaField);
-
         toggleGrupaField();
     </script>
 }

@@ -17,9 +17,9 @@ namespace FudbalskiTurnir.ViewModels
         [Display(Name = "Godina osnivanja")]
         public int GodinaOsnivanja { get; set; }
 
-        [Required(ErrorMessage = "Ranking tima je obavezan")]
+        [Required(ErrorMessage = "Ranking kluba je obavezan")]
         [Range(1, 10000, ErrorMessage = "Ranking mora biti između 1 i 10000")]
-        [Display(Name = "Ranking tima")]
+        [Display(Name = "Ranking kluba")]
         public int RankingTima { get; set; }
 
         [Required(ErrorMessage = "Broj igrača je obavezan")]

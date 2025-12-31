@@ -1,67 +1,78 @@
 ﻿@model FudbalskiTurnir.ViewModels.KlubViewModel
-
 @{
     ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
-
 <h4>Klub</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TurnirID" class="control-label"></label>
+
+            <div class="form-group mb-1">
+                <label asp-for="TurnirID" class="control-label">Turnir</label>
                 <select asp-for="TurnirID" class="form-control" asp-items="ViewBag.Turniri">
-                    <option value="">Izaberi turnir</option>
+                    <option value="">Izaberite turnir</option>
                 </select>
                 <span asp-validation-for="TurnirID" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ImeKluba" class="control-label"></label>
-                <input asp-for="ImeKluba" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="ImeKluba" class="control-label">Ime kluba</label>
+                <input asp-for="ImeKluba" class="form-control" placeholder="npr. Barcelona" />
                 <span asp-validation-for="ImeKluba" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="GodinaOsnivanja" class="control-label"></label>
-                <input asp-for="GodinaOsnivanja" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="GodinaOsnivanja" class="control-label">Godina osnivanja</label>
+                <input asp-for="GodinaOsnivanja" class="form-control" placeholder="npr. 1899"
+                       value="@(Model.GodinaOsnivanja == 0 ? "" : Model.GodinaOsnivanja.ToString())" />
                 <span asp-validation-for="GodinaOsnivanja" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="RankingTima" class="control-label"></label>
-                <input asp-for="RankingTima" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="RankingTima" class="control-label">Ranking tima</label>
+                <input asp-for="RankingTima" class="form-control" placeholder="npr. 1"
+                       value="@(Model.RankingTima == 0 ? "" : Model.RankingTima.ToString())" />
                 <span asp-validation-for="RankingTima" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="BrojIgraca" class="control-label"></label>
-                <input asp-for="BrojIgraca" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="BrojIgraca" class="control-label">Broj igrača</label>
+                <input asp-for="BrojIgraca" class="form-control" placeholder="npr. 22"
+                       value="@(Model.BrojIgraca == 0 ? "" : Model.BrojIgraca.ToString())" />
                 <span asp-validation-for="BrojIgraca" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Stadion" class="control-label"></label>
-                <input asp-for="Stadion" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="Stadion" class="control-label">Stadion</label>
+                <input asp-for="Stadion" class="form-control" placeholder="npr. Spotify Camp Nou" />
                 <span asp-validation-for="Stadion" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="BrojOsvojenihTitula" class="control-label"></label>
-                <input asp-for="BrojOsvojenihTitula" class="form-control" />
+
+            <div class="form-group mb-1">
+                <label asp-for="BrojOsvojenihTitula" class="control-label">Broj osvojenih titula</label>
+                <input asp-for="BrojOsvojenihTitula" class="form-control" placeholder="npr. 30"
+                       value="@(Model.BrojOsvojenihTitula == 0 ? "" : Model.BrojOsvojenihTitula.ToString())" />
                 <span asp-validation-for="BrojOsvojenihTitula" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success mb-1 mt-1" />
+
+            <div class="form-group mt-2">
+                <input type="submit" value="Create" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
+<div class="mt-1">
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
-
 <a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
