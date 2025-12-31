@@ -1,27 +1,39 @@
 ﻿using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FudbalskiTurnir.Controllers
+public class RezultatiController : Controller
 {
-    public class RezultatiController : Controller
+    private readonly IUtakmiceService _utakmiceService;
+
+    public RezultatiController(IUtakmiceService utakmiceService)
     {
-        private readonly ITurnirService _turnirService;
+        _utakmiceService = utakmiceService;
+    }
 
-        public RezultatiController(ITurnirService turnirService)
+    public async Task<IActionResult> Index()
+    {
+        var utakmiceDto = await _utakmiceService.GetAllUtakmiceAsync();
+
+        var viewModel = utakmiceDto.Select(u => new UtakmicaViewModel
         {
-            _turnirService = turnirService;
-        }
+            UtakmicaID = u.UtakmicaID,
+            TurnirID = u.TurnirID,
+            NazivTurnira = u.NazivTurnira,
+            Datum = u.Datum,
+            Mesto = u.Mesto,
+            PrviKlubNaziv = u.PrviKlubNaziv,
+            DrugiKlubNaziv = u.DrugiKlubNaziv,
+            Kolo = u.Kolo,
+            PrviKlubGolovi = u.PrviKlubGolovi,
+            DrugiKlubGolovi = u.DrugiKlubGolovi,
+            Produzeci = u.Produzeci,
+            Penali = u.Penali,
+            PrviKlubPenali = u.PrviKlubPenali,
+            DrugiKlubPenali = u.DrugiKlubPenali,
+            Grupa = u.Grupa
+        }).ToList();
 
-        public async Task<IActionResult> Index()
-        {
-            var sveUtakmice = await _turnirService.GetAllUtakmiceAsync();
-
-            var sortirano = sveUtakmice.OrderByDescending(u => u.Datum).ToList();
-
-            return View(sortirano);
-        }
+        return View(viewModel);
     }
 }

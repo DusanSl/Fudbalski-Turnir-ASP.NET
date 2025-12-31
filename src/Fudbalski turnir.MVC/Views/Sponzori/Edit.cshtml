@@ -14,8 +14,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="TurnirID" class="control-label">Trenutni turnir</label>
-                <select asp-for="TurnirID" class="form-control" asp-items="ViewBag.Turniri">
-                    <option value="">Bez turnira</option>
+                <select asp-for="TurnirID" class="form-control" asp-items="ViewBag.ListaTurnira">
+                    <option value="">Izaberite turnir</option>
                 </select>
                 <span asp-validation-for="TurnirID" class="text-danger"></span>
             </div>

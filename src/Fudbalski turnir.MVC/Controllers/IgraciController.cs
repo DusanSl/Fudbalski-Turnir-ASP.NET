@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Fudbalski_turnir.BLL.DTO;
+using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Authorization;
-using FudbalskiTurnir.DAL.Models;
-using FudbalskiTurnir.BLL.Interfaces;
-using FudbalskiTurnir.BLL.Services;
-using FudbalskiTurnir.ViewModels;
 
 namespace Fudbalski_turnir.Controllers
 {
@@ -26,10 +21,8 @@ namespace Fudbalski_turnir.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            // Pozivamo servis umesto baze
-            var igraci = await _igraciService.GetAllIgraceAsync();
-
-            var viewModel = igraci.Select(i => new IgracViewModel
+            var igraciDto = await _igraciService.GetAllIgraceAsync();
+            var viewModel = igraciDto.Select(i => new IgracViewModel
             {
                 OsobaID = i.OsobaID,
                 Ime = i.Ime,
@@ -39,7 +32,7 @@ namespace Fudbalski_turnir.Controllers
                 DatumRodjenja = i.DatumRodjenja,
                 Nacionalnost = i.Nacionalnost,
                 KlubID = i.KlubID,
-                ImeKluba = i.Klub?.ImeKluba
+                ImeKluba = i.ImeKluba
             }).ToList();
 
             return View(viewModel);
@@ -49,22 +42,20 @@ namespace Fudbalski_turnir.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var igrac = await _igraciService.GetIgracByIdAsync(id);
-            if (igrac == null) return NotFound();
-
-            ViewBag.IsAdmin = User.IsInRole("Admin");
+            var i = await _igraciService.GetIgracByIdAsync(id);
+            if (i == null) return NotFound();
 
             var viewModel = new IgracViewModel
             {
-                OsobaID = igrac.OsobaID,
-                Ime = igrac.Ime,
-                Prezime = igrac.Prezime,
-                Pozicija = igrac.Pozicija,
-                BrojDresa = igrac.BrojDresa,
-                DatumRodjenja = igrac.DatumRodjenja,
-                Nacionalnost = igrac.Nacionalnost,
-                KlubID = igrac.KlubID,
-                ImeKluba = igrac.Klub?.ImeKluba
+                OsobaID = i.OsobaID,
+                Ime = i.Ime,
+                Prezime = i.Prezime,
+                Pozicija = i.Pozicija,
+                BrojDresa = i.BrojDresa,
+                DatumRodjenja = i.DatumRodjenja,
+                Nacionalnost = i.Nacionalnost,
+                KlubID = i.KlubID,
+                ImeKluba = i.ImeKluba
             };
 
             return View(viewModel);
@@ -72,10 +63,8 @@ namespace Fudbalski_turnir.Controllers
 
         // GET: Igraci/Create
         [Authorize(Roles = "Admin")]
-        [HttpGet]
         public async Task<IActionResult> Create()
         {
-            // Pretpostavljamo da si dodao GetAllKluboviAsync u IIgraciService
             var klubovi = await _igraciService.GetAllKluboviAsync();
             ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba");
             return View(new IgracViewModel());
@@ -85,104 +74,94 @@ namespace Fudbalski_turnir.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create(IgracViewModel viewModel)
+        public async Task<IActionResult> Create(IgracViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                var igrac = new Igrac
+                var dto = new IgracDTO
                 {
-                    KlubID = viewModel.KlubID,
-                    Ime = viewModel.Ime,
-                    Prezime = viewModel.Prezime,
-                    DatumRodjenja = viewModel.DatumRodjenja,
-                    Nacionalnost = viewModel.Nacionalnost,
-                    Pozicija = viewModel.Pozicija,
-                    BrojDresa = viewModel.BrojDresa
+                    Ime = vm.Ime,
+                    Prezime = vm.Prezime,
+                    Pozicija = vm.Pozicija,
+                    BrojDresa = vm.BrojDresa,
+                    DatumRodjenja = vm.DatumRodjenja,
+                    Nacionalnost = vm.Nacionalnost,
+                    KlubID = vm.KlubID
                 };
-
-                await _igraciService.CreateIgracAsync(igrac);
+                await _igraciService.CreateIgracAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
-
-            var klubovi = await _igraciService.GetAllKluboviAsync();
-            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
-            return View(viewModel);
+            return View(vm);
         }
 
         // GET: Igraci/Edit/5
         [Authorize(Roles = "Admin")]
-        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var igrac = await _igraciService.GetIgracByIdAsync(id);
-            if (igrac == null) return NotFound();
+            var i = await _igraciService.GetIgracByIdAsync(id);
+            if (i == null) return NotFound();
 
-            var viewModel = new IgracViewModel
+            var vm = new IgracViewModel
             {
-                OsobaID = igrac.OsobaID,
-                KlubID = igrac.KlubID,
-                Ime = igrac.Ime,
-                Prezime = igrac.Prezime,
-                DatumRodjenja = igrac.DatumRodjenja,
-                Nacionalnost = igrac.Nacionalnost,
-                Pozicija = igrac.Pozicija,
-                BrojDresa = igrac.BrojDresa
+                OsobaID = i.OsobaID,
+                KlubID = i.KlubID,
+                Ime = i.Ime,
+                Prezime = i.Prezime,
+                Pozicija = i.Pozicija,
+                BrojDresa = i.BrojDresa,
+                DatumRodjenja = i.DatumRodjenja,
+                Nacionalnost = i.Nacionalnost
             };
 
             var klubovi = await _igraciService.GetAllKluboviAsync();
-            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", igrac.KlubID);
-            return View(viewModel);
+            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", i.KlubID);
+            return View(vm);
         }
 
         // POST: Igraci/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, IgracViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, IgracViewModel vm)
         {
-            if (id != viewModel.OsobaID) return NotFound();
+            if (id != vm.OsobaID) return NotFound();
 
             if (ModelState.IsValid)
             {
-                var igrac = new Igrac
+                var dto = new IgracDTO
                 {
-                    OsobaID = viewModel.OsobaID,
-                    KlubID = viewModel.KlubID,
-                    Ime = viewModel.Ime,
-                    Prezime = viewModel.Prezime,
-                    DatumRodjenja = viewModel.DatumRodjenja,
-                    Nacionalnost = viewModel.Nacionalnost,
-                    Pozicija = viewModel.Pozicija,
-                    BrojDresa = viewModel.BrojDresa
+                    OsobaID = vm.OsobaID,
+                    Ime = vm.Ime,
+                    Prezime = vm.Prezime,
+                    Pozicija = vm.Pozicija,
+                    BrojDresa = vm.BrojDresa,
+                    DatumRodjenja = vm.DatumRodjenja,
+                    Nacionalnost = vm.Nacionalnost,
+                    KlubID = vm.KlubID
                 };
-
-                await _igraciService.UpdateIgracAsync(igrac);
+                await _igraciService.UpdateIgracAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
-
-            var klubovi = await _igraciService.GetAllKluboviAsync();
-            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
-            return View(viewModel);
+            return View(vm);
         }
 
         // GET: Igraci/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            var igrac = await _igraciService.GetIgracByIdAsync(id);
-            if (igrac == null) return NotFound();
+            var i = await _igraciService.GetIgracByIdAsync(id);
+            if (i == null) return NotFound();
 
-            var viewModel = new IgracViewModel
+            return View(new IgracViewModel
             {
-                OsobaID = igrac.OsobaID,
-                Ime = igrac.Ime,
-                Prezime = igrac.Prezime,
-                ImeKluba = igrac.Klub?.ImeKluba,
-                Pozicija = igrac.Pozicija,
-                Nacionalnost = igrac.Nacionalnost,
-            };
-
-            return View(viewModel);
+                OsobaID = i.OsobaID,
+                Ime = i.Ime,
+                Prezime = i.Prezime,
+                ImeKluba = i.ImeKluba,
+                Pozicija = i.Pozicija,
+                BrojDresa = i.BrojDresa,
+                Nacionalnost = i.Nacionalnost,
+            });
         }
 
         // POST: Igraci/Delete/5

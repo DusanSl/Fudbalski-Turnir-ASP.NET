@@ -13,9 +13,9 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="KlubID" class="control-label">Trenutni klub</label>
-                <select asp-for="KlubID" class="form-control" asp-items="ViewBag.Klub">
-                    <option value="">Bez kluba</option>
+                <label asp-for="KlubID" class="control-label">Klub</label>
+                <select asp-for="KlubID" class="form-control" asp-items="ViewBag.ListaKlubova">
+                    <option value="">Izaberite klub</option>
                 </select>
                 <span asp-validation-for="KlubID" class="text-danger"></span>
             </div>

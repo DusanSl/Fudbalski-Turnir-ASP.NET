@@ -1,13 +1,13 @@
 ﻿using FudbalskiTurnir.BLL.Interfaces;
-using FudbalskiTurnir.DAL.Models;
+using FudbalskiTurnir.BLL.DTOs;
 using FudbalskiTurnir.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace Fudbalski_turnir.Controllers
 {
+    [Authorize]
     public class KluboviController : Controller
     {
         private readonly IKlubService _kluboviService;
@@ -18,12 +18,12 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Klubovi
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            // Koristimo servis umesto direktnog konteksta
-            var klubovi = await _kluboviService.GetAllKluboviAsync();
+            var kluboviDto = await _kluboviService.GetAllKluboviAsync();
 
-            var viewModel = klubovi.Select(k => new KlubViewModel
+            var viewModel = kluboviDto.Select(k => new KlubViewModel
             {
                 KlubID = k.KlubID,
                 ImeKluba = k.ImeKluba,
@@ -38,33 +38,35 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Klubovi/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null) return NotFound();
+            var k = await _kluboviService.GetKlubByIdAsync(id);
+            if (k == null) return NotFound();
 
-            var klub = await _kluboviService.GetKlubByIdAsync(id.Value);
-
-            if (klub == null) return NotFound();
-
-            ViewBag.IsAdmin = User.IsInRole("Admin");
             var viewModel = new KlubViewModel
             {
-                KlubID = klub.KlubID,
-                ImeKluba = klub.ImeKluba,
-                RankingTima = klub.RankingTima,
-                Stadion = klub.Stadion,
-                Turniri = klub.Turniri, // Ovo je sada napunjeno jer servis radi .Include()
-                BrojOsvojenihTitula = klub.BrojOsvojenihTitula,
-                GodinaOsnivanja = klub.GodinaOsnivanja,
-                BrojIgraca = klub.BrojIgraca
+                KlubID = k.KlubID,
+                ImeKluba = k.ImeKluba,
+                RankingTima = k.RankingTima,
+                Stadion = k.Stadion,
+                BrojOsvojenihTitula = k.BrojOsvojenihTitula,
+                GodinaOsnivanja = k.GodinaOsnivanja,
+                BrojIgraca = k.BrojIgraca,
+                // Dodajemo ID za System Info deo
+                TurnirID = k.PrimarniTurnirID,
+                // Spajamo nazive za "Trenutni turnir" deo
+                NazivTurnira = (k.NazivTurnira != null && k.NazivTurnira.Any())
+                               ? string.Join(", ", k.NazivTurnira)
+                               : "Nema dodeljenih turnira"
             };
 
+            ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(viewModel);
         }
 
         // GET: Klubovi/Create
         [Authorize(Roles = "Admin")]
-        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var turniri = await _kluboviService.GetAllTurniriAsync();
@@ -73,125 +75,114 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // POST: Klubovi/Create
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(KlubViewModel viewModel)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create(KlubViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                if (viewModel.TurnirID <= 0)
+                var dto = new KlubDTO
                 {
-                    ModelState.AddModelError("TurnirID", "Morate izabrati turnir.");
-                    var turniriList = await _kluboviService.GetAllTurniriAsync();
-                    ViewBag.Turniri = new SelectList(turniriList, "TurnirID", "NazivTurnira");
-                    return View(viewModel);
-                }
-
-                var klub = new Klub
-                {
-                    ImeKluba = viewModel.ImeKluba,
-                    GodinaOsnivanja = viewModel.GodinaOsnivanja,
-                    RankingTima = viewModel.RankingTima,
-                    BrojIgraca = viewModel.BrojIgraca,
-                    Stadion = viewModel.Stadion,
-                    BrojOsvojenihTitula = viewModel.BrojOsvojenihTitula
+                    ImeKluba = vm.ImeKluba,
+                    GodinaOsnivanja = vm.GodinaOsnivanja,
+                    RankingTima = vm.RankingTima,
+                    BrojIgraca = vm.BrojIgraca,
+                    Stadion = vm.Stadion,
+                    BrojOsvojenihTitula = vm.BrojOsvojenihTitula,
+                    PrimarniTurnirID = vm.TurnirID
                 };
 
-                await _kluboviService.CreateKlubAsync(klub, viewModel.TurnirID);
-                return RedirectToAction(nameof(Index));
-            }
-
-            var turniriBack = await _kluboviService.GetAllTurniriAsync();
-            ViewBag.Turniri = new SelectList(turniriBack, "TurnirID", "NazivTurnira", viewModel.TurnirID);
-            return View(viewModel);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var klub = await _kluboviService.GetKlubByIdAsync(id.Value);
-
-            if (klub == null) return NotFound();
-
-            var viewModel = new KlubViewModel
-            {
-                KlubID = klub.KlubID,
-                ImeKluba = klub.ImeKluba,
-                GodinaOsnivanja = klub.GodinaOsnivanja,
-                RankingTima = klub.RankingTima,
-                BrojIgraca = klub.BrojIgraca,
-                Stadion = klub.Stadion,
-                BrojOsvojenihTitula = klub.BrojOsvojenihTitula,
-                TurnirID = klub.Turniri?.FirstOrDefault()?.TurnirID
-            };
-
-            var turniri = await _kluboviService.GetAllTurniriAsync();
-            ViewBag.Turniri = new SelectList(turniri, "TurnirID", "NazivTurnira", viewModel.TurnirID);
-
-            return View(viewModel);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, KlubViewModel viewModel)
-        {
-            if (id != viewModel.KlubID) return NotFound();
-
-            if (ModelState.IsValid)
-            {
-                var klub = new Klub
-                {
-                    KlubID = viewModel.KlubID,
-                    ImeKluba = viewModel.ImeKluba,
-                    GodinaOsnivanja = viewModel.GodinaOsnivanja,
-                    RankingTima = viewModel.RankingTima,
-                    BrojIgraca = viewModel.BrojIgraca,
-                    Stadion = viewModel.Stadion,
-                    BrojOsvojenihTitula = viewModel.BrojOsvojenihTitula
-                };
-
-                await _kluboviService.UpdateKlubAsync(klub, viewModel.TurnirID);
+                await _kluboviService.CreateKlubAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
 
             var turniri = await _kluboviService.GetAllTurniriAsync();
-            ViewBag.Turniri = new SelectList(turniri, "TurnirID", "NazivTurnira", viewModel.TurnirID);
-            return View(viewModel);
+            ViewBag.Turniri = new SelectList(turniri, "TurnirID", "NazivTurnira", vm.TurnirID);
+            return View(vm);
         }
 
+        // GET: Klubovi/Edit/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null) return NotFound();
+            var k = await _kluboviService.GetKlubByIdAsync(id);
+            if (k == null) return NotFound();
 
-            var klub = await _kluboviService.GetKlubByIdAsync(id.Value);
-
-            if (klub == null) return NotFound();
-
-            var viewModel = new KlubViewModel
+            var vm = new KlubViewModel
             {
-                KlubID = klub.KlubID,
-                ImeKluba = klub.ImeKluba,
-                GodinaOsnivanja = klub.GodinaOsnivanja,
-                RankingTima = klub.RankingTima,
-                BrojIgraca = klub.BrojIgraca,
-                Stadion = klub.Stadion,
-                BrojOsvojenihTitula = klub.BrojOsvojenihTitula,
-                Turniri = klub.Turniri?.ToList(),
-                TurnirID = klub.Turniri?.FirstOrDefault()?.TurnirID,
+                KlubID = k.KlubID,
+                ImeKluba = k.ImeKluba,
+                GodinaOsnivanja = k.GodinaOsnivanja,
+                RankingTima = k.RankingTima,
+                BrojIgraca = k.BrojIgraca,
+                Stadion = k.Stadion,
+                BrojOsvojenihTitula = k.BrojOsvojenihTitula,
+                TurnirID = k.PrimarniTurnirID
             };
 
-            return View(viewModel);
+            var turniri = await _kluboviService.GetAllTurniriAsync();
+            ViewBag.Turniri = new SelectList(turniri, "TurnirID", "NazivTurnira", k.PrimarniTurnirID);
+            return View(vm);
         }
 
+        // POST: Klubovi/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int id, KlubViewModel vm)
+        {
+            if (id != vm.KlubID) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                var dto = new KlubDTO
+                {
+                    KlubID = vm.KlubID,
+                    ImeKluba = vm.ImeKluba,
+                    GodinaOsnivanja = vm.GodinaOsnivanja,
+                    RankingTima = vm.RankingTima,
+                    BrojIgraca = vm.BrojIgraca,
+                    Stadion = vm.Stadion,
+                    BrojOsvojenihTitula = vm.BrojOsvojenihTitula,
+                    PrimarniTurnirID = vm.TurnirID
+                };
+
+                await _kluboviService.UpdateKlubAsync(dto);
+                return RedirectToAction(nameof(Index));
+            }
+
+            var turniri = await _kluboviService.GetAllTurniriAsync();
+            ViewBag.Turniri = new SelectList(turniri, "TurnirID", "NazivTurnira", vm.TurnirID);
+            return View(vm);
+        }
+
+        // GET: Klubovi/Delete/5
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var k = await _kluboviService.GetKlubByIdAsync(id);
+            if (k == null) return NotFound();
+
+            return View(new KlubViewModel
+            {
+                KlubID = k.KlubID,
+                ImeKluba = k.ImeKluba,
+                Stadion = k.Stadion,
+                GodinaOsnivanja = k.GodinaOsnivanja,
+                RankingTima = k.RankingTima,
+                BrojIgraca = k.BrojIgraca,
+                BrojOsvojenihTitula = k.BrojOsvojenihTitula,
+                NazivTurnira = (k.NazivTurnira != null && k.NazivTurnira.Any())
+                               ? string.Join(", ", k.NazivTurnira)
+                               : "Nema dodeljenih turnira"
+            });
+        }
+
+        // POST: Klubovi/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _kluboviService.DeleteKlubAsync(id);

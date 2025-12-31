@@ -1,18 +1,17 @@
-﻿using FudbalskiTurnir.DAL.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using FudbalskiTurnir.BLL.DTOs;
+using FudbalskiTurnir.DAL.Models;
 
 namespace FudbalskiTurnir.BLL.Interfaces
 {
     public interface IUtakmiceService
     {
-        Task<IEnumerable<Utakmica>> GetAllUtakmiceAsync();
-        Task<Utakmica?> GetUtakmicaByIdAsync(int id);
-        Task CreateUtakmicaAsync(Utakmica utakmica);
-        Task UpdateUtakmicaAsync(Utakmica utakmica);
+        Task<IEnumerable<UtakmicaDTO>> GetAllUtakmiceAsync();
+        Task<UtakmicaDTO?> GetUtakmicaByIdAsync(int id);
+        Task CreateUtakmicaAsync(UtakmicaDTO utakmicaDto);
+        Task UpdateUtakmicaAsync(UtakmicaDTO utakmicaDto);
         Task DeleteUtakmicaAsync(int id);
         Task<bool> UtakmicaExistsAsync(int id);
-        Task<IEnumerable<Turnir>> GetAllTurniriAsync(); 
-        Task<IEnumerable<object>> GetKluboviByTurnirAsync(int turnirId); 
+        Task<IEnumerable<Turnir>> GetAllTurniriAsync();
+        Task<IEnumerable<object>> GetKluboviByTurnirAsync(int turnirId);
     }
 }

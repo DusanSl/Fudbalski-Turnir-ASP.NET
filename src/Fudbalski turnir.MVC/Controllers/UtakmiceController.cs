@@ -1,4 +1,5 @@
-﻿using FudbalskiTurnir.BLL.Interfaces;
+﻿using FudbalskiTurnir.BLL.DTOs;
+using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.DAL.Models;
 using FudbalskiTurnir.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -21,12 +22,12 @@ namespace Fudbalski_turnir.Controllers
         public async Task<IActionResult> Index()
         {
             var utakmice = await _utakmiceService.GetAllUtakmiceAsync();
-
+            
             var viewModel = utakmice.Select(u => new UtakmicaViewModel
             {
                 UtakmicaID = u.UtakmicaID,
                 TurnirID = u.TurnirID,
-                NazivTurnira = u.Turnir?.NazivTurnira ?? "Nema turnira",
+                NazivTurnira = u.NazivTurnira ?? "Nema turnira",
                 Datum = u.Datum,
                 Mesto = u.Mesto,
                 PrviKlubNaziv = u.PrviKlubNaziv,
@@ -50,7 +51,6 @@ namespace Fudbalski_turnir.Controllers
             if (id == null) return NotFound();
 
             var u = await _utakmiceService.GetUtakmicaByIdAsync(id.Value);
-
             if (u == null) return NotFound();
 
             var viewModel = new UtakmicaViewModel
@@ -69,7 +69,7 @@ namespace Fudbalski_turnir.Controllers
                 PrviKlubPenali = u.PrviKlubPenali,
                 DrugiKlubPenali = u.DrugiKlubPenali,
                 Grupa = u.Grupa,
-                NazivTurnira = u.Turnir?.NazivTurnira
+                NazivTurnira = u.NazivTurnira
             };
 
             ViewBag.IsAdmin = User.IsInRole("Admin");
@@ -99,7 +99,7 @@ namespace Fudbalski_turnir.Controllers
                 }
                 else
                 {
-                    var utakmica = new Utakmica
+                    var utakmicaDto = new UtakmicaDTO
                     {
                         TurnirID = viewModel.TurnirID,
                         Datum = viewModel.Datum,
@@ -116,7 +116,7 @@ namespace Fudbalski_turnir.Controllers
                         Grupa = viewModel.Grupa
                     };
 
-                    await _utakmiceService.CreateUtakmicaAsync(utakmica);
+                    await _utakmiceService.CreateUtakmicaAsync(utakmicaDto);
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -171,7 +171,7 @@ namespace Fudbalski_turnir.Controllers
             {
                 try
                 {
-                    var utakmica = new Utakmica
+                    var utakmicaDto = new UtakmicaDTO
                     {
                         UtakmicaID = viewModel.UtakmicaID,
                         TurnirID = viewModel.TurnirID,
@@ -189,7 +189,7 @@ namespace Fudbalski_turnir.Controllers
                         Grupa = viewModel.Grupa
                     };
 
-                    await _utakmiceService.UpdateUtakmicaAsync(utakmica);
+                    await _utakmiceService.UpdateUtakmicaAsync(utakmicaDto);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -198,9 +198,8 @@ namespace Fudbalski_turnir.Controllers
                     else throw;
                 }
             }
-
             var turniri = await _utakmiceService.GetAllTurniriAsync();
-            ViewBag.Turniri = new SelectList(turniri, "TurnirID", "NazivTurnira", viewModel.TurnirID);
+            ViewBag.Turniri = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(turniri, "TurnirID", "NazivTurnira");
             return View(viewModel);
         }
 
@@ -221,7 +220,14 @@ namespace Fudbalski_turnir.Controllers
                 PrviKlubNaziv = u.PrviKlubNaziv,
                 DrugiKlubNaziv = u.DrugiKlubNaziv,
                 Kolo = u.Kolo,
-                NazivTurnira = u.Turnir?.NazivTurnira
+                NazivTurnira = u.NazivTurnira,
+                PrviKlubGolovi = u.PrviKlubGolovi,
+                DrugiKlubGolovi = u.DrugiKlubGolovi,
+                Produzeci = u.Produzeci,
+                Penali = u.Penali,
+                PrviKlubPenali = u.PrviKlubPenali,
+                DrugiKlubPenali = u.DrugiKlubPenali,
+                Grupa = u.Grupa
             };
 
             return View(viewModel);
