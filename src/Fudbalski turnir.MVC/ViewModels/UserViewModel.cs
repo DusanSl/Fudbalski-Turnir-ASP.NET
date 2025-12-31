@@ -9,7 +9,7 @@ namespace FudbalskiTurnir.ViewModels
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        public IEnumerable<string> Roles { get; set; }
+        public IEnumerable<string>? Roles { get; set; }
         [Display(Name = "Broj telefona")]
         public string PhoneNumber { get; set; }
         [Display(Name = "Potvrđen mail")]
