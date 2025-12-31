@@ -12,19 +12,19 @@
 
     <div class="row mb-2">
         <div class="col-sm-3 fw-bold text-dark">Email</div>
-        <div class="col-sm-9 text-secondary">@Model.Email</div>
+        <div class="col-sm-9">@Model.Email</div>
     </div>
 
     <div class="row mb-2">
         <div class="col-sm-3 fw-bold text-dark">Broj telefona</div>
-        <div class="col-sm-9 text-secondary">
+        <div class="col-sm-9">
             @(string.IsNullOrEmpty(Model.PhoneNumber) ? "Nije unet" : Model.PhoneNumber)
         </div>
     </div>
 
     <div class="row mb-2">
         <div class="col-sm-3 fw-bold text-dark">Uloge</div>
-        <div class="col-sm-9 text-secondary">
+        <div class="col-sm-9">
             @if (Model.Roles != null && Model.Roles.Any())
             {
                 @string.Join(", ", Model.Roles)
@@ -40,21 +40,21 @@
 
     <div class="row mb-2">
         <div class="col-sm-3 fw-bold text-dark">Status naloga</div>
-        <div class="col-sm-9 text-secondary">
+        <div class="col-sm-9">
             @(Model.IsActive ? "Aktivan" : "Banovan")
         </div>
     </div>
 
     <div class="row mb-2">
         <div class="col-sm-3 fw-bold text-dark">Email Potvrđen</div>
-        <div class="col-sm-9 text-secondary">
+        <div class="col-sm-9">
             @(Model.EmailConfirmed ? "Da" : "Ne")
         </div>
     </div>
 
     <div class="row mb-2">
         <div class="col-sm-3 fw-bold text-dark">Tel. Potvrđen</div>
-        <div class="col-sm-9 text-secondary">
+        <div class="col-sm-9">
             @(Model.PhoneNumberConfirmed ? "Da" : "Ne")
         </div>
     </div>

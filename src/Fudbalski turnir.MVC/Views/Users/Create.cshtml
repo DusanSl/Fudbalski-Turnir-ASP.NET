@@ -1,0 +1,65 @@
+﻿@model FudbalskiTurnir.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h1>Create</h1>
+<h4>Novi Korisnik</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="npr. admin@turnir.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Lozinka</label>
+                <input type="password" name="password" class="form-control" placeholder="Min. 6 karaktera" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="PhoneNumber" class="control-label">Broj telefona</label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="npr. 064123456" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="SelectedRole" class="control-label">Uloga</label>
+                <select asp-for="SelectedRole" class="form-control">
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                </select>
+                <span asp-validation-for="SelectedRole" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check mb-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EmailConfirmed" /> Email Potvrđen
+                </label>
+            </div>
+
+            <div class="form-group form-check mb-3">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PhoneNumberConfirmed" /> Telefon Potvrđen
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
