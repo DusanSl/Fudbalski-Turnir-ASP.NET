@@ -5,7 +5,7 @@ namespace FudbalskiTurnir.ViewModels
 {
     public class UserViewModel
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }

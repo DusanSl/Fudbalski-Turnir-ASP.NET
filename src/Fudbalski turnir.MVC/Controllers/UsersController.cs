@@ -59,7 +59,47 @@ namespace FudbalskiTurnir.MVC.Controllers
 
             return View(model);
         }
+        // GET: Users/Create
+        public IActionResult Create()
+        {
+            return View(new UserViewModel());
+        }
 
+        // POST: Users/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(UserViewModel model, string password)
+        {
+            if (ModelState.IsValid)
+            {
+                if (string.IsNullOrEmpty(password))
+                {
+                    ModelState.AddModelError("", "Lozinka je obavezna.");
+                    return View(model);
+                }
+
+                var userDto = new UserDTO
+                {
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    EmailConfirmed = model.EmailConfirmed,
+                    PhoneNumberConfirmed = model.PhoneNumberConfirmed,
+                    SelectedRole = model.SelectedRole
+                };
+
+                var result = await _userService.CreateUserAsync(userDto, password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(model);
+        }
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
         {

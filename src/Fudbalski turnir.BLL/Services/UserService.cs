@@ -12,7 +12,26 @@ public class UserService : IUserService
     {
         _userManager = userManager;
     }
+    public async Task<IdentityResult> CreateUserAsync(UserDTO userDto, string password)
+    {
+        var user = new User
+        {
+            UserName = userDto.Email,
+            Email = userDto.Email,
+            PhoneNumber = userDto.PhoneNumber,
+            EmailConfirmed = userDto.EmailConfirmed,
+            PhoneNumberConfirmed = userDto.PhoneNumberConfirmed
+        };
 
+        var result = await _userManager.CreateAsync(user, password);
+
+        if (result.Succeeded && !string.IsNullOrEmpty(userDto.SelectedRole))
+        {
+            await _userManager.AddToRoleAsync(user, userDto.SelectedRole);
+        }
+
+        return result;
+    }
     public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
     {
         var users = await _userManager.Users.ToListAsync();
