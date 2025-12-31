@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FudbalskiTurnir.DAL.Models.Utakmica>
+﻿@model IEnumerable<FudbalskiTurnir.ViewModels.UtakmicaViewModel>
 
 @{
     ViewData["Title"] = "Rezultati Turnira";
@@ -12,15 +12,18 @@
             <label for="turnirFilter" class="form-label">Izaberi turnir:</label>
             <select id="turnirFilter" class="form-select">
                 <option value="">Svi turniri</option>
-                @foreach (var grupa in Model.Where(u => u.Turnir != null).GroupBy(u => u.TurnirID))
+                @if (Model != null)
                 {
-                    <option value="@grupa.Key">@grupa.First().Turnir.NazivTurnira</option>
+                    @foreach (var grupa in Model.Where(u => u.TurnirID.HasValue).GroupBy(u => u.TurnirID))
+                    {
+                        <option value="@grupa.Key">@grupa.First().NazivTurnira</option>
+                    }
                 }
             </select>
         </div>
     </div>
 
-    <table id="rezultatiTable" class="display cell-border">
+    <table id="rezultatiTable" class="display cell-border" style="width:100%">
         <thead>
             <tr>
                 <th>Datum i vreme</th>
@@ -78,28 +81,23 @@
                 "searching": true,
                 "ordering": true,
                 "info": true,
-                "lengthChange": true,
-                "order": [[0, "desc"]], 
+                "order": [[0, "desc"]],
                 "language": {
-                    "search": "Filter:",
-                    "info": "Prikazivanje _START_ do _END_ od _TOTAL_ utakmica",
-                    "lengthMenu": "Prikaži _MENU_ redova",
+                    "search": "Filter unutar tabele:",
+                    "info": "Prikaz _START_ do _END_ od ukupno _TOTAL_ utakmica",
                     "paginate": {
-                        "first": "Prva",
-                        "last": "Poslednja",
                         "next": "Sledeća",
                         "previous": "Prethodna"
-                    },
-                    "zeroRecords": "Nema pronađenih utakmica"
+                    }
                 }
             });
 
             $('#turnirFilter').on('change', function () {
-                var selectedValue = $(this).val();
-                if (selectedValue === "") {
+                var val = $(this).val();
+                if (val === "") {
                     table.column(7).search('').draw();
                 } else {
-                    table.column(7).search('^' + selectedValue + '$', true, false).draw();
+                    table.column(7).search('^' + val + '$', true, false).draw();
                 }
             });
         });

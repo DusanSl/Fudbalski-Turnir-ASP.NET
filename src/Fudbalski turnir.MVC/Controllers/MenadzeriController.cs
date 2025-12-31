@@ -1,5 +1,5 @@
 ﻿using FudbalskiTurnir.BLL.Interfaces;
-using FudbalskiTurnir.DAL.Models;
+using FudbalskiTurnir.BLL.DTOs;
 using FudbalskiTurnir.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +19,12 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Menadzeri
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var menadzeri = await _menadzerService.GetAllMenadzerAsync();
+            var menadzeriDto = await _menadzerService.GetAllMenadzerAsync();
 
-            var viewModel = menadzeri.Select(m => new MenadzerViewModel
+            var viewModel = menadzeriDto.Select(m => new MenadzerViewModel
             {
                 OsobaID = m.OsobaID,
                 Ime = m.Ime,
@@ -32,44 +33,41 @@ namespace Fudbalski_turnir.Controllers
                 DatumRodjenja = m.DatumRodjenja,
                 Nacionalnost = m.Nacionalnost,
                 KlubID = m.KlubID,
-                ImeKluba = m.Klub?.ImeKluba
+                ImeKluba = m.ImeKluba
             }).ToList();
 
             return View(viewModel);
         }
 
         // GET: Menadzeri/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null) return NotFound();
-
-            var menadzer = await _menadzerService.GetMenadzerByIdAsync(id.Value);
-            if (menadzer == null) return NotFound();
-
-            ViewBag.IsAdmin = User.IsInRole("Admin");
+            var m = await _menadzerService.GetMenadzerByIdAsync(id);
+            if (m == null) return NotFound();
 
             var viewModel = new MenadzerViewModel
             {
-                OsobaID = menadzer.OsobaID,
-                Ime = menadzer.Ime,
-                Prezime = menadzer.Prezime,
-                DatumRodjenja = menadzer.DatumRodjenja,
-                Nacionalnost = menadzer.Nacionalnost,
-                GodineIskustva = menadzer.GodineIskustva,
-                KlubID = menadzer.KlubID,
-                ImeKluba = menadzer.Klub?.ImeKluba
+                OsobaID = m.OsobaID,
+                Ime = m.Ime,
+                Prezime = m.Prezime,
+                DatumRodjenja = m.DatumRodjenja,
+                Nacionalnost = m.Nacionalnost,
+                GodineIskustva = m.GodineIskustva,
+                KlubID = m.KlubID,
+                ImeKluba = m.ImeKluba
             };
 
+            ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(viewModel);
         }
 
         // GET: Menadzeri/Create
         [Authorize(Roles = "Admin")]
-        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var klubovi = await _menadzerService.GetAllKluboviAsync();
-            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba");
+            ViewBag.KlubID = new SelectList(klubovi, "KlubID", "ImeKluba");
             return View(new MenadzerViewModel());
         }
 
@@ -81,15 +79,7 @@ namespace Fudbalski_turnir.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (viewModel.KlubID <= 0)
-                {
-                    ModelState.AddModelError("KlubID", "Morate izabrati klub.");
-                    var kluboviList = await _menadzerService.GetAllKluboviAsync();
-                    ViewBag.Klub = new SelectList(kluboviList, "KlubID", "ImeKluba");
-                    return View(viewModel);
-                }
-
-                var menadzer = new Menadzer
+                var dto = new MenadzerDTO
                 {
                     Ime = viewModel.Ime,
                     Prezime = viewModel.Prezime,
@@ -99,38 +89,36 @@ namespace Fudbalski_turnir.Controllers
                     KlubID = viewModel.KlubID
                 };
 
-                await _menadzerService.CreateMenadzerAsync(menadzer);
+                await _menadzerService.CreateMenadzerAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
 
-            var kluboviBack = await _menadzerService.GetAllKluboviAsync();
-            ViewBag.Klub = new SelectList(kluboviBack, "KlubID", "ImeKluba", viewModel.KlubID);
+            var klubovi = await _menadzerService.GetAllKluboviAsync();
+            ViewBag.KlubID = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
             return View(viewModel);
         }
 
         // GET: Menadzeri/Edit/5
         [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null) return NotFound();
-
-            var menadzer = await _menadzerService.GetMenadzerByIdAsync(id.Value);
-            if (menadzer == null) return NotFound();
+            var m = await _menadzerService.GetMenadzerByIdAsync(id);
+            if (m == null) return NotFound();
 
             var viewModel = new MenadzerViewModel
             {
-                OsobaID = menadzer.OsobaID,
-                Ime = menadzer.Ime,
-                Prezime = menadzer.Prezime,
-                DatumRodjenja = menadzer.DatumRodjenja,
-                Nacionalnost = menadzer.Nacionalnost,
-                GodineIskustva = menadzer.GodineIskustva,
-                KlubID = menadzer.KlubID
+                OsobaID = m.OsobaID,
+                Ime = m.Ime,
+                Prezime = m.Prezime,
+                DatumRodjenja = m.DatumRodjenja,
+                Nacionalnost = m.Nacionalnost,
+                GodineIskustva = m.GodineIskustva,
+                KlubID = m.KlubID
             };
 
             var klubovi = await _menadzerService.GetAllKluboviAsync();
-            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
+            ViewBag.ListaKlubova = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
+
             return View(viewModel);
         }
 
@@ -144,7 +132,7 @@ namespace Fudbalski_turnir.Controllers
 
             if (ModelState.IsValid)
             {
-                var menadzer = new Menadzer
+                var dto = new MenadzerDTO
                 {
                     OsobaID = viewModel.OsobaID,
                     Ime = viewModel.Ime,
@@ -155,32 +143,31 @@ namespace Fudbalski_turnir.Controllers
                     KlubID = viewModel.KlubID
                 };
 
-                await _menadzerService.UpdateMenadzerAsync(menadzer);
+                await _menadzerService.UpdateMenadzerAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
 
             var klubovi = await _menadzerService.GetAllKluboviAsync();
-            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
+            ViewBag.KlubID = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
             return View(viewModel);
         }
 
         // GET: Menadzeri/Delete/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null) return NotFound();
-
-            var menadzer = await _menadzerService.GetMenadzerByIdAsync(id.Value);
-            if (menadzer == null) return NotFound();
+            var m = await _menadzerService.GetMenadzerByIdAsync(id);
+            if (m == null) return NotFound();
 
             var viewModel = new MenadzerViewModel
             {
-                OsobaID = menadzer.OsobaID,
-                Ime = menadzer.Ime,
-                Prezime = menadzer.Prezime,
-                ImeKluba = menadzer.Klub?.ImeKluba,
-                GodineIskustva = menadzer.GodineIskustva,
-                Nacionalnost = menadzer.Nacionalnost
+                OsobaID = m.OsobaID,
+                Ime = m.Ime,
+                Prezime = m.Prezime,
+                ImeKluba = m.ImeKluba,
+                Nacionalnost = m.Nacionalnost,
+                GodineIskustva = m.GodineIskustva,
+                DatumRodjenja = m.DatumRodjenja,
             };
 
             return View(viewModel);
@@ -190,9 +177,9 @@ namespace Fudbalski_turnir.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int OsobaID)
         {
-            await _menadzerService.DeleteMenadzerAsync(id);
+            await _menadzerService.DeleteMenadzerAsync(OsobaID);
             return RedirectToAction(nameof(Index));
         }
     }

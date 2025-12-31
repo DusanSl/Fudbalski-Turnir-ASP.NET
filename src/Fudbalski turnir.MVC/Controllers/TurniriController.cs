@@ -1,9 +1,11 @@
 ﻿using FudbalskiTurnir.BLL.Interfaces;
-using FudbalskiTurnir.DAL.Models;
+using FudbalskiTurnir.BLL.DTOs;
 using FudbalskiTurnir.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fudbalski_turnir.Controllers
 {
@@ -17,11 +19,12 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Turniri
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var turniri = await _turnirService.GetAllTurniriAsync();
+            var turniriDto = await _turnirService.GetAllTurniriAsync();
 
-            var viewModel = turniri.Select(t => new TurnirViewModel
+            var viewModel = turniriDto.Select(t => new TurnirViewModel
             {
                 TurnirID = t.TurnirID,
                 NazivTurnira = t.NazivTurnira,
@@ -35,24 +38,25 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Turniri/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
 
-            var turnir = await _turnirService.GetTurnirByIdAsync(id.Value);
-            if (turnir == null) return NotFound();
+            var t = await _turnirService.GetTurnirByIdAsync(id.Value);
+            if (t == null) return NotFound();
 
-            ViewBag.IsAdmin = User.IsInRole("Admin");
             var viewModel = new TurnirViewModel
             {
-                TurnirID = turnir.TurnirID,
-                NazivTurnira = turnir.NazivTurnira,
-                Lokacija = turnir.Lokacija,
-                DatumPocetka = turnir.DatumPocetka,
-                DatumZavrsetka = turnir.DatumZavrsetka,
-                TipTurnira = turnir.TipTurnira
+                TurnirID = t.TurnirID,
+                NazivTurnira = t.NazivTurnira,
+                Lokacija = t.Lokacija,
+                DatumPocetka = t.DatumPocetka,
+                DatumZavrsetka = t.DatumZavrsetka,
+                TipTurnira = t.TipTurnira
             };
 
+            ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(viewModel);
         }
 
@@ -71,7 +75,7 @@ namespace Fudbalski_turnir.Controllers
         {
             if (ModelState.IsValid)
             {
-                var turnir = new Turnir
+                var dto = new TurnirDTO
                 {
                     NazivTurnira = viewModel.NazivTurnira,
                     Lokacija = viewModel.Lokacija,
@@ -80,7 +84,7 @@ namespace Fudbalski_turnir.Controllers
                     TipTurnira = viewModel.TipTurnira
                 };
 
-                await _turnirService.CreateTurnirAsync(turnir);
+                await _turnirService.CreateTurnirAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
             return View(viewModel);
@@ -92,17 +96,17 @@ namespace Fudbalski_turnir.Controllers
         {
             if (id == null) return NotFound();
 
-            var turnir = await _turnirService.GetTurnirByIdAsync(id.Value);
-            if (turnir == null) return NotFound();
+            var t = await _turnirService.GetTurnirByIdAsync(id.Value);
+            if (t == null) return NotFound();
 
             var viewModel = new TurnirViewModel
             {
-                TurnirID = turnir.TurnirID,
-                NazivTurnira = turnir.NazivTurnira,
-                Lokacija = turnir.Lokacija,
-                DatumPocetka = turnir.DatumPocetka,
-                DatumZavrsetka = turnir.DatumZavrsetka,
-                TipTurnira = turnir.TipTurnira
+                TurnirID = t.TurnirID,
+                NazivTurnira = t.NazivTurnira,
+                Lokacija = t.Lokacija,
+                DatumPocetka = t.DatumPocetka,
+                DatumZavrsetka = t.DatumZavrsetka,
+                TipTurnira = t.TipTurnira
             };
 
             return View(viewModel);
@@ -120,7 +124,7 @@ namespace Fudbalski_turnir.Controllers
             {
                 try
                 {
-                    var turnir = new Turnir
+                    var dto = new TurnirDTO
                     {
                         TurnirID = viewModel.TurnirID,
                         NazivTurnira = viewModel.NazivTurnira,
@@ -130,7 +134,7 @@ namespace Fudbalski_turnir.Controllers
                         TipTurnira = viewModel.TipTurnira
                     };
 
-                    await _turnirService.UpdateTurnirAsync(turnir);
+                    await _turnirService.UpdateTurnirAsync(dto);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -148,17 +152,17 @@ namespace Fudbalski_turnir.Controllers
         {
             if (id == null) return NotFound();
 
-            var turnir = await _turnirService.GetTurnirByIdAsync(id.Value);
-            if (turnir == null) return NotFound();
+            var t = await _turnirService.GetTurnirByIdAsync(id.Value);
+            if (t == null) return NotFound();
 
             var viewModel = new TurnirViewModel
             {
-                TurnirID = turnir.TurnirID,
-                NazivTurnira = turnir.NazivTurnira,
-                Lokacija = turnir.Lokacija,
-                DatumPocetka = turnir.DatumPocetka,
-                DatumZavrsetka = turnir.DatumZavrsetka,
-                TipTurnira = turnir.TipTurnira
+                TurnirID = t.TurnirID,
+                NazivTurnira = t.NazivTurnira,
+                Lokacija = t.Lokacija,
+                DatumPocetka = t.DatumPocetka,
+                DatumZavrsetka = t.DatumZavrsetka,
+                TipTurnira = t.TipTurnira
             };
 
             return View(viewModel);
@@ -168,9 +172,9 @@ namespace Fudbalski_turnir.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int TurnirID)
         {
-            await _turnirService.DeleteTurnirAsync(id);
+            await _turnirService.DeleteTurnirAsync(TurnirID);
             return RedirectToAction(nameof(Index));
         }
     }

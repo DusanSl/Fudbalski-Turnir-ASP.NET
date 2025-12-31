@@ -1,4 +1,5 @@
 ﻿using FudbalskiTurnir.BLL.Interfaces;
+using FudbalskiTurnir.BLL.DTOs;
 using FudbalskiTurnir.DAL;
 using FudbalskiTurnir.DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,26 +15,69 @@ namespace FudbalskiTurnir.BLL.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Turnir>> GetAllTurniriAsync()
+        public async Task<IEnumerable<TurnirDTO>> GetAllTurniriAsync()
         {
-            return await _context.Turnir.ToListAsync();
+            return await _context.Turnir
+                .Select(t => new TurnirDTO
+                {
+                    TurnirID = t.TurnirID,
+                    NazivTurnira = t.NazivTurnira,
+                    Lokacija = t.Lokacija,
+                    DatumPocetka = t.DatumPocetka,
+                    DatumZavrsetka = t.DatumZavrsetka,
+                    TipTurnira = t.TipTurnira,
+                    BrojUtakmica = t.Utakmice.Count()
+                }).ToListAsync();
         }
 
-        public async Task<Turnir?> GetTurnirByIdAsync(int id)
+        public async Task<TurnirDTO?> GetTurnirByIdAsync(int id)
         {
-            return await _context.Turnir.FirstOrDefaultAsync(t => t.TurnirID == id);
+            var t = await _context.Turnir
+                .Include(t => t.Utakmice)
+                .FirstOrDefaultAsync(m => m.TurnirID == id);
+
+            if (t == null) return null;
+
+            return new TurnirDTO
+            {
+                TurnirID = t.TurnirID,
+                NazivTurnira = t.NazivTurnira,
+                Lokacija = t.Lokacija,
+                DatumPocetka = t.DatumPocetka,
+                DatumZavrsetka = t.DatumZavrsetka,
+                TipTurnira = t.TipTurnira,
+                BrojUtakmica = t.Utakmice.Count()
+            };
         }
 
-        public async Task CreateTurnirAsync(Turnir turnir)
+        public async Task CreateTurnirAsync(TurnirDTO dto)
         {
+            var turnir = new Turnir
+            {
+                NazivTurnira = dto.NazivTurnira,
+                Lokacija = dto.Lokacija,
+                DatumPocetka = dto.DatumPocetka,
+                DatumZavrsetka = dto.DatumZavrsetka,
+                TipTurnira = dto.TipTurnira
+            };
             _context.Turnir.Add(turnir);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateTurnirAsync(Turnir turnir)
+        public async Task UpdateTurnirAsync(TurnirDTO dto)
         {
-            _context.Turnir.Update(turnir);
-            await _context.SaveChangesAsync();
+            var turnir = await _context.Turnir.FindAsync(dto.TurnirID);
+            if (turnir != null)
+            {
+                turnir.NazivTurnira = dto.NazivTurnira;
+                turnir.Lokacija = dto.Lokacija;
+                turnir.DatumPocetka = dto.DatumPocetka;
+                turnir.DatumZavrsetka = dto.DatumZavrsetka;
+                turnir.TipTurnira = dto.TipTurnira;
+
+                _context.Turnir.Update(turnir);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteTurnirAsync(int id)
@@ -44,13 +88,6 @@ namespace FudbalskiTurnir.BLL.Services
                 _context.Turnir.Remove(turnir);
                 await _context.SaveChangesAsync();
             }
-        }
-        public async Task<IEnumerable<Utakmica>> GetAllUtakmiceAsync()
-        {
-            return await _context.Utakmica
-                .Include(u => u.Turnir) 
-                .OrderByDescending(u => u.Datum)
-                .ToListAsync();
         }
 
         public async Task<bool> TurnirExistsAsync(int id)

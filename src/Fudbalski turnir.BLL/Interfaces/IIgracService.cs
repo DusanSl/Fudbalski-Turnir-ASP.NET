@@ -1,13 +1,14 @@
-﻿using FudbalskiTurnir.DAL.Models;
+﻿using Fudbalski_turnir.BLL.DTO;
+using FudbalskiTurnir.DAL.Models;
 
 namespace FudbalskiTurnir.BLL.Interfaces
 {
     public interface IIgracService
     {
-        Task<IEnumerable<Igrac>> GetAllIgraceAsync();
-        Task<Igrac?> GetIgracByIdAsync(int id);
-        Task CreateIgracAsync(Igrac igrac);
-        Task UpdateIgracAsync(Igrac igrac);
+        Task<IEnumerable<IgracDTO>> GetAllIgraceAsync();
+        Task<IgracDTO?> GetIgracByIdAsync(int id);
+        Task CreateIgracAsync(IgracDTO igracDto); 
+        Task UpdateIgracAsync(IgracDTO igracDto); 
         Task DeleteIgracAsync(int id);
         Task<IEnumerable<Klub>> GetAllKluboviAsync();
     }

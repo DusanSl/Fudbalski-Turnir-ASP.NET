@@ -19,19 +19,9 @@
             <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.SponzorID)
             </dd>
-
-            <dt class="col-sm-3">
-                TurnirID
-            </dt>
+            <dt class="col-sm-3">Turnir</dt>
             <dd class="col-sm-9">
-                @if (Model.Turniri != null && Model.Turniri.Any())
-                {
-                    @string.Join(", ", Model.Turniri.Select(t => t.TurnirID))
-                }
-                else
-                {
-                    <span class="text-muted">Nema povezanih turnira.</span>
-                }
+                @(!string.IsNullOrEmpty(Model.NazivTurnira) ? Model.TurnirID : "Nema povezanih turnira")
             </dd>
         </dl>
     }
@@ -55,20 +45,10 @@
 
     <h5 class="text-muted mt-3 mb-2">Sponsorship Details</h5>
     <dl class="row mb-3">
-        <dt class="col-sm-3">
-            Turnir
-        </dt>
+        <dt class="col-sm-3">Turnir</dt>
         <dd class="col-sm-9">
-            @if (Model.Turniri != null && Model.Turniri.Any())
-            {
-                @string.Join(", ", Model.Turniri.Select(t => t.NazivTurnira))
-            }
-            else
-            {
-                <span class="text-muted">Nema povezanih turnira.</span>
-            }
+            @(!string.IsNullOrEmpty(Model.NazivTurnira) ? Model.NazivTurnira : "Nema povezanih turnira")
         </dd>
-
         <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.VrednostSponzora)
         </dt>

@@ -38,9 +38,9 @@
                 @Html.DisplayFor(modelItem => item.KontaktSponzora)
                 </td>
                 <td>
-                    @if (item.Turniri != null && item.Turniri.Any())
+                    @if (!string.IsNullOrEmpty(item.NazivTurnira))
                     {
-                        @string.Join(", ", item.Turniri.Select(t => t.NazivTurnira))
+                        @item.NazivTurnira
                     }
                     else
                     {

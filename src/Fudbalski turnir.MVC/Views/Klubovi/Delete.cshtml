@@ -18,13 +18,13 @@
             Turnir
         </dt>
         <dd class="col-sm-10">
-            @if (Model.Turniri != null && Model.Turniri.Any())
+            @if (!string.IsNullOrEmpty(Model.NazivTurnira) && Model.NazivTurnira != "Nema dodeljenih turnira")
             {
-                @string.Join(", ", Model.Turniri.Select(t => t.NazivTurnira))
+                @Model.NazivTurnira
             }
             else
             {
-                <span>Nije prijavljen na turnire.</span>
+                <span class="text-muted">Nije prijavljen na turnire.</span>
             }
         </dd>
         <dt class="col-sm-2">

@@ -1,15 +1,14 @@
-﻿using FudbalskiTurnir.DAL.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using FudbalskiTurnir.BLL.DTOs;
+using FudbalskiTurnir.DAL.Models;
 
 namespace FudbalskiTurnir.BLL.Interfaces
 {
     public interface ISponzorService
     {
-        Task<IEnumerable<Sponzor>> GetAllSponzoriAsync();
-        Task<Sponzor?> GetSponzorByIdAsync(int id);
-        Task CreateSponzorAsync(Sponzor sponzor, int? turnirId);
-        Task UpdateSponzorAsync(Sponzor sponzor, int? turnirId);
+        Task<IEnumerable<SponzorDTO>> GetAllSponzoriAsync();
+        Task<SponzorDTO?> GetSponzorByIdAsync(int id);
+        Task CreateSponzorAsync(SponzorDTO dto);
+        Task UpdateSponzorAsync(SponzorDTO dto);
         Task DeleteSponzorAsync(int id);
         Task<IEnumerable<Turnir>> GetAllTurniriAsync();
     }

@@ -19,18 +19,17 @@
             <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.KlubID)
             </dd>
-
             <dt class="col-sm-3">
-                TurnirID
+                Turnir ID
             </dt>
             <dd class="col-sm-9">
-                @if (Model.Turniri != null && Model.Turniri.Any())
+                @if (Model.TurnirID.HasValue && Model.TurnirID > 0)
                 {
-                    @string.Join(", ", Model.Turniri.Select(t => t.TurnirID))
+                    @Model.TurnirID
                 }
                 else
                 {
-                    <span class="text-muted">Nema povezanih turnira.</span>
+                    <span class="text-muted">Nije u turniru</span>
                 }
             </dd>
         </dl>
@@ -79,9 +78,9 @@
             Trenutni turnir
         </dt>
         <dd class="col-sm-9">
-            @if (Model.Turniri != null && Model.Turniri.Any())
+            @if (!string.IsNullOrEmpty(Model.NazivTurnira))
             {
-                @string.Join(", ", Model.Turniri.Select(t => t.NazivTurnira))
+                @Model.NazivTurnira
             }
             else
             {
