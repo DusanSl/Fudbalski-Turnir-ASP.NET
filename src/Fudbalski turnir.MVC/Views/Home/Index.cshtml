@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="sr" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Platforma za baš vaše turnire</title>
+    <title>@ViewData["Title"] - Platforma za vaše turnire</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,20 +14,20 @@
             <div class="row justify-content-center text-center">
                 <div class="col-lg-8 col-xl-7">
                     <h1 class="display-3 fw-bold mb-3 text-white">
-                        Tvoja platforma za <span class="text-primary">fudbalske turnire</span> 
+                        Tvoja platforma za <span class="text-primary">fudbalske turnire</span>
                     </h1>
 
                     <p class="lead text-secondary mb-4 px-md-5">
-                        Track matches, view standings, follow your favorite teams, and never miss a moment of the action.
-                        Built for fans and administrators alike.
+                        Pratite utakmice, pregledajte tabele, pratite omiljene timove i nikada ne propustite trenutak akcije.
+                        Napravljeno za navijače i administratore.
                     </p>
 
                     <div class="d-flex gap-3 flex-wrap justify-content-center">
                         <a asp-controller="Standings" asp-action="Index" class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">
-                            Get Started
+                            Započni
                         </a>
-                        <a href="#features" class="btn btn-outline-light btn-lg rounded-pill px-5">
-                            Learn More
+                        <a href="#features" class="btn btn-light btn-lg rounded-pill px-5">
+                            Saznaj više
                         </a>
                     </div>
                 </div>
@@ -38,41 +38,43 @@
     <section id="features" class="py-1">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="fw-bold mb-3 text-white">Powerful Features</h2>
-                <p class="text-secondary">Everything you need to manage and follow football tournaments</p>
+                <h2 class="fw-bold mb-3 text-white">Moćne Funkcije</h2>
+                <p class="text-secondary">Sve što vam je potrebno za vođenje i praćenje fudbalskih turnira</p>
             </div>
 
             <div class="row g-4">
                 <div class="col-md-6 col-lg-4">
                     <div class="glass-card p-4 rounded-4 h-100">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary mb-3 rounded-3" style="width: 50px; height: 50px;">
+                            <i class="bi bi-lightning-charge fs-2"></i>
                         </div>
-                        <h4 class="fw-bold mb-3 text-white">Live Match Updates</h4>
-                        <p class="text-secondary">Get real-time scores, match schedules, and live updates for all your favorite teams.</p>
-                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">User Feature</span>
+                        <h4 class="fw-bold mb-3 text-white">Rezultati uživo</h4>
+                        <p class="text-secondary">Dobijajte rezultate u realnom vremenu, rasporede utakmica i najnovije informacije.</p>
+                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">Korisnička funkcija</span>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-lg-4">
                     <div class="glass-card p-4 rounded-4 h-100">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary mb-3 rounded-3" style="width: 50px; height: 50px;">
+                            <i class="bi bi-table fs-2"></i>
                         </div>
-                        <h4 class="fw-bold mb-3 text-white">Tournament Standings</h4>
-                        <p class="text-secondary">View detailed group standings, knockout brackets, and track your team's performance.</p>
-                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">User Feature</span>
+                        <h4 class="fw-bold mb-3 text-white">Tabele turnira</h4>
+                        <p class="text-secondary">Pregledajte detaljne tabele grupa, knockout faze i pratite vaš tim kroz takmičenje.</p>
+                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">Korisnička funkcija</span>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-lg-4">
                     <div class="glass-card p-4 rounded-4 h-100">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger mb-3 rounded-3" style="width: 50px; height: 50px;">
+                            <i class="bi bi-gear fs-2"></i>
                         </div>
-                        <h4 class="fw-bold mb-3 text-white">Tournament Management</h4>
-                        <p class="text-secondary">Create and manage tournaments, set up groups, knockout rounds, and configure rules.</p>
-                        <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill">Admin Feature</span>
+                        <h4 class="fw-bold mb-3 text-white">Upravljanje turnirom</h4>
+                        <p class="text-secondary">Kreirajte turnire, podesite grupe, knockout faze i konfigurišite pravila takmičenja.</p>
+                        <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill">Admin funkcija</span>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -80,36 +82,39 @@
     <section id="about" class="py-5">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="fw-bold text-white">How It Works</h2>
-                <p class="text-white-50">Simple steps to get started</p>
+                <h2 class="fw-bold text-white">Kako funkcioniše</h2>
+                <p class="text-white-50">Jednostavni koraci za početak</p>
             </div>
 
             <div class="row text-center g-4">
                 <div class="col-md-4">
                     <div class="p-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-gradient bg-primary text-white rounded-circle p-4 mb-3 fs-3 shadow">
-                            <i class="fas fa-user-plus"></i>
+                        <div class="d-inline-flex align-items-center justify-content-center bg-gradient bg-primary text-white rounded-circle mb-3 shadow"
+                             style="width: 70px; height: 70px; font-size: 2rem;">
+                            <i class="bi bi-person-fill-add"></i>
                         </div>
-                        <h4 class="fw-bold">1. Create an Account</h4>
-                        <p class="text-secondary">Register as a user to get started with the platform.</p>
+                        <h4 class="fw-bold text-white">1. Napravi nalog</h4>
+                        <p class="text-secondary">Registrujte se kao korisnik da biste započeli rad na platformi.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="p-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-gradient bg-primary text-white rounded-circle p-4 mb-3 fs-3 shadow">
-                            <i class="fas fa-search"></i>
+                        <div class="d-inline-flex align-items-center justify-content-center bg-gradient bg-primary text-white rounded-circle mb-3 shadow"
+                             style="width: 70px; height: 70px; font-size: 2.5rem; line-height: 1;">
+                            <i class="bi bi-search"></i>
                         </div>
-                        <h4 class="fw-bold">2. Explore</h4>
-                        <p class="text-secondary">Browse active tournaments, check schedules and follow your teams.</p>
+                        <h4 class="fw-bold text-white">2. Istražite</h4>
+                        <p class="text-secondary">Pregledajte aktivne turnire, rasporede i pratite timove koji vas zanimaju.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="p-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-gradient bg-primary text-white rounded-circle p-4 mb-3 fs-3 shadow">
-                            <i class="fas fa-bell"></i>
+                        <div class="d-inline-flex align-items-center justify-content-center bg-gradient bg-primary text-white rounded-circle p-4 mb-3 fs-3 shadow"
+                            style="width: 70px; height: 70px; font-size: 2.5rem; line-height: 1;">
+                            <i class="bi bi-bell"></i>
                         </div>
-                        <h4 class="fw-bold">3. Stay Updated</h4>
-                        <p class="text-secondary">Get real-time updates about match results and standings.</p>
+                        <h4 class="fw-bold text-white">3. Budi u toku</h4>
+                        <p class="text-secondary">Dobijajte najnovije informacije o rezultatima utakmica i promenama na tabeli.</p>
                     </div>
                 </div>
             </div>
@@ -119,14 +124,14 @@
     <section class="py-5">
         <div class="container">
             <div class="glass-card p-5 rounded-4 text-center">
-                <h2 class="fw-bold mb-3">Ready to Get Started?</h2>
-                <p class="text-secondary mb-4">Join thousands of football fans tracking their favorite tournaments</p>
+                <h2 class="fw-bold mb-3 text-white">Spremni da počnete?</h2>
+                <p class="text-secondary mb-4">Pridružite se hiljadama ljubitelja fudbala koji prate svoje omiljene turnire</p>
                 <div class="d-flex justify-content-center gap-3">
-                    <a href="Identity/Account/Register" class="btn btn-primary btn-lg rounded-pill px-4">
-                        Napravi nalog
+                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg rounded-pill px-4">
+                        Napravite nalog
                     </a>
-                    <a href="Identity/Account/Login" class="btn btn-outline-light btn-lg rounded-pill px-4">
-                        Prijavi se
+                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-light btn-lg rounded-pill px-4">
+                        Prijavite se
                     </a>
                 </div>
             </div>
