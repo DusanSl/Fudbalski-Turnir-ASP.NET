@@ -9,14 +9,15 @@
 
     <div class="row mb-3">
         <div class="col-md-4">
-            <label for="turnirFilter" class="form-label">Izaberi turnir:</label>
-            <select id="turnirFilter" class="form-select">
-                <option value="">Svi turniri</option>
+            <label for="turnirFilter" class="form-label fw-bold">Izaberite turnir:</label>
+
+            <select id="turnirFilter" class="form-select bg-dark text-white border-primary shadow-none">
+                <option value="" class="bg-dark text-white">Svi turniri</option>
                 @if (Model != null)
                 {
                     @foreach (var grupa in Model.Where(u => u.TurnirID.HasValue).GroupBy(u => u.TurnirID))
                     {
-                        <option value="@grupa.Key">@grupa.First().NazivTurnira</option>
+                        <option value="@grupa.Key" class="bg-dark text-white">@grupa.First().NazivTurnira</option>
                     }
                 }
             </select>
