@@ -1,5 +1,6 @@
 ﻿public class StandingsViewModel
 {
+    public int KlubID { get; set; } 
     public string KlubNaziv { get; set; }
     public int Odigrano { get; set; }
     public int Pobede { get; set; }
