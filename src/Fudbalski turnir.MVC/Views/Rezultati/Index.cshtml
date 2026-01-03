@@ -23,7 +23,7 @@
             </select>
         </div>
     </div>
-
+    <div class="table-responsive">
     <table id="rezultatiTable" class="display cell-border" style="width:100%">
         <thead>
             <tr>
@@ -32,8 +32,8 @@
                 <th>Domaćin</th>
                 <th>Rezultat</th>
                 <th>Gost</th>
-                <th>Mesto</th>
-                <th>Napomena</th>
+                <th class="d-none d-lg-table-cell">Mesto</th> @* Vidljivo samo na velikim ekranima *@
+                <th class="d-none d-md-table-cell">Napomena</th> @* Vidljivo na tabletima i jače *@
                 <th class="d-none">TurnirID_Hidden</th>
             </tr>
         </thead>
@@ -56,8 +56,8 @@
                         </span>
                     </td>
                     <td>@utakmica.DrugiKlubNaziv</td>
-                    <td>@utakmica.Mesto</td>
-                    <td>
+                    <td class="d-none d-lg-table-cell text-white-50">@utakmica.Mesto</td>
+                    <td class="d-none d-md-table-cell">
                         @if (utakmica.PrviKlubPenali.HasValue)
                         {
                             <span class="text-danger fw-bold small">Penali (@utakmica.PrviKlubPenali-@utakmica.DrugiKlubPenali)</span>
@@ -73,6 +73,7 @@
         </tbody>
     </table>
 </div>
+</div>
 
 @section Scripts {
     <script>
@@ -82,6 +83,8 @@
                 "searching": true,
                 "ordering": true,
                 "info": true,
+                "responsive": true, 
+                "autoWidth": false,
                 "order": [[0, "desc"]],
                 "language": {
                     "search": "Filter unutar tabele:",

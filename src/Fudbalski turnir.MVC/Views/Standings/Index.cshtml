@@ -30,13 +30,13 @@
 
 @if (ViewBag.SelectedTurnirId != null)
 {
-    <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-            <a class="nav-link @(ViewBag.SelectedFaza == "Grupna" ? "active" : "")"
+    <ul class="nav nav-tabs mb-3 border-0">
+        <li class="nav-item me-2">
+            <a class="nav-link border-primary @(ViewBag.SelectedFaza == "Grupna" ? "active" : "")"
                asp-route-turnirId="@ViewBag.SelectedTurnirId" asp-route-faza="Grupna">Grupna Faza</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @(ViewBag.SelectedFaza == "Eliminaciona" ? "active" : "")"
+            <a class="nav-link border-primary @(ViewBag.SelectedFaza == "Eliminaciona" ? "active" : "")"
                asp-route-turnirId="@ViewBag.SelectedTurnirId" asp-route-faza="Eliminaciona">Eliminaciona Faza</a>
         </li>
     </ul>
