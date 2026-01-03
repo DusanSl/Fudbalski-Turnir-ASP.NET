@@ -10,7 +10,6 @@
     <h4>Utakmica</h4>
     <hr />
     <dl class="row">
-        @* Osnovni podaci *@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Datum)
         </dt>
@@ -32,7 +31,6 @@
             @Html.DisplayFor(model => model.Kolo)
         </dd>
 
-        @* Timovi razdvojeno *@
         <dt class="col-sm-2">
             Domaćin tim
         </dt>
@@ -47,7 +45,6 @@
             @Html.DisplayFor(model => model.DrugiKlubNaziv)
         </dd>
 
-        @* Golovi razdvojeno *@
         <dt class="col-sm-2">
             Domaćin golovi
         </dt>
@@ -62,7 +59,6 @@
             @Html.DisplayFor(model => model.DrugiKlubGolovi)
         </dd>
 
-        @* Dodatni detalji (Produžeci/Penali) *@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Produzeci)
         </dt>
@@ -77,7 +73,6 @@
             @(Model.Penali ? "Da" : "Ne")
         </dd>
 
-        @* Penali razdvojeno (prikazuju se samo ako ih je bilo) *@
         @if (Model.Penali)
         {
             <dt class="col-sm-2">
