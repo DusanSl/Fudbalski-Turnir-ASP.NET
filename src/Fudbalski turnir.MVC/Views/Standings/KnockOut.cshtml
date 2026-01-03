@@ -4,48 +4,52 @@
     {
         if (match == null) return;
 
-        <div class="mb-3 border border-secondary rounded-3 bg-dark shadow-sm overflow-hidden" style="min-width: 180px;">
+        <div class="mb-2 border border-secondary rounded-2 bg-dark shadow-sm overflow-hidden" style="min-width: 150px;">
 
-            <div class="d-flex justify-content-between align-items-center p-2 club-bracket-link"
-                 style="cursor:pointer;" data-naziv="@match.PrviKlubNaziv">
-                <span class="text-truncate @(match.Pobednik == match.PrviKlubNaziv ? "text-white fw-bold" : (match.Pobednik != null ? "text-white-50 text-decoration-line-through opacity-50" : "text-white-50"))"
-                      style="max-width: 110px;">
+            <a href="@Url.Action("RedirectToClub", "Klubovi", new { naziv = match.PrviKlubNaziv })"
+               class="d-flex justify-content-between align-items-center p-2 text-decoration-none club-bracket-link">
+
+                <span class="text-truncate small @(match.Pobednik == match.PrviKlubNaziv ? "text-white fw-bold" : (match.Pobednik != null ? "text-white-50 text-decoration-line-through opacity-50" : "text-white-50"))"
+                      style="max-width: 85px;">
                     @match.PrviKlubNaziv
                 </span>
+
                 <div class="d-flex align-items-center">
                     @if (match.PrviKlubPenali.HasValue)
                     {
-                        <small class="text-danger me-1 fw-bold" style="font-size: 0.7rem;">(@match.PrviKlubPenali)</small>
+                        <small class="text-danger me-1 fw-bold" style="font-size: 0.6rem;">(@match.PrviKlubPenali)</small>
                     }
-                    <span class="badge bg-secondary bg-opacity-10 border border-secondary text-white">
+                    <span class="badge bg-secondary bg-opacity-10 border border-secondary text-white" style="font-size: 0.7rem;">
                         @(match.PrviKlubGolovi?.ToString() ?? "0")
                     </span>
                 </div>
-            </div>
+            </a>
 
             <div class="border-top border-secondary border-opacity-10"></div>
+            
+            <a href="@Url.Action("RedirectToClub", "Klubovi", new { naziv = match.DrugiKlubNaziv })"
+               class="d-flex justify-content-between align-items-center p-2 text-decoration-none club-bracket-link">
 
-            <div class="d-flex justify-content-between align-items-center p-2 club-bracket-link"
-                 style="cursor:pointer;" data-naziv="@match.DrugiKlubNaziv">
-                <span class="text-truncate @(match.Pobednik == match.DrugiKlubNaziv ? "text-white fw-bold" : (match.Pobednik != null ? "text-white-50 text-decoration-line-through opacity-50" : "text-white-50"))"
-                      style="max-width: 110px;">
+                <span class="text-truncate small @(match.Pobednik == match.DrugiKlubNaziv ? "text-white fw-bold" : (match.Pobednik != null ? "text-white-50 text-decoration-line-through opacity-50" : "text-white-50"))"
+                      style="max-width: 85px;">
                     @match.DrugiKlubNaziv
                 </span>
+
                 <div class="d-flex align-items-center">
                     @if (match.DrugiKlubPenali.HasValue)
                     {
-                        <small class="text-danger me-1 fw-bold" style="font-size: 0.7rem;">(@match.DrugiKlubPenali)</small>
+                        <small class="text-danger me-1 fw-bold" style="font-size: 0.6rem;">(@match.DrugiKlubPenali)</small>
                     }
-                    <span class="badge bg-secondary bg-opacity-10 border border-secondary text-white">
+                    <span class="badge bg-secondary bg-opacity-10 border border-secondary text-white" style="font-size: 0.7rem;">
                         @(match.DrugiKlubGolovi?.ToString() ?? "0")
                     </span>
                 </div>
-            </div>
+            </a>
 
             @if (match.Produzeci || match.PrviKlubPenali.HasValue)
             {
-                <div class="text-center py-1 fw-bold small @(match.PrviKlubPenali.HasValue ? "bg-danger bg-opacity-10 text-danger" : "bg-warning bg-opacity-10 text-warning")"
-                     style="font-size: 0.6rem; letter-spacing: 1px;">
+                <div class="text-center py-1 fw-bold @(match.PrviKlubPenali.HasValue ? "bg-danger bg-opacity-10 text-danger" : "bg-warning bg-opacity-10 text-warning")"
+                     style="font-size: 0.55rem; letter-spacing: 0.5px;">
                     @(match.PrviKlubPenali.HasValue ? "PENALI" : "PRODUŽECI")
                 </div>
             }
@@ -53,68 +57,93 @@
     }
 }
 
+<style>
+    .club-bracket-link:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        transition: 0.2s;
+    }
+
+        .club-bracket-link:hover .text-white-50 {
+            color: #fff !important;
+        }
+</style>
+
 @if (Model != null)
 {
-    <div class="container-fluid py-4 overflow-auto">
-        <div class="d-flex justify-content-between align-items-stretch text-center" style="min-width: 1200px;">
+    <div class="container-fluid py-3 overflow-auto">
+        <div class="d-flex justify-content-between align-items-stretch text-center" style="min-width: 1100px; max-width: 1400px; margin: 0 auto;">
 
             @* --- LEVA STRANA --- *@
-            <div class="d-flex flex-column justify-content-around px-2">
-                <small class="text-white fw-bold mb-2">OSMINA FINALA</small>
-                @foreach (var m in Model.OsminaFinala.Take(4)) { RenderMatch(m); }
+            <div class="d-flex flex-column px-1" style="min-height: 550px;">
+                <small class="text-white fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">OSMINA FINALA</small>
+                <div class="d-flex flex-column justify-content-around flex-grow-1">
+                    @foreach (var m in Model.OsminaFinala.Take(4)) { RenderMatch(m); }
+                </div>
             </div>
-            <div class="d-flex flex-column justify-content-around px-2">
-                <small class="text-white fw-bold mb-2">ČETVRTFINALE</small>
-                @foreach (var m in Model.Cetvrtfinale.Take(2)) { RenderMatch(m); }
+
+            <div class="d-flex flex-column px-1" style="min-height: 550px;">
+                <small class="text-white fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">ČETVRTFINALE</small>
+                <div class="d-flex flex-column justify-content-around flex-grow-1">
+                    @foreach (var m in Model.Cetvrtfinale.Take(2)) { RenderMatch(m); }
+                </div>
             </div>
-            <div class="d-flex flex-column justify-content-around px-2">
-                <small class="text-white fw-bold mb-2">POLUFINALE</small>
-                @foreach (var m in Model.Polufinale.Take(1)) { RenderMatch(m); }
+
+            <div class="d-flex flex-column px-1" style="min-height: 550px;">
+                <small class="text-white fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">POLUFINALE</small>
+                <div class="d-flex flex-column justify-content-around flex-grow-1">
+                    @foreach (var m in Model.Polufinale.Take(1)) { RenderMatch(m); }
+                </div>
             </div>
 
             @* --- FINALE --- *@
-            <div class="d-flex flex-column justify-content-center px-4">
+            <div class="d-flex flex-column justify-content-center px-2">
                 <div class="text-center">
-                    <h4 class="text-primary fw-bold mb-3">FINALE</h4>
                     @if (Model.Finale != null)
                     {
-                        <div class="card bg-dark border-primary border-2 shadow-lg mx-auto overflow-hidden" style="width: 280px;">
+                        <h5 class="text-primary fw-bold mb-2" style="font-size: 0.9rem; letter-spacing: 1px;">FINALE</h5>
+
+                        <div class="card bg-dark border-primary border-2 shadow-lg mx-auto overflow-hidden" style="width: 220px;">
                             <div class="card-body p-0">
-                                <div class="p-3 club-bracket-link" style="cursor:pointer;" data-naziv="@Model.Finale.PrviKlubNaziv">
+
+                                <a href="@Url.Action("RedirectToClub", "Klubovi", new { naziv = Model.Finale.PrviKlubNaziv })"
+                                   class="p-2 text-decoration-none club-bracket-link d-block">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fs-5 @(Model.Finale.Pobednik == Model.Finale.PrviKlubNaziv ? "text-white fw-bold" : (Model.Finale.Pobednik != null ? "text-white-50 text-decoration-line-through opacity-50" : "text-white-50"))">
+                                        <span class="@(Model.Finale.Pobednik == Model.Finale.PrviKlubNaziv ? "text-white fw-bold" : (Model.Finale.Pobednik != null ? "text-white-50 text-decoration-line-through opacity-50" : "text-white-50"))"
+                                              style="font-size: 0.9rem;">
                                             @Model.Finale.PrviKlubNaziv
                                         </span>
-                                        <span class="fs-4 text-white-50">
+                                        <span class="text-white-50" style="font-size: 1.1rem;">
                                             @if (Model.Finale.PrviKlubPenali.HasValue)
                                             {
-                                                <small class="text-danger fs-6">(@Model.Finale.PrviKlubPenali)</small>
+                                                <small class="text-danger" style="font-size: 0.7rem;">(@Model.Finale.PrviKlubPenali)</small>
                                             }
                                             @Model.Finale.PrviKlubGolovi
                                         </span>
                                     </div>
-                                </div>
+                                </a>
 
                                 <div class="border-top border-secondary opacity-25"></div>
 
-                                <div class="p-3 club-bracket-link" style="cursor:pointer;" data-naziv="@Model.Finale.DrugiKlubNaziv">
+                                <a href="@Url.Action("RedirectToClub", "Klubovi", new { naziv = Model.Finale.DrugiKlubNaziv })"
+                                   class="p-2 text-decoration-none club-bracket-link d-block">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fs-5 @(Model.Finale.Pobednik == Model.Finale.DrugiKlubNaziv ? "text-white fw-bold" : (Model.Finale.Pobednik != null ? "text-white-50 text-decoration-line-through opacity-50" : "text-white-50"))">
+                                        <span class="@(Model.Finale.Pobednik == Model.Finale.DrugiKlubNaziv ? "text-white fw-bold" : (Model.Finale.Pobednik != null ? "text-white-50 text-decoration-line-through opacity-50" : "text-white-50"))"
+                                              style="font-size: 0.9rem;">
                                             @Model.Finale.DrugiKlubNaziv
                                         </span>
-                                        <span class="fs-4 text-white-50">
+                                        <span class="text-white-50" style="font-size: 1.1rem;">
                                             @if (Model.Finale.DrugiKlubPenali.HasValue)
                                             {
-                                                <small class="text-danger fs-6">(@Model.Finale.DrugiKlubPenali)</small>
+                                                <small class="text-danger" style="font-size: 0.7rem;">(@Model.Finale.DrugiKlubPenali)</small>
                                             }
                                             @Model.Finale.DrugiKlubGolovi
                                         </span>
                                     </div>
-                                </div>
+                                </a>
 
                                 @if (Model.Finale.Produzeci || Model.Finale.PrviKlubPenali.HasValue)
                                 {
-                                    <div class="py-2 fw-bold @(Model.Finale.PrviKlubPenali.HasValue ? "bg-danger bg-opacity-10 text-danger" : "bg-warning bg-opacity-10 text-warning")" style="font-size: 0.75rem;">
+                                    <div class="py-1 fw-bold @(Model.Finale.PrviKlubPenali.HasValue ? "bg-danger bg-opacity-10 text-danger" : "bg-warning bg-opacity-10 text-warning")" style="font-size: 0.6rem;">
                                         @(Model.Finale.PrviKlubPenali.HasValue ? "PENALI" : "PRODUŽECI")
                                     </div>
                                 }
@@ -123,9 +152,9 @@
 
                         @if (!string.IsNullOrEmpty(Model.Finale.Pobednik))
                         {
-                            <div class="mt-4">
-                                <span class="badge bg-success text-uppercase mb-1">Šampion</span>
-                                <h2 class="fw-bold text-white text-uppercase">@Model.Finale.Pobednik</h2>
+                            <div class="mt-2">
+                                <span class="badge bg-success text-uppercase mb-1" style="font-size: 0.6rem;">Šampion</span>
+                                <h5 class="fw-bold text-white" style="font-size: 1.2rem;">@Model.Finale.Pobednik</h5>
                             </div>
                         }
                     }
@@ -133,17 +162,25 @@
             </div>
 
             @* --- DESNA STRANA --- *@
-            <div class="d-flex flex-column justify-content-around px-2">
-                <small class="text-white fw-bold mb-2">POLUFINALE</small>
-                @foreach (var m in Model.Polufinale.Skip(1).Take(1)) { RenderMatch(m); }
+            <div class="d-flex flex-column px-1" style="min-height: 550px;">
+                <small class="text-white fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">POLUFINALE</small>
+                <div class="d-flex flex-column justify-content-around flex-grow-1">
+                    @foreach (var m in Model.Polufinale.Skip(1).Take(1)) { RenderMatch(m); }
+                </div>
             </div>
-            <div class="d-flex flex-column justify-content-around px-2">
-                <small class="text-white fw-bold mb-2">ČETVRTFINALE</small>
-                @foreach (var m in Model.Cetvrtfinale.Skip(2).Take(2)) { RenderMatch(m); }
+
+            <div class="d-flex flex-column px-1" style="min-height: 550px;">
+                <small class="text-white fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">ČETVRTFINALE</small>
+                <div class="d-flex flex-column justify-content-around flex-grow-1">
+                    @foreach (var m in Model.Cetvrtfinale.Skip(2).Take(2)) { RenderMatch(m); }
+                </div>
             </div>
-            <div class="d-flex flex-column justify-content-around px-2">
-                <small class="text-white fw-bold mb-2">OSMINA FINALA</small>
-                @foreach (var m in Model.OsminaFinala.Skip(4).Take(4)) { RenderMatch(m); }
+
+            <div class="d-flex flex-column px-1" style="min-height: 550px;">
+                <small class="text-white fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">OSMINA FINALA</small>
+                <div class="d-flex flex-column justify-content-around flex-grow-1">
+                    @foreach (var m in Model.OsminaFinala.Skip(4).Take(4)) { RenderMatch(m); }
+                </div>
             </div>
 
         </div>

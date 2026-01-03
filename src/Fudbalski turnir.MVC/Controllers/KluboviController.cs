@@ -186,5 +186,13 @@ namespace Fudbalski_turnir.Controllers
             await _kluboviService.DeleteKlubAsync(id);
             return RedirectToAction(nameof(Index));
         }
+        [AllowAnonymous]
+        public async Task<IActionResult> RedirectToClub(string naziv)
+        {
+            var klubovi = await _kluboviService.GetAllKluboviAsync();
+            var klub = klubovi.FirstOrDefault(k => k.ImeKluba.Trim().ToLower() == naziv?.Trim().ToLower());
+            if (klub == null) return NotFound();
+            return RedirectToAction("Details", new { id = klub.KlubID });
+        }
     }
 }
