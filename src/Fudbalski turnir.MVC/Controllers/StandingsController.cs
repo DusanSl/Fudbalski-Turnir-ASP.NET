@@ -79,13 +79,34 @@ namespace FudbalskiTurnir.Controllers
         {
             var standings = new Dictionary<string, StandingsViewModel>();
 
+            var naziviKlubova = utakmice.Select(u => u.PrviKlubNaziv)
+                                .Union(utakmice.Select(u => u.DrugiKlubNaziv))
+                                .Distinct()
+                                .ToList();
+
+            var kluboviMapa = _context.Klub
+                                .Where(k => naziviKlubova.Contains(k.ImeKluba))
+                                .ToDictionary(k => k.ImeKluba, k => k.KlubID);
+
             foreach (var utakmica in utakmice)
             {
                 if (!standings.ContainsKey(utakmica.PrviKlubNaziv))
-                    standings[utakmica.PrviKlubNaziv] = new StandingsViewModel { KlubNaziv = utakmica.PrviKlubNaziv };
+                {
+                    standings[utakmica.PrviKlubNaziv] = new StandingsViewModel
+                    {
+                        KlubNaziv = utakmica.PrviKlubNaziv,
+                        KlubID = kluboviMapa.ContainsKey(utakmica.PrviKlubNaziv) ? kluboviMapa[utakmica.PrviKlubNaziv] : 0
+                    };
+                }
 
                 if (!standings.ContainsKey(utakmica.DrugiKlubNaziv))
-                    standings[utakmica.DrugiKlubNaziv] = new StandingsViewModel { KlubNaziv = utakmica.DrugiKlubNaziv };
+                {
+                    standings[utakmica.DrugiKlubNaziv] = new StandingsViewModel
+                    {
+                        KlubNaziv = utakmica.DrugiKlubNaziv,
+                        KlubID = kluboviMapa.ContainsKey(utakmica.DrugiKlubNaziv) ? kluboviMapa[utakmica.DrugiKlubNaziv] : 0
+                    };
+                }
 
                 var domacin = standings[utakmica.PrviKlubNaziv];
                 var gost = standings[utakmica.DrugiKlubNaziv];

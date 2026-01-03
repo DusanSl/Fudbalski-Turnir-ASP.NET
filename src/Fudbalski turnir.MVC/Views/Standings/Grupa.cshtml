@@ -6,67 +6,61 @@
         @foreach (var grupa in Model.OrderBy(g => g.Key))
         {
             <div class="col-lg-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-dark text-white text-center">
-                        <h5 class="mb-0">Grupa @grupa.Key</h5>
+                <div class="bg-dark border border-primary rounded-3 shadow-lg overflow-hidden">
+
+                    <div class="bg-primary bg-gradient p-2 text-center text-white">
+                        <h5 class="mb-0 fw-bold text-uppercase" style="letter-spacing: 1px;">Grupa @grupa.Key</h5>
                     </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-sm table-hover mb-0">
-                                <thead class="thead-light">
+
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover table-borderless mb-0 align-middle">
+                            <thead class="border-bottom border-secondary">
+                                <tr class="text-center text-secondary small text-uppercase">
+                                    <th style="width: 40px;">#</th>
+                                    <th class="text-start text-white">Klub</th>
+                                    <th class="text-white">O</th>
+                                    <th class="text-success">P</th>
+                                    <th class="text-warning">N</th>
+                                    <th class="text-danger">I</th>
+                                    <th class="d-none d-md-table-cell text-success">DG</th>
+                                    <th class="d-none d-md-table-cell text-danger">PG</th>
+                                    <th class="text-white">GR</th>
+                                    <th class="bg-primary bg-opacity-10 text-primary">Bodovi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var klub in grupa.Value)
+                                {
+                                    var index = grupa.Value.IndexOf(klub) + 1;
+
                                     <tr class="text-center">
-                                        <th style="width: 30px;">#</th>
-                                        <th class="text-left">Klub</th>
-                                        <th title="Odigrano">O</th>
-                                        <th class="text-success" title="Pobede">P</th>
-                                        <th>N</th>
-                                        <th class="text-danger" title="Porazi">I</th>
-                                        <th>DG</th>
-                                        <th>PG</th>
-                                        <th>GR</th>
-                                        <th><strong>Bod</strong></th>
+                                        <td class="text-white-50 small">@index.</td>
+                                        <td class="text-start">
+                                            <a asp-controller="Klubovi"
+                                               asp-action="Details"
+                                               asp-route-id="@klub.KlubID"
+                                               class="fw-bold text-white text-decoration-none link-primary club-link">
+                                                @klub.KlubNaziv
+                                            </a>
+                                        </td>
+                                        <td>@klub.Odigrano</td>
+                                        <td>@klub.Pobede</td>
+                                        <td>@klub.Nereseno</td>
+                                        <td>@klub.Porazi</td>
+                                        <td class="d-none d-md-table-cell text-white-50 small">@klub.DatiGolovi</td>
+                                        <td class="d-none d-md-table-cell text-white-50 small">@klub.PrimljeniGolovi</td>
+                                        <td>
+                                            @{
+                                                int gr = klub.DatiGolovi - klub.PrimljeniGolovi;
+                                                string grBoja = gr > 0 ? "text-success" : (gr < 0 ? "text-danger" : "text-white-50");
+                                                <span class="@grBoja fw-bold">@(gr > 0 ? "+" + gr : gr.ToString())</span>
+                                            }
+                                        </td>
+                                        <td class="bg-primary bg-opacity-25 text-primary fw-bolder fs-5">@klub.Bodovi</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @for (int i = 0; i < grupa.Value.Count; i++)
-                                    {
-                                        var klub = grupa.Value[i];
-                                        var rowClass = i < 2 ? "table-success" : ""; 
-
-                                        <tr class="@rowClass text-center">
-                                            <td><small>@(i + 1)</small></td>
-                                            <td class="text-left"><strong>@klub.KlubNaziv</strong></td>
-                                            <td>@klub.Odigrano</td>
-                                            <td>@klub.Pobede</td>
-                                            <td>@klub.Nereseno</td>
-                                            <td>@klub.Porazi</td>
-                                            <td>@klub.DatiGolovi</td>
-                                            <td>@klub.PrimljeniGolovi</td>
-                                            <td>
-                                                @{
-                                                    int gr = klub.DatiGolovi - klub.PrimljeniGolovi;
-                                                    if (gr > 0)
-                                                    {
-                                                        <span class="text-success">+@gr</span>
-                                                    }
-                                                    else if (gr < 0)
-                                                    {
-
-                                                        <span class="text-danger">@gr</span>
-                                                    }
-                                                    else
-                                                    {
-
-                                                        <span>0</span>
-                                                    }
-                                                }
-                                            </td>
-                                            <td><strong>@klub.Bodovi</strong></td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

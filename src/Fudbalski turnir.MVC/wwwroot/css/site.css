@@ -119,3 +119,49 @@ button[type="submit"].btn-primary {
       border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
+/* 1. Pozadina cele tabele i ivice */
+table.dataTable.display.cell-border,
+table.dataTable.display.cell-border tbody th,
+table.dataTable.display.cell-border tbody td {
+    background-color: #1a1e26 !important;
+    color: #ffffff !important;
+    border: 1px solid #0d6efd !important; 
+}
+
+table.dataTable.display.cell-border thead th {
+    background-color: #0d6efd !important; 
+    color: white !important;
+    border: 1px solid #0a58ca !important;
+}
+
+#rezultatiTable td span.px-3 {
+    background-color: rgba(13, 110, 253, 0.3) !important;
+    border: 1px solid #0d6efd !important;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+table.dataTable.display.cell-border tbody tr:hover {
+    background-color: #252b36 !important;
+}
+
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 25px !important; 
+    padding-top: 10px;
+}
+
+.dataTables_filter label {
+    margin-left: 15px;
+}
+
+.club-link {
+    transition: all 0.2s ease-in-out;
+    color: #fff !important;
+}
+
+.club-link:hover {
+    color: #0d6efd !important; 
+    text-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+    padding-left: 5px;
+}
