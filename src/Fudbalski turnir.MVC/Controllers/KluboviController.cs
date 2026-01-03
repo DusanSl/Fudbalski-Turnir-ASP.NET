@@ -53,9 +53,7 @@ namespace Fudbalski_turnir.Controllers
                 BrojOsvojenihTitula = k.BrojOsvojenihTitula,
                 GodinaOsnivanja = k.GodinaOsnivanja,
                 BrojIgraca = k.BrojIgraca,
-                // Dodajemo ID za System Info deo
                 TurnirID = k.PrimarniTurnirID,
-                // Spajamo nazive za "Trenutni turnir" deo
                 NazivTurnira = (k.NazivTurnira != null && k.NazivTurnira.Any())
                                ? string.Join(", ", k.NazivTurnira)
                                : "Nema dodeljenih turnira"

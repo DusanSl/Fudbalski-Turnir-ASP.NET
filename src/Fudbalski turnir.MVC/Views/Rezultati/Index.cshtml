@@ -40,7 +40,7 @@
         <tbody>
             @foreach (var utakmica in Model)
             {
-                <tr>
+                <tr class="rezultati">
                     <td>@utakmica.Datum.ToString("dd.MM.yyyy. HH:mm")</td>
                     <td>
                         @utakmica.Kolo
@@ -51,7 +51,7 @@
                     </td>
                     <td>@utakmica.PrviKlubNaziv</td>
                     <td>
-                        <span class="px-3 py-2">
+                        <span class="scoreBadge px-3 py-2">
                             @(utakmica.PrviKlubGolovi) : @(utakmica.DrugiKlubGolovi)
                         </span>
                     </td>
