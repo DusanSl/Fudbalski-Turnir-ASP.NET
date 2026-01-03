@@ -2,86 +2,144 @@
     ViewData["Title"] = "Admin Panel";
 }
 
-<div class="container mt-4">
-    <h1>Admin Panel</h1>
-    <p class="lead">Manage all database tables</p>
+<div class="container mt-5">
 
-    <div class="row mt-4">
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Igrači</h5>
-                    <p class="card-text">Manage players in the database</p>
-                    <a asp-controller="Igraci" asp-action="Create" class="btn btn-success">Add New</a>
-                    <a asp-controller="Igraci" asp-action="Index" class="btn btn-primary">View All</a>
+    <div class="mb-5">
+        <h1 class="display-5 fw-bold text-white">Admin Panel</h1>
+        <p class="lead text-white-50">Upravljanje bazom podataka i sistemskim entitetima.</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-50 h-100 shadow-sm admin-card">
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="card-title mb-0 text-white fw-bold">Igrači</h4>
+                    </div>
+                    <p class="card-text text-white-50 mb-4 flex-grow-1 fs-5">
+                        Upravljanje svim igračima.
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start pt-3">
+                        <a asp-controller="Igraci" asp-action="Create" class="btn btn-success btn-sm px-4 py-2 fw-bold fs-6">Novi unos</a>
+                        <a asp-controller="Igraci" asp-action="Index" class="btn btn-primary btn-sm px-4 py-2 fw-bold shadow-sm fs-6">Vidite Sve</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Klubovi</h5>
-                    <p class="card-text">Manage clubs in the database</p>
-                    <a asp-controller="Klubovi" asp-action="Create" class="btn btn-success">Add New</a>
-                    <a asp-controller="Klubovi" asp-action="Index" class="btn btn-primary">View All</a>
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-50 h-100 shadow-sm admin-card">
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="card-title mb-0 text-white fw-bold">Klubovi</h4>
+                    </div>
+                    <p class="card-text text-white-50 mb-4 flex-grow-1 fs-5">
+                        Upravljanje svim klubovima.
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start pt-3">
+                        <a asp-controller="Klubovi" asp-action="Create" class="btn btn-success btn-sm px-4 py-2 fw-bold fs-6">Novi unos</a>
+                        <a asp-controller="Klubovi" asp-action="Index" class="btn btn-primary btn-sm px-4 py-2 fw-bold shadow-sm fs-6">Vidite Sve</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Korisnici</h5>
-                    <p class="card-text">Manage users and accounts in the database</p>
-                    <a asp-controller="Users" asp-action="Create" class="btn btn-success">Add New</a>
-                    <a asp-controller="Users" asp-action="Index" class="btn btn-primary">View All</a>
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-50 h-100 shadow-sm admin-card">
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="card-title mb-0 text-white fw-bold">Korisnici</h4>
+                    </div>
+                    <p class="card-text text-white-50 mb-4 flex-grow-1 fs-5">
+                        Upravljanje svim korisnicima sajta.
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start pt-3">
+                        <a asp-controller="Users" asp-action="Create" class="btn btn-success btn-sm px-4 py-2 fw-bold fs-6">Novi unos</a>
+                        <a asp-controller="Users" asp-action="Index" class="btn btn-primary btn-sm px-4 py-2 fw-bold shadow-sm fs-6">Vidite Sve</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Menadžeri</h5>
-                    <p class="card-text">Manage managers in the database</p>
-                    <a asp-controller="Menadzeri" asp-action="Create" class="btn btn-success">Add New</a>
-                    <a asp-controller="Menadzeri" asp-action="Index" class="btn btn-primary">View All</a>
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-50 h-100 shadow-sm admin-card">
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="card-title mb-0 text-white fw-bold">Menadžeri</h4>
+                    </div>
+                    <p class="card-text text-white-50 mb-4 flex-grow-1 fs-5">
+                        Upravljanje svim menadžerima.
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start pt-3">
+                        <a asp-controller="Menadzeri" asp-action="Create" class="btn btn-success btn-sm px-4 py-2 fw-bold fs-6">Novi unos</a>
+                        <a asp-controller="Menadzeri" asp-action="Index" class="btn btn-primary btn-sm px-4 py-2 fw-bold shadow-sm fs-6">Vidite Sve</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Sponzori</h5>
-                    <p class="card-text">Manage sponsors in the database</p>
-                    <a asp-controller="Sponzori" asp-action="Create" class="btn btn-success">Add New</a>
-                    <a asp-controller="Sponzori" asp-action="Index" class="btn btn-primary">View All</a>
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-50 h-100 shadow-sm admin-card">
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="card-title mb-0 text-white fw-bold">Sponzori</h4>
+                    </div>
+                    <p class="card-text text-white-50 mb-4 flex-grow-1 fs-5">
+                        Upravljanje svim sponzorima.
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start pt-3">
+                        <a asp-controller="Sponzori" asp-action="Create" class="btn btn-success btn-sm px-4 py-2 fw-bold fs-6">Novi unos</a>
+                        <a asp-controller="Sponzori" asp-action="Index" class="btn btn-primary btn-sm px-4 py-2 fw-bold shadow-sm fs-6">Vidite Sve</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Turniri</h5>
-                    <p class="card-text">Manage tournaments in the database</p>
-                    <a asp-controller="Turniri" asp-action="Create" class="btn btn-success">Add New</a>
-                    <a asp-controller="Turniri" asp-action="Index" class="btn btn-primary">View All</a>
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-50 h-100 shadow-sm admin-card">
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="card-title mb-0 text-white fw-bold">Turniri</h4>
+                    </div>
+                    <p class="card-text text-white-50 mb-4 flex-grow-1 fs-5">
+                        Upravljanje svim turnirima.
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start pt-3">
+                        <a asp-controller="Turniri" asp-action="Create" class="btn btn-success btn-sm px-4 py-2 fw-bold fs-6">Novi unos</a>
+                        <a asp-controller="Turniri" asp-action="Index" class="btn btn-primary btn-sm px-4 py-2 fw-bold shadow-sm fs-6">Vidite Sve</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Utakmice</h5>
-                    <p class="card-text">Manage matches in the database</p>
-                    <a asp-controller="Utakmice" asp-action="Create" class="btn btn-success">Add New</a>
-                    <a asp-controller="Utakmice" asp-action="Index" class="btn btn-primary">View All</a>
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-50 h-100 shadow-sm admin-card">
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="card-title mb-0 text-white fw-bold">Utakmice</h4>
+                    </div>
+                    <p class="card-text text-white-50 mb-4 flex-grow-1 fs-5">
+                        Upravljanje svim utakmicama.
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start pt-3">
+                        <a asp-controller="Utakmice" asp-action="Create" class="btn btn-success btn-sm px-4 py-2 fw-bold fs-6">Novi unos</a>
+                        <a asp-controller="Utakmice" asp-action="Index" class="btn btn-primary btn-sm px-4 py-2 fw-bold shadow-sm fs-6">Vidite Sve</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+
+    /* Animacije i hover efekti */
+    .admin-card {
+        transition: all 0.25s ease-in-out;
+    }
+
+        .admin-card:hover{
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6) !important;
+        }
+</style>
