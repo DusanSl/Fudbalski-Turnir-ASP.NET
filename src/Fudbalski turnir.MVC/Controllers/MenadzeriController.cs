@@ -67,7 +67,7 @@ namespace Fudbalski_turnir.Controllers
         public async Task<IActionResult> Create()
         {
             var klubovi = await _menadzerService.GetAllKluboviAsync();
-            ViewBag.KlubID = new SelectList(klubovi, "KlubID", "ImeKluba");
+            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba");
             return View(new MenadzerViewModel());
         }
 
@@ -94,7 +94,7 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var klubovi = await _menadzerService.GetAllKluboviAsync();
-            ViewBag.KlubID = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
+            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
             return View(viewModel);
         }
 
@@ -148,7 +148,7 @@ namespace Fudbalski_turnir.Controllers
             }
 
             var klubovi = await _menadzerService.GetAllKluboviAsync();
-            ViewBag.KlubID = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
+            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", viewModel.KlubID);
             return View(viewModel);
         }
 
