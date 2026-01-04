@@ -12,6 +12,7 @@
 <table id="usersTable" class="display compact cell-border">
     <thead>
         <tr>
+            <th></th>
             <th>Email</th>
             <th>Uloga</th>
             <th>Status</th>
@@ -23,6 +24,7 @@
         @foreach (var user in Model)
         {
             <tr>
+                <td class="control-icon"></td>
                 <td>@user.Email</td>
                 <td>
                     @if (user.Roles != null && user.Roles.Any())
@@ -54,6 +56,32 @@
     <script>
         $(document).ready(function () {
             $('#usersTable').DataTable({
+                "responsive": {
+                    "details": {
+                        "type": "column",
+                        "target": 0,
+                        "renderer": function (api, rowIdx, columns) {
+                            var data = '<table class="table table-sm table-dark table-borderless mb-0">';
+                            $.each(columns, function (i, col) {
+                                if (i > 0) {
+                                    data += '<tr>' +
+                                            '<td class="text-white-50 fw-bold" style="width: 40%;">' + col.title + '</td>' +
+                                            '<td class="text-white">' + col.data + '</td>' +
+                                            '</tr>';
+                                }
+                            });
+                            data += '</table>';
+                            return data;
+                        }
+                    }
+                },
+                "columnDefs": [
+                    {
+                        "className": "control",
+                        "orderable": false,
+                        "targets": 0
+                    }
+                ],
                 "paging": true,
                 "searching": true,
                 "ordering": true,

@@ -26,6 +26,7 @@
         <table id="rezultatiTable" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Datum i vreme</th>
                     <th>Kolo / Grupa</th>
                     <th>Domaćin</th>
@@ -40,6 +41,7 @@
                 @foreach (var utakmica in Model)
                 {
                     <tr class="rezultati">
+                        <td class="control-icon"></td>
                         <td data-order="@utakmica.Datum.ToString("yyyyMMddHHmm")">
                             @utakmica.Datum.ToString("dd.MM.yyyy. HH:mm")
                         </td>
@@ -52,7 +54,7 @@
                         </td>
                         <td>@utakmica.PrviKlubNaziv</td>
                         <td>
-                            <span class="scoreBadge px-3 py-2">
+                            <span class="px-3 py-2">
                                 @(utakmica.PrviKlubGolovi) : @(utakmica.DrugiKlubGolovi)
                             </span>
                         </td>
@@ -80,13 +82,42 @@
     <script>
         $(document).ready(function () {
             var table = $('#rezultatiTable').DataTable({
+                "responsive": {
+                    "details": {
+                        "type": "column",
+                        "target": 0,
+                        "renderer": function (api, rowIdx, columns) {
+                            var data = '<table class="table table-sm table-dark table-borderless mb-0">';
+                            $.each(columns, function (i, col) {
+                                if (i > 0 && i !== 7) {
+                                    data += '<tr>' +
+                                            '<td class="text-white-50 fw-bold" style="width: 40%;">' + col.title + '</td>' +
+                                            '<td class="text-white">' + col.data + '</td>' +
+                                            '</tr>';
+                                }
+                            });
+                            data += '</table>';
+                            return data;
+                        }
+                    }
+                },
+                "columnDefs": [
+                    {
+                        "className": "control",
+                        "orderable": false,
+                        "targets": 0
+                    },
+                    {
+                        "targets": 8,
+                        "visible": false
+                    }
+                ],
                 "paging": true,
                 "searching": true,
                 "ordering": true,
                 "info": true,
-                "responsive": true,
                 "autoWidth": false,
-                "order": [[0, "desc"]], 
+                "order": [[1, "desc"]],
                 "language": {
                     "search": "Filter unutar tabele:",
                     "info": "Prikaz _START_ do _END_ od ukupno _TOTAL_ utakmica",
@@ -100,9 +131,9 @@
             $('#turnirFilter').on('change', function () {
                 var val = $(this).val();
                 if (val === "") {
-                    table.column(7).search('').draw();
+                    table.column(8).search('').draw();
                 } else {
-                    table.column(7).search('^' + val + '$', true, false).draw();
+                    table.column(8).search('^' + val + '$', true, false).draw();
                 }
             });
         });
