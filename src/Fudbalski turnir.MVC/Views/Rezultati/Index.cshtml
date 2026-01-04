@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<FudbalskiTurnir.ViewModels.UtakmicaViewModel>
-
 @{
     ViewData["Title"] = "Rezultati Turnira";
 }
@@ -10,7 +9,6 @@
     <div class="row mb-3">
         <div class="col-md-4">
             <label for="turnirFilter" class="form-label fw-bold">Izaberite turnir:</label>
-
             <select id="turnirFilter" class="form-select bg-dark text-white border-primary shadow-none">
                 <option value="" class="bg-dark text-white">Svi turniri</option>
                 @if (Model != null)
@@ -23,56 +21,60 @@
             </select>
         </div>
     </div>
+
     <div class="table-responsive">
-    <table id="rezultatiTable" class="display cell-border" style="width:100%">
-        <thead>
-            <tr>
-                <th>Datum i vreme</th>
-                <th>Kolo / Grupa</th>
-                <th>Domaćin</th>
-                <th>Rezultat</th>
-                <th>Gost</th>
-                <th class="d-none d-lg-table-cell">Mesto</th> @* Vidljivo samo na velikim ekranima *@
-                <th class="d-none d-md-table-cell">Napomena</th> @* Vidljivo na tabletima i jače *@
-                <th class="d-none">TurnirID_Hidden</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var utakmica in Model)
-            {
-                <tr class="rezultati">
-                    <td>@utakmica.Datum.ToString("dd.MM.yyyy. HH:mm")</td>
-                    <td>
-                        @utakmica.Kolo
-                        @if (!string.IsNullOrEmpty(utakmica.Grupa))
-                        {
-                            <span>(Grupa @utakmica.Grupa)</span>
-                        }
-                    </td>
-                    <td>@utakmica.PrviKlubNaziv</td>
-                    <td>
-                        <span class="scoreBadge px-3 py-2">
-                            @(utakmica.PrviKlubGolovi) : @(utakmica.DrugiKlubGolovi)
-                        </span>
-                    </td>
-                    <td>@utakmica.DrugiKlubNaziv</td>
-                    <td class="d-none d-lg-table-cell text-white-50">@utakmica.Mesto</td>
-                    <td class="d-none d-md-table-cell">
-                        @if (utakmica.PrviKlubPenali.HasValue)
-                        {
-                            <span class="text-danger fw-bold small">Penali (@utakmica.PrviKlubPenali-@utakmica.DrugiKlubPenali)</span>
-                        }
-                        else if (utakmica.Produzeci)
-                        {
-                            <span class="text-warning fw-bold small">Produžeci</span>
-                        }
-                    </td>
-                    <td class="d-none">@utakmica.TurnirID</td>
+        <table id="rezultatiTable" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Datum i vreme</th>
+                    <th>Kolo / Grupa</th>
+                    <th>Domaćin</th>
+                    <th>Rezultat</th>
+                    <th>Gost</th>
+                    <th class="d-none d-lg-table-cell">Mesto</th>
+                    <th class="d-none d-md-table-cell">Napomena</th>
+                    <th class="d-none">TurnirID_Hidden</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var utakmica in Model)
+                {
+                    <tr class="rezultati">
+                        @* KLJUČNA PROMENA: data-order omogućava hronološko sortiranje *@
+                        <td data-order="@utakmica.Datum.ToString("yyyyMMddHHmm")">
+                            @utakmica.Datum.ToString("dd.MM.yyyy. HH:mm")
+                        </td>
+                        <td>
+                            @utakmica.Kolo
+                            @if (!string.IsNullOrEmpty(utakmica.Grupa))
+                            {
+                                <span>(Grupa @utakmica.Grupa)</span>
+                            }
+                        </td>
+                        <td>@utakmica.PrviKlubNaziv</td>
+                        <td>
+                            <span class="scoreBadge px-3 py-2">
+                                @(utakmica.PrviKlubGolovi) : @(utakmica.DrugiKlubGolovi)
+                            </span>
+                        </td>
+                        <td>@utakmica.DrugiKlubNaziv</td>
+                        <td class="d-none d-lg-table-cell text-white-50">@utakmica.Mesto</td>
+                        <td class="d-none d-md-table-cell">
+                            @if (utakmica.PrviKlubPenali.HasValue)
+                            {
+                                <span class="text-danger fw-bold small">Penali (@utakmica.PrviKlubPenali-@utakmica.DrugiKlubPenali)</span>
+                            }
+                            else if (utakmica.Produzeci)
+                            {
+                                <span class="text-warning fw-bold small">Produžeci</span>
+                            }
+                        </td>
+                        <td class="d-none">@utakmica.TurnirID</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @section Scripts {
@@ -83,9 +85,9 @@
                 "searching": true,
                 "ordering": true,
                 "info": true,
-                "responsive": true, 
+                "responsive": true,
                 "autoWidth": false,
-                "order": [[0, "desc"]],
+                "order": [[0, "desc"]], // Sortira prvu kolonu (Datum) unazad
                 "language": {
                     "search": "Filter unutar tabele:",
                     "info": "Prikaz _START_ do _END_ od ukupno _TOTAL_ utakmica",
