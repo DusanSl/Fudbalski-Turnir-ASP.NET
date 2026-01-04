@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success mb-1 mt-1">Create New</a>
+    <a asp-action="Create" class="btn btn-success mb-1 mt-1">Nov unos</a>
 </p>
 <table id="turniriTable" class="display compact cell-border">
     <thead>
@@ -52,9 +52,9 @@
                     @Html.DisplayFor(modelItem => item.TipTurnira)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.TurnirID" class="btn btn-primary mb-2 mt-2">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.TurnirID" class="btn btn-secondary mb-2 mt-2">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.TurnirID" class="btn btn-danger">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.TurnirID" class="btn btn-primary mb-2 mt-2">Izmenite</a>
+                    <a asp-action="Details" asp-route-id="@item.TurnirID" class="btn btn-secondary mb-2 mt-2">Svi detalji</a>
+                    <a asp-action="Delete" asp-route-id="@item.TurnirID" class="btn btn-danger">Obrišite</a>
                 </td>
             </tr>
         }

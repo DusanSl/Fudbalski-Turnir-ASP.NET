@@ -3,14 +3,13 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
-<h3>Are you sure you want to delete this?</h3>
+<h1>Obrišite</h1>
+<h3>Da li ste sigurni da želite da obrišete?</h3>
 
 <div>
-    <h4>Menadzer</h4>
+    <h4>Menadžer</h4>
     <hr />
     <dl class="row">
-        @* Prvo Ime i Prezime *@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ime)
         </dt>
@@ -56,10 +55,10 @@
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="OsobaID" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
+        <input type="submit" value="Obrišite" class="btn btn-danger" />
         <div>
-            <a asp-action="Index" class="btn btn-secondary mt-1">Back to List</a>
+            <a asp-action="Index" class="btn btn-secondary mt-1">Nazad na listu</a>
         </div>
-        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark mt-1">Back to Admin Page</a>
+        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark mt-1">Nazad na admin stranicu</a>
     </form>
 </div>

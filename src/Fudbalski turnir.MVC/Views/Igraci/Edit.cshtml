@@ -4,10 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Izmenite</h1>
 
-<h4>Igrac</h4>
-<hr />
+<h4>Igrač</h4>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -51,17 +50,17 @@
                 <span asp-validation-for="Nacionalnost" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary mb-1 mt-1" />
+                <input type="submit" value="Sačuvaj" class="btn btn-primary mb-1 mt-1" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
 </div>
 
-<a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Back to Admin Page</a>
+<a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Nazad na admin stranicu</a>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
