@@ -187,7 +187,7 @@ table.dataTable.cell-border tbody tr:hover td {
     box-shadow: inset 0 0 15px rgba(13, 110, 253, 0.1);
 }
 
-#rezultatiTable .scoreBadge {
+#rezultatiTable .responsiveTable {
     display: inline-block;
     min-width: 60px;
     text-align: center;

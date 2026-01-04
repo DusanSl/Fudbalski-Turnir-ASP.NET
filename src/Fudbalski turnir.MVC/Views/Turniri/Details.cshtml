@@ -4,14 +4,14 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Svi detalji</h1>
 
 <div>
     <h4>Turnir</h4>
 
     @if (ViewBag.IsAdmin ?? false)
     {
-        <h5 class="text-muted mt-3 mb-2">System Info</h5>
+        <h5 class="text-white-50 mt-3 mb-2">Sistemske informacije</h5>
         <dl class="row mb-3">
             <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.TurnirID)
@@ -22,7 +22,7 @@
         </dl>
     }
 
-    <h5 class="text-muted mt-3 mb-2">Basic Info</h5>
+    <h5 class="text-white-50 mt-3 mb-2">Osnovne informacije</h5>
     <dl class="row mb-3">
         <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.NazivTurnira)
@@ -46,7 +46,7 @@
         </dd>
     </dl>
 
-    <h5 class="text-muted mt-3 mb-2">Schedule</h5>
+    <h5 class="text-white-50 mt-3 mb-2">Raspored</h5>
     <dl class="row mb-3">
         <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.DatumPocetka)
@@ -65,9 +65,9 @@
 </div>
 
 <div class="mt-4">
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
     @if (ViewBag.IsAdmin ?? false)
     {
-        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark">Back to Admin Page</a>
+        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark">Nazad na admin stranicu</a>
     }
 </div>

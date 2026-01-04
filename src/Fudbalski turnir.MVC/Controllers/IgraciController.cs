@@ -57,7 +57,7 @@ namespace Fudbalski_turnir.Controllers
                 KlubID = i.KlubID,
                 ImeKluba = i.ImeKluba
             };
-
+            ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(viewModel);
         }
 

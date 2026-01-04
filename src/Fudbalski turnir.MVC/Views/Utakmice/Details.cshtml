@@ -3,13 +3,13 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Svi detalji</h1>
 <div>
     <h4>Utakmica</h4>
 
     @if (ViewBag.IsAdmin ?? false)
     {
-        <h5 class="text-muted mt-3 mb-2">System Info</h5>
+        <h5 class="text-white-50 mt-3 mb-2">Sistemske informacije</h5>
         <dl class="row mb-3">
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UtakmicaID)</dt>
             <dd class="col-sm-9">@Html.DisplayFor(model => model.UtakmicaID)</dd>
@@ -18,9 +18,8 @@
         </dl>
     }
 
-    <h5 class="text-muted mt-3 mb-2">Match Info</h5>
+    <h5 class="text-white-50 mt-3 mb-2">Informacije o meču</h5>
     <dl class="row mb-3">
-        @* PRIKAZUJE GRUPU SAMO AKO NIJE PRAZNA *@
         @if (!string.IsNullOrEmpty(Model.Grupa))
         {
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Grupa)</dt>
@@ -48,7 +47,7 @@
         <dd class="col-sm-9">@Html.DisplayFor(model => model.Kolo)</dd>
     </dl>
 
-    <h5 class="text-muted mt-3 mb-2">Score</h5>
+    <h5 class="text-white-50 mt-3 mb-2">Rezultat</h5>
     <dl class="row mb-3">
         <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PrviKlubGolovi)</dt>
         <dd class="col-sm-9">@Html.DisplayFor(model => model.PrviKlubGolovi)</dd>
@@ -74,9 +73,9 @@
 </div>
 
 <div class="mt-4">
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
     @if (ViewBag.IsAdmin ?? false)
     {
-        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark">Back to Admin Page</a>
+        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark">Nazad na admin stranicu</a>
     }
 </div>
