@@ -12,6 +12,7 @@
 <table id="turniriTable" class="display compact cell-border">
     <thead>
         <tr>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.NazivTurnira)
             </th>
@@ -31,30 +32,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NazivTurnira)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lokacija)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatumPocetka)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatumZavrsetka)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipTurnira)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TurnirID" class="btn btn-primary mb-2 mt-2">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.TurnirID" class="btn btn-secondary mb-2 mt-2">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.TurnirID" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="control-icon"></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NazivTurnira)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lokacija)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DatumPocetka)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DatumZavrsetka)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipTurnira)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TurnirID" class="btn btn-primary mb-2 mt-2">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.TurnirID" class="btn btn-secondary mb-2 mt-2">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.TurnirID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
@@ -62,6 +65,32 @@
 @section Scripts {
     <script>
         $('#turniriTable').DataTable({
+            "responsive": {
+                "details": {
+                    "type": "column",
+                    "target": 0,
+                    "renderer": function (api, rowIdx, columns) {
+                        var data = '<table class="table table-sm table-dark table-borderless mb-0">';
+                        $.each(columns, function (i, col) {
+                            if (i > 0) {
+                                data += '<tr>' +
+                                        '<td class="text-white-50 fw-bold" style="width: 40%;">' + col.title + '</td>' +
+                                        '<td class="text-white">' + col.data + '</td>' +
+                                        '</tr>';
+                            }
+                        });
+                        data += '</table>';
+                        return data;
+                    }
+                }
+            },
+            "columnDefs": [
+                {
+                    "className": "control",
+                    "orderable": false,
+                    "targets": 0
+                }
+            ],
             "paging": true,
             "searching": true,
             "ordering": true,

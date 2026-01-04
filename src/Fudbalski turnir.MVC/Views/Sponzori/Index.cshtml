@@ -12,6 +12,7 @@
 <table id="sponzoriTable" class="display compact cell-border">
     <thead>
         <tr>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.ImeSponzora)
             </th>
@@ -26,16 +27,18 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImeSponzora)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VrednostSponzora)€
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.KontaktSponzora)
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="control-icon"></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImeSponzora)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VrednostSponzora)€
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KontaktSponzora)
                 </td>
                 <td>
                     @if (!string.IsNullOrEmpty(item.NazivTurnira))
@@ -47,19 +50,45 @@
                         <span class="text-muted small">Nema dodeljenih turnira</span>
                     }
                 </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.SponzorID" class="btn btn-primary mb-2 mt-2">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.SponzorID" class="btn btn-secondary mb-2 mt-2">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.SponzorID" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SponzorID" class="btn btn-primary mb-2 mt-2">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.SponzorID" class="btn btn-secondary mb-2 mt-2">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.SponzorID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
 @section Scripts {
     <script>
         $('#sponzoriTable').DataTable({
+            "responsive": {
+                "details": {
+                    "type": "column",
+                    "target": 0,
+                    "renderer": function (api, rowIdx, columns) {
+                        var data = '<table class="table table-sm table-dark table-borderless mb-0">';
+                        $.each(columns, function (i, col) {
+                            if (i > 0) {
+                                data += '<tr>' +
+                                        '<td class="text-white-50 fw-bold" style="width: 40%;">' + col.title + '</td>' +
+                                        '<td class="text-white">' + col.data + '</td>' +
+                                        '</tr>';
+                            }
+                        });
+                        data += '</table>';
+                        return data;
+                    }
+                }
+            },
+            "columnDefs": [
+                {
+                    "className": "control",
+                    "orderable": false,
+                    "targets": 0
+                }
+            ],
             "paging": true,
             "searching": true,
             "ordering": true,
