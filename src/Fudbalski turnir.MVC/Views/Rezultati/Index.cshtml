@@ -40,7 +40,6 @@
                 @foreach (var utakmica in Model)
                 {
                     <tr class="rezultati">
-                        @* KLJUČNA PROMENA: data-order omogućava hronološko sortiranje *@
                         <td data-order="@utakmica.Datum.ToString("yyyyMMddHHmm")">
                             @utakmica.Datum.ToString("dd.MM.yyyy. HH:mm")
                         </td>
@@ -87,7 +86,7 @@
                 "info": true,
                 "responsive": true,
                 "autoWidth": false,
-                "order": [[0, "desc"]], // Sortira prvu kolonu (Datum) unazad
+                "order": [[0, "desc"]], 
                 "language": {
                     "search": "Filter unutar tabele:",
                     "info": "Prikaz _START_ do _END_ od ukupno _TOTAL_ utakmica",
