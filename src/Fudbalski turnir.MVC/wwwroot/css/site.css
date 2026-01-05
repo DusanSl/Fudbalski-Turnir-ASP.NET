@@ -220,3 +220,11 @@ table.dataTable.cell-border tbody tr:hover td {
 .control-icon:before {
     color: white !important;
 }
+
+.admin-card {
+    transition: all 0.25s ease-in-out;
+}
+
+.admin-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6) !important;
+}
