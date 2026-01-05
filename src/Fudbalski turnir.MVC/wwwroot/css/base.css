@@ -1,0 +1,14 @@
+﻿body {
+    background: linear-gradient(to bottom right, #0f172a, #172554, #020617);
+    min-height: 100vh;
+    color: white;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.whitetexthover:hover {
+    color: white !important;
+}
+
+.control-icon:before {
+    color: white !important;
+}
