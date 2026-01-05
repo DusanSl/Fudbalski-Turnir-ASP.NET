@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Fudbalski_turnir.Controllers
 {
-    [Authorize]
     public class KluboviController : Controller
     {
         private readonly IKlubService _kluboviService;
@@ -18,7 +17,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Klubovi
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var kluboviDto = await _kluboviService.GetAllKluboviAsync();
@@ -38,7 +37,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Klubovi/Details/5
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Details(int id)
         {
             var k = await _kluboviService.GetKlubByIdAsync(id);

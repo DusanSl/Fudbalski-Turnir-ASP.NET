@@ -19,7 +19,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Turniri
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var turniriDto = await _turnirService.GetAllTurniriAsync();
@@ -38,7 +38,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Turniri/Details/5
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, Users")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();

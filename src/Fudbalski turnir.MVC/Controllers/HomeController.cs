@@ -1,13 +1,15 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using FudbalskiTurnir.DAL;
-using FudbalskiTurnir.DAL.Models;
 using Fudbalski_turnir.Models;
 using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.BLL.Services;
+using FudbalskiTurnir.DAL;
+using FudbalskiTurnir.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Fudbalski_turnir.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

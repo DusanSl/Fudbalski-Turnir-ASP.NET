@@ -49,26 +49,47 @@
 
 /* for forms in register, login & profile sections */
 .form-control {
-    background-color: rgba(15, 23, 42, 0.6) !important;
+    background-color: #1a2332 !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: white !important;
     border-radius: 10px !important;
     padding: 12px !important;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
 }
 
 .form-floating {
-    height: 58px !important;
-    min-height: 50px !important;
+    margin-bottom: 15px !important; 
+    position: relative;
 }
 
     .form-floating > .form-control {
-        padding-top: 1.25rem !important;
-        padding-bottom: 0.25rem !important;
-        height: 50px !important;
-        line-height: 1.25 !important;
+        padding-top: 1.625rem !important;
+        padding-bottom: 0.625rem !important;
+        height: 58px !important; 
     }
-
     .form-floating > label {
         padding-top: 0.7rem !important;
     }
+
+.identity-wrapper .text-danger {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    line-height: 1.2;
+    padding-left: 5px;
+}
+
+/* Stilizovanje autofill polja */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #1a2332 inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+

@@ -1,15 +1,8 @@
-﻿<!DOCTYPE html>
-<html lang="sr" data-bs-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Platforma za vaše turnire</title>
+﻿@{
+    ViewData["Title"] = "Početna";
+}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <section class="py-5 d-flex align-items-center" style="min-height: 70vh;">
+<section class="py-5 d-flex align-items-center" style="min-height: 70vh;">
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-lg-8 col-xl-7">
@@ -23,11 +16,11 @@
                     </p>
 
                     <div class="d-flex gap-3 flex-wrap justify-content-center">
-                        <a asp-controller="Standings" asp-action="Index" class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">
-                            Započni
-                        </a>
                         <a href="#features" class="btn btn-light btn-lg rounded-pill px-5">
                             Saznaj više
+                        </a>
+                        <a asp-controller="Standings" asp-action="Index" class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">
+                            Započni
                         </a>
                     </div>
                 </div>
@@ -93,7 +86,7 @@
                              style="width: 70px; height: 70px; font-size: 2rem;">
                             <i class="bi bi-person-fill-add"></i>
                         </div>
-                        <h4 class="fw-bold text-white">1. Napravi nalog</h4>
+                        <h4 class="fw-bold text-white">1. Napravite nalog</h4>
                         <p class="text-secondary">Registrujte se kao korisnik da biste započeli rad na platformi.</p>
                     </div>
                 </div>
@@ -113,7 +106,7 @@
                             style="width: 70px; height: 70px; font-size: 2.5rem; line-height: 1;">
                             <i class="bi bi-bell"></i>
                         </div>
-                        <h4 class="fw-bold text-white">3. Budi u toku</h4>
+                        <h4 class="fw-bold text-white">3. Budite u toku</h4>
                         <p class="text-secondary">Dobijajte najnovije informacije o rezultatima utakmica i promenama na tabeli.</p>
                     </div>
                 </div>
@@ -139,5 +132,3 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
