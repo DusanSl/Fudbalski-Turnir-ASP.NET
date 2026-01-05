@@ -49,7 +49,7 @@
 
 /* for forms in register, login & profile sections */
 .form-control {
-    background-color: #1a2332 !important;
+    background-color: #0f172a !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: white !important;
     border-radius: 10px !important;
@@ -80,12 +80,13 @@
     padding-left: 5px;
 }
 
-/* Stilizovanje autofill polja */
+/* Stilizovanje autofill polja (ako se obrise, stavi se automatski na white) 
+(problem samo na Chromium browserima (Chrome, Edge..), na Firefox-u radi bez problema :)) */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #1a2332 inset !important;
+    -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
     -webkit-text-fill-color: #ffffff !important;
     caret-color: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
