@@ -228,3 +228,22 @@ table.dataTable.cell-border tbody tr:hover td {
 .admin-card:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.6) !important;
 }
+.nav-pills .nav-link {
+    color: #ffffff !important; 
+}
+
+.form-floating {
+    height: 58px !important; 
+    min-height: 50px !important;
+}
+
+.form-floating > .form-control {
+    padding-top: 1.25rem !important; 
+    padding-bottom: 0.25rem !important;
+    height: 50px !important;
+    line-height: 1.25 !important;
+}
+
+.form-floating > label {
+    padding-top: 0.7rem !important; 
+}

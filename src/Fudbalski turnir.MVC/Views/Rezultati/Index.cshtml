@@ -28,10 +28,10 @@
                 <tr>
                     <th></th>
                     <th>Datum i vreme</th>
-                    <th>Kolo / Grupa</th>
                     <th>Domaćin</th>
                     <th>Rezultat</th>
                     <th>Gost</th>
+                    <th>Kolo / Grupa</th>
                     <th class="d-none d-lg-table-cell">Mesto</th>
                     <th class="d-none d-md-table-cell">Napomena</th>
                     <th class="d-none">TurnirID_Hidden</th>
@@ -45,13 +45,6 @@
                         <td data-order="@utakmica.Datum.ToString("yyyyMMddHHmm")">
                             @utakmica.Datum.ToString("dd.MM.yyyy. HH:mm")
                         </td>
-                        <td>
-                            @utakmica.Kolo
-                            @if (!string.IsNullOrEmpty(utakmica.Grupa))
-                            {
-                                <span>(Grupa @utakmica.Grupa)</span>
-                            }
-                        </td>
                         <td>@utakmica.PrviKlubNaziv</td>
                         <td>
                             <span class="responsiveTable px-3 py-2">
@@ -59,6 +52,13 @@
                             </span>
                         </td>
                         <td>@utakmica.DrugiKlubNaziv</td>
+                        <td>
+                            @utakmica.Kolo
+                            @if (!string.IsNullOrEmpty(utakmica.Grupa))
+                            {
+                                <span>(Grupa @utakmica.Grupa)</span>
+                            }
+                        </td>
                         <td class="d-none d-lg-table-cell text-white-50">@utakmica.Mesto</td>
                         <td class="d-none d-md-table-cell">
                             @if (utakmica.PrviKlubPenali.HasValue)
