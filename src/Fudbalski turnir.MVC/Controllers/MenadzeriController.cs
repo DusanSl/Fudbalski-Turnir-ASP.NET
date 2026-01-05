@@ -19,7 +19,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Menadzeri
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var menadzeriDto = await _menadzerService.GetAllMenadzerAsync();
@@ -40,7 +40,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Menadzeri/Details/5
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Details(int id)
         {
             var m = await _menadzerService.GetMenadzerByIdAsync(id);

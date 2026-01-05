@@ -1,11 +1,13 @@
 ﻿using FudbalskiTurnir.DAL;
 using FudbalskiTurnir.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace FudbalskiTurnir.Controllers
 {
+    [Authorize(Roles = "Admin,User")]
     public class StandingsController : Controller
     {
         private readonly ApplicationDbContext _context;

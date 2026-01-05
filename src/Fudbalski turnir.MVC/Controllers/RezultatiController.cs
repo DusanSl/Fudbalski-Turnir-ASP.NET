@@ -1,7 +1,9 @@
 ﻿using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize(Roles = "Admin,User")]
 public class RezultatiController : Controller
 {
     private readonly IUtakmiceService _utakmiceService;

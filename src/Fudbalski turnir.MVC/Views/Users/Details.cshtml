@@ -8,7 +8,7 @@
 
 <div class="container-fluid p-0">
 
-    <div class="text-white-50 fw-light fs-4 mt-2 mb-2">Account Info</div>
+    <div class="text-white-50 fw-light fs-4 mt-2 mb-2">Informacije o nalogu</div>
 
     <div class="row mb-2">
         <div class="col-sm-3 fw-bold">Email</div>
@@ -61,6 +61,9 @@
 
     <div class="mt-4">
         <a asp-action="Index" class="btn btn-secondary px-4">Nazad na listu</a>
-        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark">Nazad na admin stranicu</a>
+        @if (ViewBag.IsAdmin ?? false)
+        {
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark">Nazad na admin stranicu</a>
+        }
     </div>
 </div>

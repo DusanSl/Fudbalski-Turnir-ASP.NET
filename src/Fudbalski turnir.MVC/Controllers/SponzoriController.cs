@@ -19,7 +19,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Sponzori
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var sponzoriDto = await _sponzorService.GetAllSponzoriAsync();
@@ -39,7 +39,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Sponzori/Details/5
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Details(int id)
         {
             var s = await _sponzorService.GetSponzorByIdAsync(id);

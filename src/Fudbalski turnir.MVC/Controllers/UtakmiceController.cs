@@ -19,6 +19,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Utakmice
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var utakmice = await _utakmiceService.GetAllUtakmiceAsync();
@@ -46,6 +47,7 @@ namespace Fudbalski_turnir.Controllers
         }
 
         // GET: Utakmice/Details/5
+        [Authorize(Roles = "Admin, Users")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
