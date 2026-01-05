@@ -1,0 +1,72 @@
+﻿.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 25px !important;
+    padding-top: 10px;
+}
+
+.dataTables_filter label {
+    margin-left: 15px;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    padding-top: 1.5rem;
+}
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        background-color: #212529 !important;
+        color: white !important;
+        border: 1px solid #0d6efd !important;
+        border-radius: 6px !important;
+        padding: 5px 12px !important;
+        margin-left: 4px !important;
+        transition: all 0.2s ease;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background-color: #0d6efd !important;
+        color: white !important;
+        border: 1px solid #0d6efd !important;
+        font-weight: bold;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+        opacity: 0.5;
+        cursor: default;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+table.dataTable.display.cell-border,
+table.dataTable.cell-border {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin: 20px 0 !important;
+    border: 1px solid rgba(13, 110, 253, 0.3) !important;
+    background-color: transparent !important;
+}
+
+    table.dataTable.display.cell-border thead th,
+    table.dataTable.cell-border thead th {
+        background-color: #0d6efd !important;
+        color: white !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        padding: 15px 10px !important;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
+
+    table.dataTable.display.cell-border tbody td,
+    table.dataTable.display.cell-border tbody th,
+    table.dataTable.cell-border tbody td {
+        background-color: rgba(26, 30, 38, 0.8) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(13, 110, 253, 0.2) !important;
+        padding: 12px 8px !important;
+        transition: all 0.2s ease;
+    }
+
+    table.dataTable.display.cell-border tbody tr:hover td,
+    table.dataTable.cell-border tbody tr:hover td {
+        background-color: rgba(13, 110, 253, 0.15) !important;
+        box-shadow: inset 0 0 10px rgba(13, 110, 253, 0.1);
+    }
