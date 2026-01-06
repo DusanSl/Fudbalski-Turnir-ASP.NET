@@ -67,3 +67,16 @@ table.dataTable.cell-border {
         background-color: rgba(13, 110, 253, 0.15) !important;
         box-shadow: inset 0 0 10px rgba(13, 110, 253, 0.1);
     }
+
+.dataTables_wrapper .dataTables_length select {
+    background-color: #1a1e26 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(13, 110, 253, 0.5) !important;
+    border-radius: 4px;
+    padding: 4px 8px;
+    outline: none;
+}
+    .dataTables_wrapper .dataTables_length select option {
+        background-color: #1a1e26 !important;
+        color: #ffffff !important;
+    }
