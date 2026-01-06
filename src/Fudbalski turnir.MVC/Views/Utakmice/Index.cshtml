@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="admin-fade-in">
 <h1>Index</h1>
 <p>
     <a asp-action="Create" class="btn btn-success mb-2 mt-2">Nov unos</a>
@@ -68,7 +69,8 @@
             </tr>
         }
     </tbody>
-</table>
+    </table>
+</div>
 @section Scripts {
     <script>
         $('#utakmiceTable').DataTable({

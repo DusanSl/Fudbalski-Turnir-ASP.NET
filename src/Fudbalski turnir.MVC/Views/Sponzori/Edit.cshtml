@@ -4,10 +4,11 @@
     ViewData["Title"] = "Izmenite";
 }
 
+<div class="admin-fade-in">
 <h1>Izmenite</h1>
 
 <h4>Sponzor</h4>
-<div class="row">
+<div>
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -48,6 +49,7 @@
 <a asp-controller="Admin" asp-action="Index" class="btn btn-dark mb-1 mt-1">Nazad na admin stranicu</a>
 
 
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

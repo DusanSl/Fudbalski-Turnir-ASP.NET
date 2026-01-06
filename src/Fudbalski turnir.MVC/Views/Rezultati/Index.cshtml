@@ -4,9 +4,9 @@
 }
 
 <div class="container">
-    <h2 class="display-6 fw-bold">Rezultati svih utakmica</h2>
+    <h2 class="display-6 fw-bold animate-title">Rezultati svih utakmica</h2>
 
-    <div class="row mb-3">
+    <div class="row mb-3 animate-filter">
         <div class="col-md-4">
             <label for="turnirFilter" class="fs-3 form-label">Izaberite turnir:</label>
             <select id="turnirFilter" class="form-select bg-dark text-white border-primary shadow-none">
@@ -22,8 +22,8 @@
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table id="rezultatiTable" class="display cell-border" style="width:100%">
+    <div class="table-responsive animate-table">
+        <table id="rezultatiTable" class="display cell-border rezultati-table" style="width:100%">
             <thead>
                 <tr>
                     <th></th>
@@ -117,14 +117,22 @@
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
+                "zeroRecords": "Nema rezultata",
+                "emptyTable": "Nema podataka u tabeli",
                 "order": [[1, "desc"]],
                 "language": {
                     "search": "Filter unutar tabele:",
                     "info": "Prikaz _START_ do _END_ od ukupno _TOTAL_ utakmica",
+                    "infoEmpty": "Prikazivanje 0 do 0 od 0 entiteta",
+                    "infoFiltered": "(filtrirano od ukupno _MAX_ entiteta)",
                     "paginate": {
+                        "first": "Prva",
+                        "last": "Poslednja",
                         "next": "Sledeća",
                         "previous": "Prethodna"
-                    }
+                    },
+                "zeroRecords": "Nema rezultata",
+                "emptyTable": "Nema podataka u tabeli"
                 }
             });
 
