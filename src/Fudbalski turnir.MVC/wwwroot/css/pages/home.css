@@ -1,0 +1,77 @@
+﻿@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+section:first-of-type h1 {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+section:first-of-type .lead {
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+section:first-of-type .d-flex {
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.glass-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+#features .col-md-6:nth-child(1) .glass-card {
+    animation-delay: 0.1s;
+}
+
+#features .col-md-6:nth-child(2) .glass-card {
+    animation-delay: 0.2s;
+}
+
+#features .col-md-6:nth-child(3) .glass-card {
+    animation-delay: 0.3s;
+}
+
+#features .text-center,
+#about .text-center {
+    animation: fadeIn 0.8s ease-out;
+}
+
+#about .col-md-4 {
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+    #about .col-md-4:nth-child(1) {
+        animation-delay: 0.2s;
+    }
+
+    #about .col-md-4:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+
+    #about .col-md-4:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+
+.btn-shadow:hover {
+        filter: brightness(0.85) !important;
+        background-color: #e2e6ea !important;
+        color: #212529 !important;
+    }

@@ -1,0 +1,153 @@
+﻿@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.standings-title {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.standings-filter {
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.turnir-selector {
+    transition: all 0.3s ease;
+}
+
+    .turnir-selector:hover {
+        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+        transform: translateY(-2px);
+    }
+
+.standings-tabs {
+    animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.standings-tab {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+    .standings-tab:hover {
+        transform: translateY(-3px);
+    }
+
+    .standings-tab.active {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+.standings-content {
+    animation: fadeIn 0.8s ease-out 0.4s both;
+}
+
+.group-card-wrapper {
+    animation: fadeIn 0.5s ease-out both;
+}
+
+    .group-card-wrapper:nth-child(1) {
+        animation-delay: 0.05s;
+    }
+
+    .group-card-wrapper:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .group-card-wrapper:nth-child(3) {
+        animation-delay: 0.15s;
+    }
+
+    .group-card-wrapper:nth-child(4) {
+        animation-delay: 0.2s;
+    }
+
+.group-card {
+    transition: all 0.3s ease;
+}
+
+    .group-card:hover {
+        transform: translateY(-5px);
+    }
+
+.group-header {
+    transition: background-color 0.3s ease;
+}
+
+.group-card:hover .group-header {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
+}
+
+.group-row {
+    transition: background-color 0.2s ease;
+}
+
+    .group-row:hover {
+        background-color: rgba(59, 130, 246, 0.1) !important;
+    }
+
+.points-cell {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.group-row:hover .points-cell {
+    color: #1c4cee !important;
+}
+
+.knockout-match {
+    transition: all 0.3s ease;
+}
+
+    .knockout-match:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
+    }
+
+.finale-card {
+    transition: all 0.3s ease;
+}
+
+    .finale-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+    }
+
+.club-bracket-link {
+    transition: background-color 0.2s ease;
+}
+
+    .club-bracket-link:hover {
+        background-color: rgba(59, 130, 246, 0.1);
+    }
+
+.standings-back {
+    animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.back-button {
+    transition: all 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -4,7 +4,7 @@
     {
         if (match == null) return;
 
-        <div class="mb-2 border border-secondary rounded-2 bg-dark shadow-sm overflow-hidden" style="min-width: 150px;">
+        <div class="mb-2 border border-secondary rounded-2 bg-dark shadow-sm overflow-hidden knockout-match" style="min-width: 150px;">
 
             <a href="@Url.Action("RedirectToClub", "Klubovi", new { naziv = match.PrviKlubNaziv })"
                class="d-flex justify-content-between align-items-center p-2 text-decoration-none club-bracket-link">
@@ -102,7 +102,7 @@
                     {
                         <h5 class="text-primary fw-bold mb-2" style="font-size: 0.9rem; letter-spacing: 1px;">FINALE</h5>
 
-                        <div class="card bg-dark border-primary border-2 shadow-lg mx-auto overflow-hidden" style="width: 220px;">
+                        <div class="card bg-dark border-primary border-2 shadow-lg mx-auto overflow-hidden finale-card" style="width: 220px;">
                             <div class="card-body p-0">
 
                                 <a href="@Url.Action("RedirectToClub", "Klubovi", new { naziv = Model.Finale.PrviKlubNaziv })"

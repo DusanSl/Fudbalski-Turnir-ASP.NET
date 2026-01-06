@@ -1,5 +1,9 @@
 ﻿@import 'base.css';
 @import 'layout.css';
 @import 'components/tables.css';
+@import 'pages/admin.css';
+@import 'pages/standings.css';
+@import 'pages/home.css';
+@import 'pages/rezultati.css';
 @import 'pages/identity.css';
 @import 'pages/tournament.css';

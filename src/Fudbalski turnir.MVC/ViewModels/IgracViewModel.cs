@@ -25,7 +25,7 @@ namespace FudbalskiTurnir.ViewModels
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = false)]
         [Display(Name = "Datum rođenja")]
-        public DateTime DatumRodjenja { get; set; }
+        public DateTime DatumRodjenja { get; set; } = new DateTime(2000, 1, 1);
 
         [Required(ErrorMessage = "Nacionalnost je obavezna")]
         [StringLength(50)]
