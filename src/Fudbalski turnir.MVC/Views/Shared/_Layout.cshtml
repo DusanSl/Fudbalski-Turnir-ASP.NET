@@ -106,6 +106,119 @@
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isIdPage = document.querySelector('.identity-wrapper') !== null ||
+                             window.location.pathname.toLowerCase().includes('/account/') ||
+                             window.location.pathname.toLowerCase().includes('/identity/');
+
+            if (!isIdPage) return;
+
+                    const translations = {
+            'Email': 'Email',
+            'Password': 'Lozinka',
+            'Confirm Password': 'Potvrdite lozinku',
+            'Confirm password': 'Potvrdite lozinku',
+            'Remember me?': 'Zapamti me?',
+            'Log in': 'Prijavite se',
+            'Register': 'Registrujte se',
+            'Forgot your password?': 'Zaboravili ste lozinku?',
+            'Register as a new user': 'Registrujte se kao novi korisnik',
+            'Resend email confirmation': 'Pošaljite ponovo potvrdu emaila',
+            'Enter your email.': 'Napišite vas email.',
+
+            'Manage your account': 'Upravljajte nalogom',
+            'Change your account settings': 'Promenite podešavanja naloga',
+            'Profile': 'Profil',
+            'Username': 'Korisničko ime',
+            'Phone number': 'Broj telefona',
+            'Save': 'Sačuvajte',
+            'Two-factor authentication': 'Dvofaktorska autentifikacija',
+            'Two-factor authentication (2FA)': 'Dvofaktorska autentifikacija (2FA)',
+            'Personal data': 'Lični podaci',
+            'Personal Data': 'Lični podaci',
+            'Reset Password' : 'Resetujte lozinku',
+            'Change password': 'Promenite lozinku',
+            'Old password': 'Stara lozinka',
+            'Current password': 'Trenutna lozinka',
+            'New password': 'Nova lozinka',
+            'Confirm new password': 'Potvrdite novu lozinku',
+            'Change email': 'Promenite email',
+            'Manage Email': 'Upravljajte emailom',
+            'Delete account': 'Obrišite nalog',
+            'Logout': 'Odjavite se',
+            'Download': 'Preuzmite',
+            'Delete': 'Obrišite',
+
+            'Authenticator app': 'Autentifikator aplikacija',
+            'Add authenticator app': 'Dodajte autentifikator aplikaciju',
+            'Configure authenticator app': 'Podesite autentifikator aplikaciju',
+            'Reset authenticator app': 'Resetujte autentifikator aplikaciju',
+            'Disable 2FA': 'Onemogući 2FA',
+            'Enable 2FA': 'Omogući 2FA',
+
+            'Your account contains personal data that you have given us. This page allows you to download or delete that data.': 'Vaš nalog sadrži lične podatke koje ste nam dali. Ova stranica vam omogućava da preuzmete ili obrišete te podatke.',
+            'Deleting this data will permanently remove your account, and this cannot be recovered.': 'Brisanje ovih podataka će trajno ukloniti vaš nalog i to se ne može vratiti.',
+
+            'Submit': 'Potvrdite',
+            'Cancel': 'Otkažite',
+            'Update': 'Ažurirajte',
+            'Change': 'Promenite',
+            'Create': 'Kreirajte',
+            'Resend': 'Pošaljite ponovo',
+            'Update password': 'Ažurirajte lozinku',
+
+            'The Email field is required.': 'Email je obavezan.',
+            'The Password field is required.': 'Lozinka je obavezna.',
+            'The passwords do not match.': 'Lozinke se ne poklapaju.',
+            'Invalid login attempt.': 'Neuspešan pokušaj prijave.',
+            'Please enter a valid email address.': 'Molimo unesite validan email.',
+            'The phone number is invalid.': 'Broj telefona nije validan.',
+            'The current password is incorrect.': 'Trenutna lozinka je netačna.',
+            'Email is required.': 'Email je obavezan.',
+            'Password is required.': 'Lozinka je obavezna.',
+            'Passwords do not match.': 'Lozinke se ne poklapaju.',
+
+            'Your profile has been updated': 'Vaš profil je ažuriran',
+            'Your password has been changed': 'Vaša lozinka je promenjena',
+            'Your email has been changed': 'Vaš email je promenjen',
+            'Your authenticator app has been verified': 'Vaša autentifikator aplikacija je verifikovana',
+            };
+
+                            function translate() {
+                try {
+                    const elements = document.querySelectorAll('h1, h2, h3, h4, h5, label, a, button, span, p, strong');
+
+                    elements.forEach(el => {
+                        if (el.tagName === 'LABEL' && el.querySelector('input[type="checkbox"]')) {
+                            for (let node of el.childNodes) {
+                                if (node.nodeType === 3) {
+                                    let t = node.textContent.trim().replace(/\s+/g, ' ');
+                                    if (translations[t]) node.textContent = node.textContent.replace(node.textContent.trim(), translations[t]);
+                                }
+                            }
+                            return;
+                        }
+
+                        if (el.children.length === 0) {
+                            let t = el.textContent.trim().replace(/\s+/g, ' ');
+                            if (translations[t]) el.textContent = translations[t];
+                        }
+                    });
+
+                    document.querySelectorAll('input[placeholder]').forEach(input => {
+                        let p = input.getAttribute('placeholder').trim();
+                        if (translations[p]) input.setAttribute('placeholder', translations[p]);
+                    });
+                } catch (e) { console.error("Translation error:", e); }
+            }
+
+            translate();
+
+            document.addEventListener('keyup', translate);
+            document.addEventListener('click', translate);
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
