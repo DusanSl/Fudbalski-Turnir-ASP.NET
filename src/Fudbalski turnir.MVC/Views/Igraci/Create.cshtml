@@ -19,16 +19,6 @@
                 <span asp-validation-for="KlubID" class="text-danger"></span>
             </div>
             <div class="form-group mb-1">
-                <label asp-for="Pozicija" class="control-label"></label>
-                <input asp-for="Pozicija" class="form-control" placeholder="npr. Napadač" />
-                <span asp-validation-for="Pozicija" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-1">
-                <label asp-for="BrojDresa" class="control-label">Broj dresa</label>
-                <input asp-for="BrojDresa" class="form-control" placeholder="npr. 10" value="@(Model.BrojDresa == 0 ? "" : Model.BrojDresa.ToString())" />
-                <span asp-validation-for="BrojDresa" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-1">
                 <label asp-for="Ime" class="control-label"></label>
                 <input asp-for="Ime" class="form-control" placeholder="npr. Lionel" />
                 <span asp-validation-for="Ime" class="text-danger"></span>
@@ -37,6 +27,16 @@
                 <label asp-for="Prezime" class="control-label"></label>
                 <input asp-for="Prezime" class="form-control" placeholder="npr. Messi" />
                 <span asp-validation-for="Prezime" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-1">
+                <label asp-for="Pozicija" class="control-label"></label>
+                <input asp-for="Pozicija" class="form-control" placeholder="npr. Napadač" />
+                <span asp-validation-for="Pozicija" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-1">
+                <label asp-for="BrojDresa" class="control-label">Broj dresa</label>
+                <input asp-for="BrojDresa" class="form-control" placeholder="npr. 10" value="@(Model.BrojDresa == 0 ? "" : Model.BrojDresa.ToString())" />
+                <span asp-validation-for="BrojDresa" class="text-danger"></span>
             </div>
             <div class="form-group mb-1">
                 <label asp-for="DatumRodjenja" class="control-label"></label>
