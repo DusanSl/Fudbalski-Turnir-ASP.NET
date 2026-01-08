@@ -13,7 +13,7 @@ namespace FudbalskiTurnir.ViewModels
         public string ImeKluba { get; set; }
 
         [Required(ErrorMessage = "Godina osnivanja je obavezna")]
-        [Range(1800, 2100, ErrorMessage = "Godina osnivanja mora biti između 1800 i 2100")]
+        [Range(1800, 2035, ErrorMessage = "Godina osnivanja mora biti između 1800 i 2035")]
         [Display(Name = "Godina osnivanja")]
         public int GodinaOsnivanja { get; set; }
 
@@ -23,7 +23,7 @@ namespace FudbalskiTurnir.ViewModels
         public int RankingTima { get; set; }
 
         [Required(ErrorMessage = "Broj igrača je obavezan")]
-        [Range(19, 30, ErrorMessage = "Broj igrača mora biti između 19 i 30")]
+        [Range(15, 30, ErrorMessage = "Broj igrača mora biti između 15 i 30")]
         [Display(Name = "Broj igrača")]
         public int BrojIgraca { get; set; }
 
