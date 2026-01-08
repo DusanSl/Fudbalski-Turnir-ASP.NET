@@ -72,7 +72,7 @@
                     "renderer": function (api, rowIdx, columns) {
                         var data = '<table class="table table-sm table-dark table-borderless mb-0">';
                         $.each(columns, function (i, col) {
-                            if (i > 0) {
+                            if (i >= 0) {
                                 data += '<tr>' +
                                         '<td class="text-white-50 fw-bold" style="width: 40%;">' + col.title + '</td>' +
                                         '<td class="text-white">' + col.data + '</td>' +

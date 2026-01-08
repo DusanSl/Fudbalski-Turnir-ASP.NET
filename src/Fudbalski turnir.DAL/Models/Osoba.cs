@@ -8,14 +8,15 @@ namespace FudbalskiTurnir.DAL.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OsobaID { get; set; }
+        [Required]
         [MaxLength(50)]
         public string Ime { get; set; }
+        [Required]
         [MaxLength(100)]
         public string Prezime { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = false)]
-        [Display(Name = "Datum rođenja")]
+        [Required]
         public DateTime DatumRodjenja { get; set; }
+        [Required]
         [MaxLength(50)]
         public string Nacionalnost { get; set; }
         public Osoba()

@@ -76,15 +76,15 @@ namespace FudbalskiTurnir.DAL
             await context.SaveChangesAsync();
 
             context.Menadzer.AddRange(
-                new Menadzer { Ime = "Carlo", Prezime = "Ancelotti", Nacionalnost = "ITA", GodineIskustva = 30, DatumRodjenja = new DateTime(1959, 6, 10), KlubID = ls[0].KlubID },
-                new Menadzer { Ime = "Pep", Prezime = "Guardiola", Nacionalnost = "ESP", GodineIskustva = 16, DatumRodjenja = new DateTime(1971, 1, 18), KlubID = ls[7].KlubID },
-                new Menadzer { Ime = "Hansi", Prezime = "Flick", Nacionalnost = "GER", GodineIskustva = 20, DatumRodjenja = new DateTime(1965, 2, 24), KlubID = ls[4].KlubID }
+                new Menadzer { Ime = "Carlo", Prezime = "Ancelotti", Nacionalnost = "Italija", GodineIskustva = 30, DatumRodjenja = new DateTime(1959, 6, 10), KlubID = ls[0].KlubID },
+                new Menadzer { Ime = "Pep", Prezime = "Guardiola", Nacionalnost = "Španija", GodineIskustva = 16, DatumRodjenja = new DateTime(1971, 1, 18), KlubID = ls[7].KlubID },
+                new Menadzer { Ime = "Hansi", Prezime = "Flick", Nacionalnost = "Nemačka", GodineIskustva = 20, DatumRodjenja = new DateTime(1965, 2, 24), KlubID = ls[4].KlubID }
             );
 
             context.Igrac.AddRange(
-                new Igrac { Ime = "Kylian", Prezime = "Mbappé", Nacionalnost = "FRA", Pozicija = "Napadač", BrojDresa = 9, DatumRodjenja = new DateTime(1998, 12, 20), KlubID = ls[0].KlubID },
-                new Igrac { Ime = "Lamine", Prezime = "Yamal", Nacionalnost = "ESP", Pozicija = "Krilo", BrojDresa = 19, DatumRodjenja = new DateTime(2007, 7, 13), KlubID = ls[4].KlubID },
-                new Igrac { Ime = "Erling", Prezime = "Haaland", Nacionalnost = "NOR", Pozicija = "Napadač", BrojDresa = 9, DatumRodjenja = new DateTime(2000, 7, 21), KlubID = ls[7].KlubID }
+                new Igrac { Ime = "Kylian", Prezime = "Mbappé", Nacionalnost = "Francuska", Pozicija = "Napadač", BrojDresa = 9, DatumRodjenja = new DateTime(1998, 12, 20), KlubID = ls[0].KlubID },
+                new Igrac { Ime = "Lamine", Prezime = "Yamal", Nacionalnost = "Španija", Pozicija = "Napadač", BrojDresa = 19, DatumRodjenja = new DateTime(2007, 7, 13), KlubID = ls[4].KlubID },
+                new Igrac { Ime = "Erling", Prezime = "Haaland", Nacionalnost = "Norveška", Pozicija = "Napadač", BrojDresa = 9, DatumRodjenja = new DateTime(2000, 7, 21), KlubID = ls[7].KlubID }
             );
 
             context.Utakmica.AddRange(

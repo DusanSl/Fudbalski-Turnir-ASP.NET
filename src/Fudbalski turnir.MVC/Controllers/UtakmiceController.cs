@@ -93,6 +93,10 @@ namespace Fudbalski_turnir.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UtakmicaViewModel viewModel)
         {
+            if (viewModel.PrviKlubNaziv == viewModel.DrugiKlubNaziv && !string.IsNullOrEmpty(viewModel.PrviKlubNaziv))
+            {
+                ModelState.AddModelError("DrugiKlubNaziv", "Domaćin i gost ne mogu biti isti klub.");
+            }
             if (ModelState.IsValid)
             {
                 if (viewModel.TurnirID <= 0)
@@ -132,6 +136,7 @@ namespace Fudbalski_turnir.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null) return NotFound();
 
             var u = await _utakmiceService.GetUtakmicaByIdAsync(id.Value);
@@ -167,7 +172,12 @@ namespace Fudbalski_turnir.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, UtakmicaViewModel viewModel)
         {
-            if (id != viewModel.UtakmicaID) return NotFound();
+            if (id != viewModel.UtakmicaID) return NotFound(); 
+            
+            if (viewModel.PrviKlubNaziv == viewModel.DrugiKlubNaziv && !string.IsNullOrEmpty(viewModel.PrviKlubNaziv))
+            {
+                ModelState.AddModelError("DrugiKlubNaziv", "Domaćin i gost ne mogu biti isti klub.");
+            }
 
             if (ModelState.IsValid)
             {
