@@ -1,6 +1,8 @@
-﻿@model BracketViewModel
+﻿@using FudbalskiTurnir.BLL.DTOs
+@model BracketDTO
+
 @{
-    void RenderMatch(KnockoutUtakmica match)
+    void RenderMatch(KnockoutUtakmicaDTO match)
     {
         if (match == null) return;
 

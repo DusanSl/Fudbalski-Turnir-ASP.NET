@@ -126,4 +126,98 @@ public class UtakmicaService : IUtakmiceService
     public async Task<IEnumerable<object>> GetKluboviByTurnirAsync(int turnirId) =>
         await _context.Klub.Where(k => k.Turniri.Any(t => t.TurnirID == turnirId))
             .Select(k => new { k.KlubID, k.ImeKluba }).ToListAsync();
+
+    public async Task<TurnirPregledDTO> GetStandingsModelAsync(int turnirId, string faza)
+    {
+        var model = new TurnirPregledDTO();
+
+        if (faza == "Grupna")
+        {
+            var utakmice = await _context.Utakmica
+                .Where(u => u.TurnirID == turnirId && u.Kolo == "Grupna faza")
+                .ToListAsync();
+
+            var grupisano = utakmice.GroupBy(u => u.Grupa).OrderBy(g => g.Key);
+
+            foreach (var grupa in grupisano)
+            {
+                if (!string.IsNullOrEmpty(grupa.Key))
+                {
+                    model.Grupe[grupa.Key] = CalculateStandings(grupa.ToList());
+                }
+            }
+        }
+        else
+        {
+            var knockout = await _context.Utakmica
+                .Where(u => u.TurnirID == turnirId && u.Kolo != "Grupna faza")
+                .ToListAsync();
+
+            model.Bracket = new BracketDTO
+            {
+                OsminaFinala = knockout.Where(u => u.Kolo == "Osmina finala").Select(MapToKnockout).ToList(),
+                Cetvrtfinale = knockout.Where(u => u.Kolo == "Četvrtfinale").Select(MapToKnockout).ToList(),
+                Polufinale = knockout.Where(u => u.Kolo == "Polufinale").Select(MapToKnockout).ToList(),
+                Finale = knockout.Where(u => u.Kolo == "Finale").Select(MapToKnockout).FirstOrDefault()
+            };
+        }
+
+        return model;
+    }
+
+    private List<StandingsDTO> CalculateStandings(List<Utakmica> utakmice)
+    {
+        var standings = new Dictionary<string, StandingsDTO>();
+
+        var nazivi = utakmice.Select(u => u.PrviKlubNaziv).Union(utakmice.Select(u => u.DrugiKlubNaziv)).Distinct().ToList();
+        var kluboviMapa = _context.Klub.Where(k => nazivi.Contains(k.ImeKluba)).ToDictionary(k => k.ImeKluba, k => k.KlubID);
+
+        foreach (var u in utakmice)
+        {
+            foreach (var naziv in new[] { u.PrviKlubNaziv, u.DrugiKlubNaziv })
+            {
+                if (!standings.ContainsKey(naziv))
+                    standings[naziv] = new StandingsDTO { KlubNaziv = naziv, KlubID = kluboviMapa.GetValueOrDefault(naziv) };
+            }
+
+            var d = standings[u.PrviKlubNaziv];
+            var g = standings[u.DrugiKlubNaziv];
+
+            d.Odigrano++;
+            g.Odigrano++;
+
+            d.DatiGolovi += u.PrviKlubGolovi;
+            d.PrimljeniGolovi += u.DrugiKlubGolovi;
+            g.DatiGolovi += u.DrugiKlubGolovi;
+            g.PrimljeniGolovi += u.PrviKlubGolovi;
+
+            if (u.PrviKlubGolovi > u.DrugiKlubGolovi)
+            {
+                d.Pobede++; d.Bodovi += 3; g.Porazi++;
+            }
+            else if (u.DrugiKlubGolovi > u.PrviKlubGolovi)
+            {
+                g.Pobede++; g.Bodovi += 3; d.Porazi++;
+            }
+            else
+            {
+                d.Nereseno++; g.Nereseno++; d.Bodovi += 1; g.Bodovi += 1;
+            }
+        }
+
+        return standings.Values
+            .OrderByDescending(s => s.Bodovi)
+            .ThenByDescending(s => s.GolRazlika)
+            .ToList();
+    }
+
+    private KnockoutUtakmicaDTO MapToKnockout(Utakmica u) => new KnockoutUtakmicaDTO
+    {
+        UtakmicaID = u.UtakmicaID,
+        PrviKlubNaziv = u.PrviKlubNaziv,
+        DrugiKlubNaziv = u.DrugiKlubNaziv,
+        PrviKlubGolovi = u.PrviKlubGolovi,
+        DrugiKlubGolovi = u.DrugiKlubGolovi,
+        Pobednik = u.PrviKlubGolovi > u.DrugiKlubGolovi ? u.PrviKlubNaziv : (u.DrugiKlubGolovi > u.PrviKlubGolovi ? u.DrugiKlubNaziv : "")
+    };
 }
