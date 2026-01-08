@@ -12,6 +12,7 @@ namespace FudbalskiTurnir.BLL.Interfaces
         Task DeleteUtakmicaAsync(int id);
         Task<bool> UtakmicaExistsAsync(int id);
         Task<IEnumerable<Turnir>> GetAllTurniriAsync();
-        Task<IEnumerable<object>> GetKluboviByTurnirAsync(int turnirId);
+        Task<IEnumerable<object>> GetKluboviByTurnirAsync(int turnirId); 
+        Task<TurnirPregledDTO> GetStandingsModelAsync(int turnirId, string faza);
     }
 }

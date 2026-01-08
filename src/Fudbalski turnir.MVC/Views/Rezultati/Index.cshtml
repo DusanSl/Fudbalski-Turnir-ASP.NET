@@ -27,7 +27,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>Datum i vreme</th>
+                    <th>Datum</th>
                     <th>Domaćin</th>
                     <th>Rezultat</th>
                     <th>Gost</th>
@@ -42,8 +42,8 @@
                 {
                     <tr class="rezultati">
                         <td class="control-icon"></td>
-                        <td data-order="@utakmica.Datum.ToString("yyyyMMddHHmm")">
-                            @utakmica.Datum.ToString("dd.MM.yyyy. HH:mm")
+                        <td data-order="@utakmica.Datum.ToString("yyyyMMdd")">
+                            @utakmica.Datum.ToString("dd.MM.yyyy.")
                         </td>
                         <td>@utakmica.PrviKlubNaziv</td>
                         <td>

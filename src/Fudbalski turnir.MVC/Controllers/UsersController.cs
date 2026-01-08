@@ -81,9 +81,11 @@ namespace FudbalskiTurnir.MVC.Controllers
                 var userDto = new UserDTO
                 {
                     Email = model.Email,
+                    UserName = model.Email,
                     PhoneNumber = model.PhoneNumber,
                     EmailConfirmed = model.EmailConfirmed,
                     PhoneNumberConfirmed = model.PhoneNumberConfirmed,
+                    IsActive = true,
                     SelectedRole = model.SelectedRole
                 };
 
