@@ -46,6 +46,18 @@
     position: relative;
 }
 
+.standings-tabs .nav-link.standings-tab:not(.active) {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background-color: transparent !important;
+    border: 1px solid rgba(59, 130, 246, 0.3); 
+}
+
+.standings-tabs .nav-link.standings-tab.active {
+    color: white !important;
+    background-color: #007bff !important; 
+    border-color: #007bff !important;
+    opacity: 1 !important;
+}
     .standings-tab:hover {
         transform: translateY(-3px);
     }

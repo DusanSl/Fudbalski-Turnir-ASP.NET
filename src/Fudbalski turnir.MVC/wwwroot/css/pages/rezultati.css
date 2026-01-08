@@ -7,7 +7,7 @@
 }
 
 .animate-table {
-    animation: fadeIn 0.8s ease-out 0.4s both;
+    animation: fadeIn 0.4s ease-out 0.2s both;
 }
 
 .dataTables_processing {

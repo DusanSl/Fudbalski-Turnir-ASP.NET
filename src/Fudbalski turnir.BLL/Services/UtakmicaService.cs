@@ -68,6 +68,10 @@ public class UtakmicaService : IUtakmiceService
 
     public async Task CreateUtakmicaAsync(UtakmicaDTO dto)
     {
+        if (dto.PrviKlubNaziv == dto.DrugiKlubNaziv)
+        {
+            throw new ArgumentException("Klub ne može igrati utakmicu protiv samog sebe.");
+        }
         var u = new Utakmica
         {
             TurnirID = dto.TurnirID,
@@ -90,6 +94,10 @@ public class UtakmicaService : IUtakmiceService
 
     public async Task UpdateUtakmicaAsync(UtakmicaDTO dto)
     {
+        if (dto.PrviKlubNaziv == dto.DrugiKlubNaziv)
+        {
+            throw new ArgumentException("Klub ne može igrati utakmicu protiv samog sebe.");
+        }
         var u = await _context.Utakmica.FindAsync(dto.UtakmicaID);
         if (u != null)
         {

@@ -75,6 +75,11 @@ namespace Fudbalski_turnir.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(IgracViewModel vm)
         {
+            if (!await _igraciService.IsBrojDresaDostupanAsync(vm.KlubID, vm.BrojDresa))
+            {
+                ModelState.AddModelError("BrojDresa", "Ovaj broj dresa je već zauzet u izabranom klubu.");
+            }
+
             if (ModelState.IsValid)
             {
                 var dto = new IgracDTO
@@ -90,6 +95,8 @@ namespace Fudbalski_turnir.Controllers
                 await _igraciService.CreateIgracAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
+            var klubovi = await _igraciService.GetAllKluboviAsync();
+            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", vm.KlubID);
             return View(vm);
         }
 
@@ -124,6 +131,11 @@ namespace Fudbalski_turnir.Controllers
         public async Task<IActionResult> Edit(int id, IgracViewModel vm)
         {
             if (id != vm.OsobaID) return NotFound();
+            
+            if (!await _igraciService.IsBrojDresaDostupanAsync(vm.KlubID, vm.BrojDresa, vm.OsobaID))
+            {
+                ModelState.AddModelError("BrojDresa", "Ovaj broj dresa je već zauzet u izabranom klubu.");
+            }
 
             if (ModelState.IsValid)
             {
@@ -141,6 +153,8 @@ namespace Fudbalski_turnir.Controllers
                 await _igraciService.UpdateIgracAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
+            var klubovi = await _igraciService.GetAllKluboviAsync();
+            ViewBag.Klub = new SelectList(klubovi, "KlubID", "ImeKluba", vm.KlubID);
             return View(vm);
         }
 

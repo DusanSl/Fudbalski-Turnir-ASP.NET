@@ -12,3 +12,7 @@
 .control-icon:before {
     color: white !important;
 }
+
+input, select, textarea {
+    color-scheme: dark;
+}

@@ -103,5 +103,14 @@ namespace FudbalskiTurnir.BLL.Services
         {
             return await _context.Klub.ToListAsync();
         }
+        public async Task<bool> IsBrojDresaDostupanAsync(int klubId, int brojDresa, 
+            int? trenutniIgracId = null)
+        {
+            bool zauzeto = await _context.Igrac.AnyAsync(i => i.KlubID == klubId
+                                                         && i.BrojDresa == brojDresa
+                                                         && i.OsobaID != trenutniIgracId);
+
+            return !zauzeto; 
+        }
     }
 }

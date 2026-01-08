@@ -3,31 +3,30 @@
 @{
     ViewData["Title"] = "Tabela Turnira";
 }
+<div class="container">
+    <h2 class="display-6 fw-bold standings-title">Tabela Turnira</h2>
 
-<h1 class="display-6 fw-bold standings-title">Tabela Turnira</h1>
-
-<div class="row mb-4 standings-filter">
-    <div class="col-md-6">
-        <form method="get" asp-action="Index">
-            <div class="form-group">
-                <label class="fs-4 form-label">Izaberite Turnir:</label>
-
-                <select name="turnirId" class="form-select bg-dark text-white border-primary shadow-none turnir-selector" onchange="this.form.submit()">
-                    <option value="" class="bg-dark text-white">Svi turniri</option>
-                    @foreach (var item in (SelectList)ViewBag.Turniri)
-                    {
-                        <option value="@item.Value"
-                                selected="@(item.Value == ViewBag.SelectedTurnirId?.ToString())"
-                                class="bg-dark text-white">
-                            @item.Text
-                        </option>
-                    }
-                </select>
-            </div>
-            <input type="hidden" name="faza" value="@(ViewBag.SelectedFaza ?? "Grupna")" />
-        </form>
+    <div class="row mb-3 standings-filter">
+        <div class="col-md-4">
+            <form method="get" asp-action="Index">
+                <div class="form-group">
+                    <label class="fs-4 form-label">Izaberite turnir:</label>
+                    <select name="turnirId" class="form-select bg-dark text-white border-primary shadow-none turnir-selector" onchange="this.form.submit()">
+                        <option value="" class="bg-dark text-white">Svi turniri</option>
+                        @foreach (var item in (SelectList)ViewBag.Turniri)
+                        {
+                            <option value="@item.Value"
+                                    selected="@(item.Value == ViewBag.SelectedTurnirId?.ToString())"
+                                    class="bg-dark text-white">
+                                @item.Text
+                            </option>
+                        }
+                    </select>
+                </div>
+                <input type="hidden" name="faza" value="@(ViewBag.SelectedFaza ?? "Grupna")" />
+            </form>
+        </div>
     </div>
-</div>
 
 @if (ViewBag.SelectedTurnirId != null)
 {

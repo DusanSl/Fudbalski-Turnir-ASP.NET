@@ -10,6 +10,7 @@ namespace FudbalskiTurnir.BLL.Interfaces
         Task CreateIgracAsync(IgracDTO igracDto); 
         Task UpdateIgracAsync(IgracDTO igracDto); 
         Task DeleteIgracAsync(int id);
-        Task<IEnumerable<Klub>> GetAllKluboviAsync();
+        Task<IEnumerable<Klub>> GetAllKluboviAsync(); 
+        Task<bool> IsBrojDresaDostupanAsync(int klubId, int brojDresa, int? trenutniIgracId = null);
     }
 }

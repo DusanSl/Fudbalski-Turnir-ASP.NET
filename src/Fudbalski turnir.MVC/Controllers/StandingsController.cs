@@ -1,8 +1,10 @@
-﻿using FudbalskiTurnir.BLL.Interfaces;
-using FudbalskiTurnir.BLL.DTOs;
+﻿using FudbalskiTurnir.BLL.DTOs;
+using FudbalskiTurnir.BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+[Authorize(Roles = "Admin,User")]
 public class StandingsController : Controller
 {
     private readonly ITurnirService _turnirService;

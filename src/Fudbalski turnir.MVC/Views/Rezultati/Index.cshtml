@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="table-responsive animate-table">
+    <div id="omotacTabele" class="table-responsive animate-table" style="display: none;">
         <table id="rezultatiTable" class="display cell-border rezultati-table" style="width:100%">
             <thead>
                 <tr>
@@ -102,23 +102,14 @@
                     }
                 },
                 "columnDefs": [
-                    {
-                        "className": "control",
-                        "orderable": false,
-                        "targets": 0
-                    },
-                    {
-                        "targets": 8,
-                        "visible": false
-                    }
+                    { "className": "control", "orderable": false, "targets": 0 },
+                    { "targets": 8, "visible": false }
                 ],
                 "paging": true,
                 "searching": true,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
-                "zeroRecords": "Nema rezultata",
-                "emptyTable": "Nema podataka u tabeli",
                 "order": [[1, "desc"]],
                 "language": {
                     "search": "Filter unutar tabele:",
@@ -127,22 +118,27 @@
                     "infoFiltered": "(filtrirano od ukupno _MAX_ entiteta)",
                     "lengthMenu": "Prikažite _MENU_ entiteta",
                     "paginate": {
-                        "first": "Prva",
-                        "last": "Poslednja",
-                        "next": "Sledeća",
-                        "previous": "Prethodna"
+                        "first": "Prva", "last": "Poslednja", "next": "Sledeća", "previous": "Prethodna"
                     },
-                "zeroRecords": "Nema rezultata",
-                "emptyTable": "Nema podataka u tabeli"
+                    "zeroRecords": "Nema rezultata",
+                    "emptyTable": "Nema podataka u tabeli"
                 }
             });
 
             $('#turnirFilter').on('change', function () {
                 var val = $(this).val();
+                var omotac = $('#omotacTabele');
+
                 if (val === "") {
-                    table.column(8).search('').draw();
+                    omotac.fadeOut(200, function() {
+                        table.column(8).search("DO_NOT_SHOW_ANYTHING").draw(false);
+                    });
                 } else {
-                    table.column(8).search('^' + val + '$', true, false).draw();
+                    table.column(8).search('^' + val + '$', true, false).draw(false);
+
+                    omotac.fadeIn(300, function() {
+                        table.responsive.recalc();
+                    });
                 }
             });
         });
