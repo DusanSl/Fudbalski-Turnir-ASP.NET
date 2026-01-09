@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-Fudbalski_turnir-214234a7-d277-48b1-97cb-7d03679fb1d1</UserSecretsId>
-    <RootNamespace>Fudbalski_turnir</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<OutputType>Exe</OutputType>
+		<UserSecretsId>aspnet-Fudbalski_turnir-214234a7-d277-48b1-97cb-7d03679fb1d1</UserSecretsId>
+		<RootNamespace>Fudbalski_turnir</RootNamespace>
+	</PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Fudbalski turnir.BLL\FudbalskiTurnir.BLL.csproj" />

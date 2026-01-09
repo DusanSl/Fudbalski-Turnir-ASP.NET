@@ -11,7 +11,7 @@ namespace FudbalskiTurnir.ViewModels
         [Display(Name = "TurnirID")]
         public int? TurnirID { get; set; }
 
-        [Required(ErrorMessage = "Ime sponzora je obavezno")]
+        [Required(ErrorMessage = "Ime sponzora je obavezno.")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Ime sponzora mora imati između 2 i 50 karaktera")]
         [Display(Name = "Ime sponzora")]
         public string ImeSponzora { get; set; } = string.Empty;
