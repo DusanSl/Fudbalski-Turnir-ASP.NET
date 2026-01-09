@@ -4,6 +4,7 @@ using FudbalskiTurnir.DAL;
 using FudbalskiTurnir.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<User>(options => {
+    options.SignIn.RequireConfirmedAccount = false;
+    options.User.RequireUniqueEmail = true;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ITurnirService, TurnirService>();
@@ -44,6 +48,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

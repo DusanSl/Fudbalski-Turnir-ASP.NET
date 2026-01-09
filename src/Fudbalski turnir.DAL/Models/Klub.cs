@@ -10,7 +10,7 @@ namespace FudbalskiTurnir.DAL.Models
         public int KlubID { get; set; }
         [MaxLength(50)]
         [Required]
-        public string ImeKluba { get; set; }
+        public string ImeKluba { get; set; } = string.Empty;
         [Required]
         public int GodinaOsnivanja { get; set; }
         [Required]
@@ -19,7 +19,7 @@ namespace FudbalskiTurnir.DAL.Models
         public int BrojIgraca { get; set; }
         [Required]
         [MaxLength(100)]
-        public string Stadion { get; set; }
+        public string Stadion { get; set; } = string.Empty;
         [Required]
         public int BrojOsvojenihTitula { get; set; }
         public ICollection<Utakmica>? Utakmice { get; set; }

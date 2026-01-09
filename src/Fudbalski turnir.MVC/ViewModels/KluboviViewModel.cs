@@ -10,7 +10,7 @@ namespace FudbalskiTurnir.ViewModels
         [Required(ErrorMessage = "Ime kluba je obavezno")]
         [StringLength(50, ErrorMessage = "Ime kluba ne može biti duže od 50 karaktera")]
         [Display(Name = "Ime kluba")]
-        public string ImeKluba { get; set; }
+        public string ImeKluba { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Godina osnivanja je obavezna")]
         [Range(1800, 2035, ErrorMessage = "Godina osnivanja mora biti između 1800 i 2035")]
@@ -30,7 +30,7 @@ namespace FudbalskiTurnir.ViewModels
         [Required(ErrorMessage = "Stadion je obavezan")]
         [StringLength(100, ErrorMessage = "Naziv stadiona ne može biti duži od 100 karaktera")]
         [Display(Name = "Stadion")]
-        public string Stadion { get; set; }
+        public string Stadion { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Broj osvojenih titula je obavezan")]
         [Range(0, 1000, ErrorMessage = "Broj titula mora biti između 0 i 1000")]

@@ -132,7 +132,7 @@ public class UtakmicaService : IUtakmiceService
     public async Task<bool> UtakmicaExistsAsync(int id) => await _context.Utakmica.AnyAsync(e => e.UtakmicaID == id);
     public async Task<IEnumerable<Turnir>> GetAllTurniriAsync() => await _context.Turnir.ToListAsync();
     public async Task<IEnumerable<object>> GetKluboviByTurnirAsync(int turnirId) =>
-        await _context.Klub.Where(k => k.Turniri.Any(t => t.TurnirID == turnirId))
+        await _context.Klub.Where(k => k.Turniri!.Any(t => t.TurnirID == turnirId))
             .Select(k => new { k.KlubID, k.ImeKluba }).ToListAsync();
 
     public async Task<TurnirPregledDTO> GetStandingsModelAsync(int turnirId, string faza)

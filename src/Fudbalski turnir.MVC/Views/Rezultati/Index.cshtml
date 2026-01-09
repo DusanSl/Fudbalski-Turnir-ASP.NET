@@ -38,6 +38,8 @@
                 </tr>
             </thead>
             <tbody>
+                @if (Model != null)
+                {
                 @foreach (var utakmica in Model)
                 {
                     <tr class="rezultati">
@@ -72,6 +74,7 @@
                         </td>
                         <td class="d-none">@utakmica.TurnirID</td>
                     </tr>
+                }
                 }
             </tbody>
         </table>

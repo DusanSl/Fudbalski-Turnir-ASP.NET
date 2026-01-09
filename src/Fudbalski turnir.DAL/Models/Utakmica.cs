@@ -16,16 +16,16 @@ namespace FudbalskiTurnir.DAL.Models
         public DateTime Datum { get; set; }
         [Required]
         [MaxLength(50)]
-        public string Mesto { get; set; }
+        public string Mesto { get; set; } = string.Empty;
         [Required]
         [MaxLength(50)]
-        public string PrviKlubNaziv { get; set; }
+        public string PrviKlubNaziv { get; set; } = string.Empty;
         [Required]
         [MaxLength(50)]
-        public string DrugiKlubNaziv { get; set; }
+        public string DrugiKlubNaziv { get; set; } = string.Empty;
         [Required]
         [MaxLength(20)]
-        public string Kolo { get; set; }
+        public string Kolo { get; set; } = string.Empty;
         [Required]
         public int PrviKlubGolovi { get; set; }
         [Required]

@@ -14,12 +14,12 @@ namespace FudbalskiTurnir.ViewModels
         [Required(ErrorMessage = "Ime je obavezno")]
         [StringLength(50, ErrorMessage = "Ime ne može biti duže od 50 karaktera")]
         [Display(Name = "Ime")]
-        public string Ime { get; set; }
+        public string Ime { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Prezime je obavezno")]
         [StringLength(100, ErrorMessage = "Prezime ne može biti duže od 100 karaktera")]
         [Display(Name = "Prezime")]
-        public string Prezime { get; set; }
+        public string Prezime { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Datum rođenja je obavezan")]
         [DataType(DataType.Date)]
@@ -30,12 +30,12 @@ namespace FudbalskiTurnir.ViewModels
         [Required(ErrorMessage = "Nacionalnost je obavezna")]
         [StringLength(50)]
         [Display(Name = "Nacionalnost")]
-        public string Nacionalnost { get; set; }
+        public string Nacionalnost { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Pozicija je obavezna")]
         [StringLength(30)]
         [Display(Name = "Pozicija")]
-        public string Pozicija { get; set; }
+        public string Pozicija { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Broj dresa je obavezan")]
         [Range(1, 99, ErrorMessage = "Broj dresa mora biti između 1 i 99")]
