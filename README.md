@@ -1,5 +1,3 @@
-# Fudbalski Turnir - Series Management WebApp
-
 **Fudbalski Turnir** is a professional tournament management system built with **ASP.NET Core 8.0**. The application provides a comprehensive solution for managing football clubs, match results, dynamic group standings, and tournament brackets.
 
 ### Tech Stack
