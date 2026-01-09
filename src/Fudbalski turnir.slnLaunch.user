@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "Fudbalski turnir.MVC/FudbalskiTurnir.MVC.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
