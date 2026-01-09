@@ -1,0 +1,71 @@
+﻿@page
+@using Microsoft.AspNetCore.Http.Features
+@model TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = "Dvostruka autentifikacija (2FA)";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h3>@ViewData["Title"]</h3>
+@{
+    var consentFeature = HttpContext.Features.Get<ITrackingConsentFeature>();
+    @if (consentFeature?.CanTrack ?? true)
+    {
+        @if (Model.Is2faEnabled)
+        {
+            if (Model.RecoveryCodesLeft == 0)
+            {
+                <div class="alert alert-danger">
+                    <strong>Nema preostalih kodova za oporavak.</strong>
+                    <p>Morate <a asp-page="./GenerateRecoveryCodes">generisati novi set kodova</a> pre nego što se budete mogli prijaviti pomoću koda za oporavak.</p>
+                </div>
+            }
+            else if (Model.RecoveryCodesLeft == 1)
+            {
+                <div class="alert alert-danger">
+                    <strong>Preostao vam je samo 1 kod za oporavak.</strong>
+                    <p>Možete <a asp-page="./GenerateRecoveryCodes">generisati novi set kodova za oporavak</a>.</p>
+                </div>
+            }
+            else if (Model.RecoveryCodesLeft <= 3)
+            {
+                <div class="alert alert-warning">
+                    <strong>Preostalo vam je još @Model.RecoveryCodesLeft koda/ova za oporavak.</strong>
+                    <p>Trebalo bi da <a asp-page="./GenerateRecoveryCodes">generišete novi set kodova za oporavak</a>.</p>
+                </div>
+            }
+
+            if (Model.IsMachineRemembered)
+            {
+                <form method="post" style="display: inline-block">
+                    <button type="submit" class="btn btn-primary">Zaboravi ovaj brauzer</button>
+                </form>
+            }
+            <a asp-page="./Disable2fa" class="btn btn-primary">Onemogući 2FA</a>
+            <a asp-page="./GenerateRecoveryCodes" class="btn btn-primary">Resetuj kodove za oporavak</a>
+        }
+
+        <h4>Aplikacija za autentifikaciju</h4>
+        @if (!Model.HasAuthenticator)
+        {
+            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Dodaj aplikaciju za autentifikaciju</a>
+        }
+        else
+        {
+            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Podesi aplikaciju za autentifikaciju</a>
+            <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-primary">Resetuj aplikaciju za autentifikaciju</a>
+        }
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <strong>Politika privatnosti i kolačića nije prihvaćena.</strong>
+            <p>Morate prihvatiti politiku privatnosti pre nego što omogućite dvostruku autentifikaciju.</p>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

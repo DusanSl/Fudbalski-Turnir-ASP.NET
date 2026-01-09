@@ -10,7 +10,6 @@ namespace FudbalskiTurnir.DAL
         {
             var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
-            // 1. IDENTITY
             string[] roles = { "Admin", "User" };
             foreach (var r in roles) if (!await roleManager.RoleExistsAsync(r)) await roleManager.CreateAsync(new IdentityRole(r));
 
