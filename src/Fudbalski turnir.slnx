@@ -2,4 +2,6 @@
   <Project Path="Fudbalski turnir.MVC/FudbalskiTurnir.MVC.csproj" />
   <Project Path="Fudbalski turnir.BLL/FudbalskiTurnir.BLL.csproj" />
   <Project Path="Fudbalski turnir.DAL/FudbalskiTurnir.DAL.csproj" />
+  
+  <StartupProject>Fudbalski turnir.MVC/FudbalskiTurnir.MVC.csproj</StartupProject>
 </Solution>
