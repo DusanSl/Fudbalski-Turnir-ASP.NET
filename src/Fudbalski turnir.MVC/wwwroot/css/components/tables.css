@@ -80,3 +80,19 @@ table.dataTable.cell-border {
         background-color: #1a1e26 !important;
         color: #ffffff !important;
     }
+
+.dataTables_wrapper .dataTables_filter input {
+    background-color: #1a1e26 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; 
+    border-radius: 4px;
+    outline: none !important;
+    transition: all 0.3s ease;
+}
+
+    .dataTables_wrapper .dataTables_filter input:hover,
+    .dataTables_wrapper .dataTables_filter input:focus {
+        border-color: rgba(255, 255, 255, 0.5) !important; 
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.1) !important; 
+        background-color: #252a33 !important; /
+    }
