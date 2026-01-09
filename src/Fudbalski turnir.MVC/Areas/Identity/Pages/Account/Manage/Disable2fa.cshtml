@@ -1,0 +1,25 @@
+﻿@page
+@model Disable2faModel
+@{
+    ViewData["Title"] = "Onemogući dvostruku autentifikaciju (2FA)";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h3>@ViewData["Title"]</h3>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <strong>Ova akcija samo onemogućava 2FA.</strong>
+    </p>
+    <p>
+        Onemogućavanje 2FA ne menja ključeve koji se koriste u aplikacijama za autentifikaciju. Ako želite da promenite ključ
+        koji se koristi u aplikaciji, trebalo bi da <a asp-page="./ResetAuthenticator">resetujete svoje ključeve autentifikatora.</a>
+    </p>
+</div>
+
+<div>
+    <form method="post">
+        <button class="btn btn-danger" type="submit">Onemogući 2FA</button>
+    </form>
+</div>
