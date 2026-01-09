@@ -5,6 +5,7 @@
     <RootNamespace>Fudbalski_turnir.BLL</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
