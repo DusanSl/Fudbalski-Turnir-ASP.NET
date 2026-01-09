@@ -19,19 +19,19 @@ namespace FudbalskiTurnir.ViewModels
 
         [Required(ErrorMessage = "Mesto je obavezno")]
         [Display(Name = "Mesto")]
-        public string Mesto { get; set; }
+        public string Mesto { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Domaći klub je obavezan")]
         [Display(Name = "Domaći klub")]
-        public string PrviKlubNaziv { get; set; }
+        public string PrviKlubNaziv { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Gostujući klub je obavezan")]
         [Display(Name = "Gostujući klub")]
-        public string DrugiKlubNaziv { get; set; }
+        public string DrugiKlubNaziv { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Kolo je obavezno")]
         [Display(Name = "Kolo")]
-        public string Kolo { get; set; }
+        public string Kolo { get; set; } = string.Empty;
 
         [Required]
         [Range(0, 250, ErrorMessage = "Golovi ne mogu biti negativni")]

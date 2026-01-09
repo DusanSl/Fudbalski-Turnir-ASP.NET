@@ -28,7 +28,7 @@ namespace FudbalskiTurnir.BLL.Services
                     BrojIgraca = k.BrojIgraca,
                     Stadion = k.Stadion,
                     BrojOsvojenihTitula = k.BrojOsvojenihTitula,
-                    NazivTurnira = k.Turniri.Select(t => t.NazivTurnira).ToList(),
+                    NazivTurnira = k.Turniri!.Select(t => t.NazivTurnira).ToList(),
                 })
                 .ToListAsync(); 
         }
@@ -50,8 +50,8 @@ namespace FudbalskiTurnir.BLL.Services
                 BrojIgraca = k.BrojIgraca,
                 Stadion = k.Stadion,
                 BrojOsvojenihTitula = k.BrojOsvojenihTitula,
-                NazivTurnira = k.Turniri.Select(t => t.NazivTurnira).ToList(),
-                PrimarniTurnirID = k.Turniri.FirstOrDefault()?.TurnirID
+                NazivTurnira = k.Turniri!.Select(t => t.NazivTurnira).ToList(),
+                PrimarniTurnirID = k.Turniri!.FirstOrDefault()?.TurnirID
             };
         }
 
@@ -95,7 +95,7 @@ namespace FudbalskiTurnir.BLL.Services
             existingKlub.Stadion = dto.Stadion;
             existingKlub.BrojOsvojenihTitula = dto.BrojOsvojenihTitula;
 
-            existingKlub.Turniri.Clear();
+            existingKlub.Turniri!.Clear();
             if (dto.PrimarniTurnirID.HasValue && dto.PrimarniTurnirID.Value > 0)
             {
                 var turnir = await _context.Turnir.FindAsync(dto.PrimarniTurnirID.Value);

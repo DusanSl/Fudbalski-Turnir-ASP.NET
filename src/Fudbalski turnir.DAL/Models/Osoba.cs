@@ -10,15 +10,15 @@ namespace FudbalskiTurnir.DAL.Models
         public int OsobaID { get; set; }
         [Required]
         [MaxLength(50)]
-        public string Ime { get; set; }
+        public string Ime { get; set; } = string.Empty;
         [Required]
         [MaxLength(100)]
-        public string Prezime { get; set; }
+        public string Prezime { get; set; } = string.Empty;
         [Required]
         public DateTime DatumRodjenja { get; set; }
         [Required]
         [MaxLength(50)]
-        public string Nacionalnost { get; set; }
+        public string Nacionalnost { get; set; } = string.Empty;
         public Osoba()
         {
 

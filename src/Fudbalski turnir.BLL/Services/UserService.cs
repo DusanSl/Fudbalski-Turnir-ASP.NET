@@ -44,7 +44,7 @@ public class UserService : IUserService
             {
                 Id = user.Id,
                 Email = user.Email ?? string.Empty,
-                PhoneNumber = user.PhoneNumber,
+                PhoneNumber = user.PhoneNumber ?? string.Empty,
                 EmailConfirmed = user.EmailConfirmed,
                 IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
                 Roles = roles
@@ -63,9 +63,9 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Email = user.Email ?? string.Empty,
-            PhoneNumber = user.PhoneNumber,
+            PhoneNumber = user.PhoneNumber ?? string.Empty,
             EmailConfirmed = user.EmailConfirmed,
-            PhoneNumberConfirmed = user.PhoneNumberConfirmed, // Mapiranje
+            PhoneNumberConfirmed = user.PhoneNumberConfirmed,
             IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
             Roles = roles,
             SelectedRole = roles.FirstOrDefault()

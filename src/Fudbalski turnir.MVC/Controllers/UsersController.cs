@@ -28,7 +28,7 @@ namespace FudbalskiTurnir.MVC.Controllers
             {
                 Id = u.Id,
                 Email = u.Email ?? "Bez emaila",
-                PhoneNumber = u.PhoneNumber,
+                PhoneNumber = u.PhoneNumber!,
                 EmailConfirmed = u.EmailConfirmed,
                 IsActive = u.IsActive,
                 Roles = u.Roles
@@ -82,7 +82,7 @@ namespace FudbalskiTurnir.MVC.Controllers
                 {
                     Email = model.Email,
                     UserName = model.Email,
-                    PhoneNumber = model.PhoneNumber,
+                    PhoneNumber = model.PhoneNumber ?? string.Empty,
                     EmailConfirmed = model.EmailConfirmed,
                     PhoneNumberConfirmed = model.PhoneNumberConfirmed,
                     IsActive = true,
@@ -115,7 +115,7 @@ namespace FudbalskiTurnir.MVC.Controllers
                 Id = u.Id,
                 Email = u.Email,
                 EmailConfirmed = u.EmailConfirmed,
-                PhoneNumber = u.PhoneNumber,
+                PhoneNumber = u.PhoneNumber!,
                 PhoneNumberConfirmed = u.PhoneNumberConfirmed,
                 IsActive = u.IsActive,
                 SelectedRole = u.SelectedRole ?? "User"
@@ -169,7 +169,7 @@ namespace FudbalskiTurnir.MVC.Controllers
                 Id = u.Id,
                 Email = u.Email,
                 IsActive = u.IsActive,
-                SelectedRole = u.SelectedRole,
+                SelectedRole = u.SelectedRole!,
                 Roles = u.Roles 
             };
 

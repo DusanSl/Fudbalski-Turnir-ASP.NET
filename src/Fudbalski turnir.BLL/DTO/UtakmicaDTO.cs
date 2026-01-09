@@ -6,10 +6,10 @@
         public int? TurnirID { get; set; }
         public string? NazivTurnira { get; set; }
         public DateTime Datum { get; set; }
-        public string Mesto { get; set; }
-        public string PrviKlubNaziv { get; set; }
-        public string DrugiKlubNaziv { get; set; }
-        public string Kolo { get; set; }
+        public string Mesto { get; set; } = string.Empty;
+        public string PrviKlubNaziv { get; set; } = string.Empty;
+        public string DrugiKlubNaziv { get; set; } = string.Empty;
+        public string Kolo { get; set; } = string.Empty;
         public int PrviKlubGolovi { get; set; }
         public int DrugiKlubGolovi { get; set; }
         public bool Produzeci { get; set; }

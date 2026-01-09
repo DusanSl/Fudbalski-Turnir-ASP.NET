@@ -26,7 +26,7 @@ namespace FudbalskiTurnir.BLL.Services
                     DatumPocetka = t.DatumPocetka,
                     DatumZavrsetka = t.DatumZavrsetka,
                     TipTurnira = t.TipTurnira,
-                    BrojUtakmica = t.Utakmice.Count()
+                    BrojUtakmica = t.Utakmice!.Count()
                 }).ToListAsync();
         }
 
@@ -46,7 +46,7 @@ namespace FudbalskiTurnir.BLL.Services
                 DatumPocetka = t.DatumPocetka,
                 DatumZavrsetka = t.DatumZavrsetka,
                 TipTurnira = t.TipTurnira,
-                BrojUtakmica = t.Utakmice.Count()
+                BrojUtakmica = t.Utakmice!.Count()
             };
         }
 

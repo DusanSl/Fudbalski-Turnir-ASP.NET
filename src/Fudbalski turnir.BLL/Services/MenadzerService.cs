@@ -22,7 +22,7 @@ public class MenadzerService : IMenadzerService
                 DatumRodjenja = m.DatumRodjenja,
                 Nacionalnost = m.Nacionalnost,
                 KlubID = m.KlubID,
-                ImeKluba = m.Klub.ImeKluba
+                ImeKluba = m.Klub!.ImeKluba
             }).ToListAsync();
     }
 

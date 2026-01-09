@@ -19,7 +19,7 @@ public class SponzorService : ISponzorService
                 ImeSponzora = s.ImeSponzora,
                 KontaktSponzora = s.KontaktSponzora,
                 VrednostSponzora = s.VrednostSponzora,
-                NaziviTurnira = s.Turniri.Select(t => t.NazivTurnira).ToList()
+                NaziviTurnira = s.Turniri!.Select(t => t.NazivTurnira).ToList()
             }).ToListAsync();
     }
 
@@ -37,8 +37,8 @@ public class SponzorService : ISponzorService
             ImeSponzora = s.ImeSponzora,
             KontaktSponzora = s.KontaktSponzora,
             VrednostSponzora = s.VrednostSponzora,
-            PrimarniTurnirID = s.Turniri.FirstOrDefault()?.TurnirID,
-            NaziviTurnira = s.Turniri.Select(t => t.NazivTurnira).ToList()
+            PrimarniTurnirID = s.Turniri!.FirstOrDefault()?.TurnirID,
+            NaziviTurnira = s.Turniri!.Select(t => t.NazivTurnira).ToList()
         };
     }
 
@@ -74,7 +74,7 @@ public class SponzorService : ISponzorService
             existing.KontaktSponzora = dto.KontaktSponzora;
             existing.VrednostSponzora = dto.VrednostSponzora;
 
-            existing.Turniri.Clear();
+            existing.Turniri!.Clear();
             if (dto.PrimarniTurnirID.HasValue)
             {
                 var turnir = await _context.Turnir.FindAsync(dto.PrimarniTurnirID.Value);

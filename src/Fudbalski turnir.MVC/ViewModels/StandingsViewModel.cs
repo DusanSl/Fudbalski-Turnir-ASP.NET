@@ -1,7 +1,7 @@
 ﻿public class StandingsViewModel
 {
     public int KlubID { get; set; } 
-    public string KlubNaziv { get; set; }
+    public string KlubNaziv { get; set; } = string.Empty;
     public int Odigrano { get; set; }
     public int Pobede { get; set; }
     public int Nereseno { get; set; }
@@ -13,8 +13,8 @@
 }
 public class GrupnaFazaViewModel
 {
-    public Dictionary<string, List<StandingsViewModel>> Grupe { get; set; }
-    public BracketViewModel Bracket { get; set; }
+    public Dictionary<string, List<StandingsViewModel>> Grupe { get; set; } = new();
+    public BracketViewModel Bracket { get; set; } = new();
 }
 public class BracketViewModel
 {
