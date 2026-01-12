@@ -6,7 +6,7 @@ namespace FudbalskiTurnir.ViewModels
     {
         public ICollection<UtakmicaDTO>? Utakmica { get; set; }
         public string NaslovStranice { get; set; } = string.Empty;
-        public int UkupnoUtakmica => Utakmica.Count;
+        public int UkupnoUtakmica => Utakmica?.Count ?? 0;
         public int? IzabraniTurnirID { get; set; }
     }
 }

@@ -110,7 +110,7 @@ public class UserService : IUserService
         var result = await _userManager.DeleteAsync(user);
         return result.Succeeded;
     }
-    public async Task<UserDTO> GetCurrentUserAsync(ClaimsPrincipal principal)
+    public async Task<UserDTO?> GetCurrentUserAsync(ClaimsPrincipal principal)
     {
         var user = await _userManager.GetUserAsync(principal);
         if (user == null) return null;
