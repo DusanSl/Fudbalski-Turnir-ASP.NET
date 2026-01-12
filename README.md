@@ -32,7 +32,7 @@ To ensure enterprise-grade scalability, the project is structured into three dis
 
 ### Visuals (Screenshots)
 
-#### 1. Standings pages
+### 1. Standings pages
 
 #### Group Phase Standings
 ![Group Standings](screenshots/GroupPhase.jpg)
