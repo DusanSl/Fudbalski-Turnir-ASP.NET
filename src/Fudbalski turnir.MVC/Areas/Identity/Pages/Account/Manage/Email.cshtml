@@ -23,10 +23,16 @@
             }
             else
             {
-                <div class="form-floating mb-3">
-                    <input asp-for="Email" class="form-control" placeholder="Molimo unesite vaš email." disabled />
-                    <label asp-for="Email" class="form-label">Email</label>
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Pošalji potvrdni email</button>
+                <div class="form-floating mb-2">
+                    <input asp-for="Email" class="form-control bg-dark text-light border-secondary" placeholder="Email" disabled />
+                    <label asp-for="Email" class="text-secondary">Email</label>
+                </div>
+
+                <div class="d-grid">
+                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail"
+                            class="btn btn-primary fw-bold py-2 mb-2">
+                        Potvrdi Email Adresu
+                    </button>
                 </div>
             }
             <div class="form-floating mb-3">
