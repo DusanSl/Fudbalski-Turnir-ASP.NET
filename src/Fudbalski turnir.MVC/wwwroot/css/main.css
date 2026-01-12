@@ -7,4 +7,6 @@
 @import 'pages/rezultati.css';
 @import 'pages/identity.css';
 @import 'pages/tournament.css';
-@import "../lib/bootstrap/dist/css/bootstrap icons/bootstrap-icons.css";
+@import "../lib/bootstrap/dist/css/bootstrap-icons/bootstrap-icons.css";
+@import "../lib/jquery/dist/jquery-dataTables/jquery.dataTables.min.css";
+@import "../lib/jquery/dist/responsive-dataTables/responsive.dataTables.min.css";

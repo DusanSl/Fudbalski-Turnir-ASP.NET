@@ -11,6 +11,6 @@ namespace FudbalskiTurnir.BLL.Interfaces
         Task<IdentityResult> CreateUserAsync(UserDTO userDto, string password);
         Task<bool> UpdateUserAsync(UserDTO userDto);
         Task<bool> DeleteUserAsync(string id); 
-        Task<UserDTO> GetCurrentUserAsync(ClaimsPrincipal principal);
+        Task<UserDTO?> GetCurrentUserAsync(ClaimsPrincipal principal);
     }
 }
