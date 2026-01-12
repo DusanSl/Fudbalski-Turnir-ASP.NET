@@ -1,5 +1,6 @@
 ﻿using FudbalskiTurnir.DAL.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 namespace FudbalskiTurnir.DAL

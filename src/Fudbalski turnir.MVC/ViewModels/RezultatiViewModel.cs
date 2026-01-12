@@ -1,12 +1,12 @@
-﻿using FudbalskiTurnir.DAL.Models;
+﻿using FudbalskiTurnir.BLL.DTOs;
 
 namespace FudbalskiTurnir.ViewModels
 {
     public class RezultatiViewModel
     {
-        public List<Utakmica> Utakmice { get; set; } = new();
+        public ICollection<UtakmicaDTO>? Utakmica { get; set; }
         public string NaslovStranice { get; set; } = string.Empty;
-        public int UkupnoUtakmica => Utakmice.Count;
+        public int UkupnoUtakmica => Utakmica.Count;
         public int? IzabraniTurnirID { get; set; }
     }
 }

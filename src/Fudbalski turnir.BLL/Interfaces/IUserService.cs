@@ -1,5 +1,6 @@
 ﻿using FudbalskiTurnir.BLL.DTOs;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace FudbalskiTurnir.BLL.Interfaces
 {
@@ -9,6 +10,7 @@ namespace FudbalskiTurnir.BLL.Interfaces
         Task<UserDTO?> GetUserByIdAsync(string id); 
         Task<IdentityResult> CreateUserAsync(UserDTO userDto, string password);
         Task<bool> UpdateUserAsync(UserDTO userDto);
-        Task<bool> DeleteUserAsync(string id);
+        Task<bool> DeleteUserAsync(string id); 
+        Task<UserDTO> GetCurrentUserAsync(ClaimsPrincipal principal);
     }
 }

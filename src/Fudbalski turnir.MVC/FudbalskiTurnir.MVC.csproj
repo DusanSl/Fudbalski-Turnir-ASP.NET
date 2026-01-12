@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fudbalski turnir.BLL\FudbalskiTurnir.BLL.csproj" />
-    <ProjectReference Include="..\Fudbalski turnir.DAL\FudbalskiTurnir.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

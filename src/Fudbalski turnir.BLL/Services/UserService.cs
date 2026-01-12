@@ -3,6 +3,8 @@ using FudbalskiTurnir.BLL.Interfaces;
 using FudbalskiTurnir.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Security.Claims;
 
 public class UserService : IUserService
 {
@@ -107,5 +109,20 @@ public class UserService : IUserService
 
         var result = await _userManager.DeleteAsync(user);
         return result.Succeeded;
+    }
+    public async Task<UserDTO> GetCurrentUserAsync(ClaimsPrincipal principal)
+    {
+        var user = await _userManager.GetUserAsync(principal);
+        if (user == null) return null;
+
+        return new UserDTO
+        {
+            Id = user.Id,
+            Email = user.Email ?? string.Empty,
+            PhoneNumber = user.PhoneNumber ?? string.Empty,
+            EmailConfirmed = user.EmailConfirmed,
+            PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+            IsActive = user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
+        };
     }
 }
